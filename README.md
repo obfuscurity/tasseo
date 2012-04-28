@@ -49,6 +49,10 @@ var metrics =
 
 ``warning`` and ``critical`` thresholds are optional. If defined, the color of the graph will change when the current value exceeds the respective threshold. If the thresholds are reversed (i.e. ``critical`` is lower than ``warning``), Tasseo understands that an inverse threshold is expected.
 
+### Dashboard Attributes
+
+* refresh - Refresh interval for charts, in milliseconds. (optional, defaults to _2000_)
+
 ### Metric Attributes
 
 * alias - Short name for the metric. (optional)

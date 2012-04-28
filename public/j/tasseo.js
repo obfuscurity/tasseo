@@ -32,8 +32,9 @@ for (var j=0; j<metrics.length; j++) {
   graphs[j].render();
 }
 
-// refresh the graph every 2 seconds
-var int = self.setInterval("refreshData()", 2000);
+// refresh the graph
+var myRefresh = (typeof refresh == "undefined") ? 2000 : refresh;
+var int = self.setInterval("refreshData()", myRefresh);
 function refreshData() {
   for (var k=0; k<graphs.length; k++) {
     getData(function(n, values) {

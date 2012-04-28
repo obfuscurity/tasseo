@@ -1,3 +1,4 @@
+// var refresh = 5000;
 var metrics =
 [
   {
