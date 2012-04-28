@@ -2,7 +2,7 @@
 
 Reading the tea leaves.
 
-![graph](https://github.com/heroku/tasseo/raw/master/public/i/tasseo.png "Tasseo Dashboard")
+![graph](https://github.com/obfuscurity/tasseo/raw/master/public/i/tasseo.png "Tasseo Dashboard")
 
 ## Overview
 
