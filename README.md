@@ -12,7 +12,7 @@ Tasseo is a lightweight, easily configurable, real-time dashboard for Graphite e
 
 ### Examples
 
-Creating your own dashboard is as simple as dropping a JSON file into the ``public/d`` directory, committing it and pushing it to the staging or production Tasseo apps. The name of your file (minus the ``.js`` suffix) becomes the name of your dashboard. Here's a sample (also found [here](https://github.com/heroku/tasseo/blob/master/public/d/template.js)):
+Creating your own dashboard is as simple as dropping a JSON file into the ``public/d`` directory, committing it and pushing it to the staging or production Tasseo apps. The name of your file (minus the ``.js`` suffix) becomes the name of your dashboard. Here's a sample (also found [here](https://github.com/obfuscurity/tasseo/blob/master/public/d/template.js)):
 
 ```json
 var metrics =
