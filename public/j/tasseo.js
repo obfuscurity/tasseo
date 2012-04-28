@@ -9,6 +9,7 @@ var graphs = [];
 var datum = [];
 var urls = [];
 var hovers = [];
+var aliases = [];
 for (var j=0; j<metrics.length; j++) {
 
   // our server
@@ -16,7 +17,7 @@ for (var j=0; j<metrics.length; j++) {
   urls[j] = url + "/render/?target=" + encodeURI(metrics[j].target) + "&from=-" + period + "minutes&format=json";
 
   // construct our graph
-  var alias = metrics[j].alias || metrics[j].target;
+  aliases[j] = metrics[j].alias || metrics[j].target;
   datum[j] = [{ x:0, y:0 }];
   graphs[j] = new Rickshaw.Graph({
     element: document.querySelector(".graph" + j),
@@ -24,7 +25,7 @@ for (var j=0; j<metrics.length; j++) {
     height: 80,
     interpolation: 'step-after',
     series: [{
-      name: alias,
+      name: aliases[j],
       color: '#afdab1',
       data: datum[j]
     }]
@@ -59,7 +60,7 @@ function refreshData() {
 
       // update our graph
       graphs[n].update();
-      $(".overlay-name" + n).text(alias);
+      $(".overlay-name" + n).text(aliases[n]);
       $(".overlay-number" + n).text(parseInt(datum[n][datum.length].y));
       if (metrics[n].unit) {
         $(".overlay-number" + n).append('<span class="unit">' + metrics[n].unit + '</span>');
