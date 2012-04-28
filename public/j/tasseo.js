@@ -59,6 +59,7 @@ function refreshData() {
 
       // update our graph
       graphs[n].update();
+      alias = metrics[n].alias || metrics[n].target;
       $(".overlay-name" + n).text(alias);
       $(".overlay-number" + n).text(parseInt(datum[n][datum.length].y));
       if (metrics[n].unit) {
