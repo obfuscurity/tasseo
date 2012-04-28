@@ -1,0 +1,15 @@
+---
+production:
+  agent_enabled: true
+  error_collector:
+    capture_source: true
+    enabled: true
+    ignore_errors: ActionController::RoutingError
+  apdex_t: 0.5
+  ssl: true
+  monitor_mode: true
+  license_key: <%= ENV["NEW_RELIC_LICENSE_KEY"] %>
+  developer_mode: false
+  app_name: <%= ENV["NEW_RELIC_APP_NAME"] %>
+  capture_params: false
+  log_level: info
