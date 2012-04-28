@@ -1,5 +1,4 @@
 require 'sinatra'
-require 'newrelic_rpm'
 require 'haml'
 
 module Tasseo
