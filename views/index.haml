@@ -11,6 +11,11 @@
     #title
       - if dashboard
         %h1= dashboard
+        .toggle
+          %ul
+            %li.toggle
+              %a{ :href => "#" }
+                %img{ :src => "/i/night.png" }
       - else
         %h1 Tasseo
     - if dashboard

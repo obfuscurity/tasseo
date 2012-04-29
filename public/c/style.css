@@ -1,4 +1,8 @@
 
+body {
+  background-color: #fff;
+}
+
 div#title {
   margin: 20px 10% 0px;
 }
@@ -6,6 +10,33 @@ div#title {
 #title h1 {
   font-size: 48px;
   font-family: Helvetica;
+  color: #000;
+  opacity: 1.0;
+  width: 50%;
+  margin: 0;
+}
+
+#title .toggle {
+  font-size: 18px;
+  font-family: Helvetica;
+  font-weight: 100;
+  color: #000;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 5px 5px 0 0;
+}
+
+#title .toggle ul {
+  list-style-type: none;
+}
+
+#title .toggle ul li a {
+  text-decoration: none;
+}
+
+#title .toggle ul li a img {
+  opacity: 0.8;
 }
 
 div#main {
@@ -44,6 +75,10 @@ div#nav {
   padding: 0 10px 10px 0;
 }
 
+#graph svg {
+  opacity: 1.0;
+}
+
 #overlay-name {
   position: absolute;
   font-size: 12px;
@@ -52,6 +87,8 @@ div#nav {
   width: 150px;
   left: 20px;
   bottom: 20px;
+  color: #000;
+  z-index: 200;
 }
 
 #overlay-number {
@@ -61,6 +98,9 @@ div#nav {
   font-weight: bold;
   right: 20px;
   bottom: 20px;
+  color: #000;
+  z-index: 200;
+  opacity: 1.0;
 }
 
 span.unit {
