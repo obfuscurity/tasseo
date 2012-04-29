@@ -97,27 +97,19 @@ function getData(cb, n) {
 // toggle switch for night/day mode
 $('li.toggle a').toggle(function() {
   console.log("night");
-  styleNight();
+  $('body').toggleClass('night');
+  $('div#title h1').toggleClass('night');
+  $('div#graph svg').toggleClass('night');
+  $('div#overlay-name').toggleClass('night');
+  $('div#overlay-number').toggleClass('night');
   $('li.toggle a').find('img').attr({ 'src': '/i/day.png' });
 }, function() {
   console.log("day");
-  styleDay();
+  $('body').toggleClass('night');
+  $('div#title h1').toggleClass('night');
+  $('div#graph svg').toggleClass('night');
+  $('div#overlay-name').toggleClass('night');
+  $('div#overlay-number').toggleClass('night');
   $('li.toggle a').find('img').attr({ 'src': '/i/night.png' });
 });
-
-function styleDay() {
-  $('body').css('background-color', '#fff');
-  $('div#title h1').css({ 'color': '#000', 'opacity': '1.0' });
-  $('div#graph svg').css('opacity', '1.0');
-  $('div#overlay-name').css('color', '#000');
-  $('div#overlay-number').css({ 'color': '#000', 'opacity': '1.0' });
-}
-
-function styleNight() {
-  $('body').css('background-color', '#000');
-  $('div#title h1').css({ 'color': '#fff', 'opacity': '0.9' });
-  $('div#graph svg').css('opacity', '0.8');
-  $('div#overlay-name').css('color', '#fff');
-  $('div#overlay-number').css({ 'color': '#fff', 'opacity': '0.9' });
-}
 

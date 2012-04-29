@@ -1,6 +1,6 @@
 
-body {
-  background-color: #fff;
+body.night {
+  background-color: #000;
 }
 
 div#title {
@@ -10,17 +10,16 @@ div#title {
 #title h1 {
   font-size: 48px;
   font-family: Helvetica;
-  color: #000;
-  opacity: 1.0;
   width: 50%;
   margin: 0;
 }
 
+#title h1.night {
+  color: #fff;
+  opacity: 0.9;
+}
+
 #title .toggle {
-  font-size: 18px;
-  font-family: Helvetica;
-  font-weight: 100;
-  color: #000;
   position: absolute;
   top: 0;
   right: 0;
@@ -75,8 +74,8 @@ div#nav {
   padding: 0 10px 10px 0;
 }
 
-#graph svg {
-  opacity: 1.0;
+#graph svg.night {
+  opacity: 0.8;
 }
 
 #overlay-name {
@@ -87,8 +86,11 @@ div#nav {
   width: 150px;
   left: 20px;
   bottom: 20px;
-  color: #000;
   z-index: 200;
+}
+
+#overlay-name.night {
+  color: #fff;
 }
 
 #overlay-number {
@@ -98,9 +100,12 @@ div#nav {
   font-weight: bold;
   right: 20px;
   bottom: 20px;
-  color: #000;
   z-index: 200;
-  opacity: 1.0;
+}
+
+#overlay-number.night {
+  color: #fff;
+  opacity: 0.9;
 }
 
 span.unit {
