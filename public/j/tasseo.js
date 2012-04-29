@@ -96,7 +96,6 @@ function getData(cb, n) {
 
 // toggle switch for night/day mode
 $('li.toggle a').toggle(function() {
-  console.log("night");
   $('body').toggleClass('night');
   $('div#title h1').toggleClass('night');
   $('div#graph svg').toggleClass('night');
@@ -104,7 +103,6 @@ $('li.toggle a').toggle(function() {
   $('div#overlay-number').toggleClass('night');
   $('li.toggle a').find('img').attr({ 'src': '/i/day.png' });
 }, function() {
-  console.log("day");
   $('body').toggleClass('night');
   $('div#title h1').toggleClass('night');
   $('div#graph svg').toggleClass('night');
