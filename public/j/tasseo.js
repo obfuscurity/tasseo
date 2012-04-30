@@ -1,26 +1,21 @@
-
 // add our containers
 for (var i=0; i<metrics.length; i++) {
   $('#main').append('<div id="graph" class="graph' + i + '"><div id="overlay-name" class="overlay-name' + i + '"></div><div id="overlay-number" class="overlay-number' + i + '"></div></div>');
 }
 
+var graphs = [];   // rickshaw objects
+var datum = [];    // metric data
+var urls = [];     // graphite urls
+var aliases = [];  // alias strings
+
 // build our structures
-var graphs = [];
-var datum = [];
-var urls = [];
-var hovers = [];
-var aliases = [];
 for (var j=0; j<metrics.length; j++) {
-
-  // our server
   var period = metrics[j].period || 5;
-  urls[j] = url + "/render/?target=" + encodeURI(metrics[j].target) + "&from=-" + period + "minutes&format=json";
-
-  // construct our graph
+  urls[j] = url + '/render/?target=' + encodeURI(metrics[j].target) + '&from=-' + period + 'minutes&format=json';
   aliases[j] = metrics[j].alias || metrics[j].target;
   datum[j] = [{ x:0, y:0 }];
   graphs[j] = new Rickshaw.Graph({
-    element: document.querySelector(".graph" + j),
+    element: document.querySelector('.graph' + j),
     width: 350,
     height: 80,
     interpolation: 'step-after',
@@ -34,8 +29,6 @@ for (var j=0; j<metrics.length; j++) {
 }
 
 // refresh the graph
-var myRefresh = (typeof refresh == "undefined") ? 2000 : refresh;
-var int = self.setInterval("refreshData()", myRefresh);
 function refreshData() {
   for (var k=0; k<graphs.length; k++) {
     getData(function(n, values) {
@@ -46,28 +39,39 @@ function refreshData() {
       // check our thresholds and update color
       if (metrics[n].critical > metrics[n].warning) {
         if (datum[n][datum.length].y > metrics[n].critical) {
-          graphs[n].series[0].color = "#d59295";
+          graphs[n].series[0].color = '#d59295';
         } else if (datum[n][datum.length].y > metrics[n].warning) {
-          graphs[n].series[0].color = "#f5cb56";
+          graphs[n].series[0].color = '#f5cb56';
         }
       } else {
         if (datum[n][datum.length].y < metrics[n].critical) {
-          graphs[n].series[0].color = "#d59295";
+          graphs[n].series[0].color = '#d59295';
         } else if (datum[n][datum.length].y < metrics[n].warning) {
-          graphs[n].series[0].color = "#f5cb56";
+          graphs[n].series[0].color = '#f5cb56';
         }
       }
 
       // update our graph
       graphs[n].update();
-      $(".overlay-name" + n).text(aliases[n]);
-      $(".overlay-number" + n).text(parseInt(datum[n][datum.length].y));
+      $('.overlay-name' + n).text(aliases[n]);
+      var lastValue = datum[n][datum.length].y;
+      var lastValueDisplay;
+      if ((typeof lastValue == 'number') && lastValue < 2.0) {
+        lastValueDisplay = Math.round(lastValue*1000)/1000;
+      } else if (typeof lastValue == 'number') {
+        lastValueDisplay = parseInt(lastValue)
+      } else {
+        lastValueDisplay = '?'
+      }
+      $('.overlay-number' + n).text(lastValueDisplay);
       if (metrics[n].unit) {
-        $(".overlay-number" + n).append('<span class="unit">' + metrics[n].unit + '</span>');
+        $('.overlay-number' + n).append('<span class="unit">' + metrics[n].unit + '</span>');
       }
     }, k);
   }
 }
+var refreshInterval = (typeof refresh == 'undefined') ? 2000 : refresh;
+setInterval(refreshData, refreshInterval);
 
 // pull 5min of data from graphite
 function getData(cb, n) {
@@ -95,19 +99,16 @@ function getData(cb, n) {
 }
 
 // toggle switch for night/day mode
-$('li.toggle a').toggle(function() {
-  $('body').toggleClass('night');
-  $('div#title h1').toggleClass('night');
-  $('div#graph svg').toggleClass('night');
-  $('div#overlay-name').toggleClass('night');
-  $('div#overlay-number').toggleClass('night');
-  $('li.toggle a').find('img').attr({ 'src': '/i/day.png' });
-}, function() {
-  $('body').toggleClass('night');
-  $('div#title h1').toggleClass('night');
-  $('div#graph svg').toggleClass('night');
-  $('div#overlay-name').toggleClass('night');
-  $('div#overlay-number').toggleClass('night');
-  $('li.toggle a').find('img').attr({ 'src': '/i/night.png' });
-});
-
+function toggleNightFn(toggleImg) {
+  return function() {
+    $('body').toggleClass('night');
+    $('div#title h1').toggleClass('night');
+    $('div#graph svg').toggleClass('night');
+    $('div#overlay-name').toggleClass('night');
+    $('div#overlay-number').toggleClass('night');
+    $('li.toggle a').find('img').attr({ 'src': toggleImg });
+  }
+}
+$('li.toggle a').toggle(
+  toggleNightFn('/i/day.png'),
+  toggleNightFn('/i/night.png'));
