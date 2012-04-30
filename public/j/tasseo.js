@@ -50,24 +50,24 @@ function refreshData() {
           graphs[n].series[0].color = '#f5cb56';
         }
       }
-
-      // update our graph
-      graphs[n].update();
-      $('.overlay-name' + n).text(aliases[n]);
-      var lastValue = datum[n][datum.length].y;
-      var lastValueDisplay;
-      if ((typeof lastValue == 'number') && lastValue < 2.0) {
-        lastValueDisplay = Math.round(lastValue*1000)/1000;
-      } else if (typeof lastValue == 'number') {
-        lastValueDisplay = parseInt(lastValue)
-      } else {
-        lastValueDisplay = '?'
-      }
-      $('.overlay-number' + n).text(lastValueDisplay);
-      if (metrics[n].unit) {
-        $('.overlay-number' + n).append('<span class="unit">' + metrics[n].unit + '</span>');
-      }
     }, k);
+  }
+
+  for (var m=0; m<graphs.length; m++) {
+    // update our graph
+    graphs[m].update();
+    var lastValue = datum[m][datum.length].y;
+    var lastValueDisplay;
+    if ((typeof lastValue == 'number') && lastValue < 2.0) {
+      lastValueDisplay = Math.round(lastValue*1000)/1000;
+    } else {
+      lastValueDisplay = parseInt(lastValue)
+    }
+    $('.overlay-name' + m).text(aliases[m]);
+    $('.overlay-number' + m).text(lastValueDisplay);
+    if (metrics[m].unit) {
+      $('.overlay-number' + m).append('<span class="unit">' + metrics[m].unit + '</span>');
+    }
   }
 }
 var refreshInterval = (typeof refresh == 'undefined') ? 2000 : refresh;
