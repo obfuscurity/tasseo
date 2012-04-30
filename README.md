@@ -8,13 +8,13 @@ Reading the tea leaves.
 
 Tasseo is a lightweight, easily configurable, real-time dashboard for Graphite events. Charts are refreshed every two seconds and provide a heads-up view of the most current value.
 
-The default behavior is designed for a Carbon retention policy with a 1-second resolution for at least five minutes, although this can be modified within the dashboard and metric attributes.
+The default behavior is designed for a Carbon retention policy with a 1-second resolution for at least 5 minutes, although this can be modified within the dashboard and metric attributes.
 
 ## Configuration
 
 ### Examples
 
-Creating your own dashboard is as simple as dropping a JSON file into the ``public/d`` directory, committing it and pushing it to the staging or production Tasseo apps. The name of your file (minus the ``.js`` suffix) becomes the name of your dashboard. Here's a sample (also found [here](https://github.com/obfuscurity/tasseo/blob/master/public/d/template.js)):
+Creating your own dashboard is as simple as dropping a JSON file into the `public/d` directory, committing it, and pushing the code to a Heroku app. The name of your file (minus the `.js` suffix) becomes the name of your dashboard. Here's an example configuration that you could put in e.g. `public/d/example.js`:
 
 ```json
 var metrics =
@@ -28,7 +28,7 @@ var metrics =
 ];
 ```
 
-The ``target`` attribute is the only mandatory field. As you might expect, each dashboard can contain an arbitrary list of different Graphite metrics. Another perfectly valid example:
+The `target` attribute is the only mandatory field. As you might expect, each dashboard can contain an arbitrary list of different Graphite metrics. Another perfectly valid example:
 
 ```json
 var metrics =
@@ -49,7 +49,7 @@ var metrics =
 
 ### Thresholds
 
-``warning`` and ``critical`` thresholds are optional. If defined, the color of the graph will change when the current value exceeds the respective threshold. If the thresholds are reversed (i.e. ``critical`` is lower than ``warning``), Tasseo understands that an inverse threshold is expected.
+`warning` and `critical` thresholds are optional. If defined, the color of the graph will change when the current value exceeds the respective threshold. If the thresholds are reversed (i.e. `critical` is lower than `warning`), Tasseo understands that an inverse threshold is expected.
 
 ### Dashboard Attributes
 
@@ -66,7 +66,7 @@ var metrics =
 
 ## Deployment
 
-The only environment variable is ``GRAPHITE_URL``. This should be set to the base URL of your Graphite composer (e.g. ``https://graphite.yourdomain.com``).
+The only environment variable is `GRAPHITE_URL`. This should be set to the base URL of your Graphite composer (e.g. `https://graphite.yourdomain.com`).
 
 ### Development
 
