@@ -106,9 +106,21 @@ function toggleNightFn(toggleImg) {
     $('div#graph svg').toggleClass('night');
     $('div#overlay-name').toggleClass('night');
     $('div#overlay-number').toggleClass('night');
-    $('li.toggle a').find('img').attr({ 'src': toggleImg });
+    $('li.toggle-night a').find('img').attr({ 'src': toggleImg });
   }
 }
-$('li.toggle a').toggle(
+$('li.toggle-night a').toggle(
   toggleNightFn('/i/day.png'),
   toggleNightFn('/i/night.png'));
+
+// toggle switch for displaying numbers
+function toggleNumberFn(toggleImg) {
+  return function() {
+    $('div#overlay-number').toggleClass('nonum');
+    $('li.toggle-nonum a').find('img').attr({ 'src': toggleImg });
+  }
+}
+$('li.toggle-nonum a').toggle(
+  toggleNumberFn('/i/num-day.png'),
+  toggleNumberFn('/i/nonum-day.png'));
+

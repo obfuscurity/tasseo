@@ -13,7 +13,10 @@
         %h1= dashboard
         .toggle
           %ul
-            %li.toggle
+            %li.toggle-nonum
+              %a{ :href => "#" }
+                %img{ :src => "/i/nonum-day.png" }
+            %li.toggle-night
               %a{ :href => "#" }
                 %img{ :src => "/i/night.png" }
       - else
