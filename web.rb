@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'rack-ssl-enforcer'
 require 'haml'
 
 module Tasseo
@@ -7,6 +8,7 @@ module Tasseo
     configure do
       enable :logging
       mime_type :js, 'text/javascript'
+      use Rack::SslEnforcer if ENV['FORCE_HTTPS']
     end
 
     helpers do
