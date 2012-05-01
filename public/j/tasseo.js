@@ -106,19 +106,21 @@ function getData(cb, n) {
   });
 }
 
-// toggle switch for night/day mode
-$('li.toggle a').toggle(function() {
+// toggle night mode
+$('li.toggle-night a').toggle(function() {
   $('body').toggleClass('night');
   $('div#title h1').toggleClass('night');
   $('div#graph svg').css('opacity', '0.6');
   $('div#overlay-name').toggleClass('night');
   $('div#overlay-number').toggleClass('night');
-  $('li.toggle a').find('img').attr({ 'src': '/i/day.png' });
 }, function() {
   $('body').toggleClass('night');
   $('div#title h1').toggleClass('night');
   $('div#graph svg').css('opacity', '1.0');
   $('div#overlay-name').toggleClass('night');
   $('div#overlay-number').toggleClass('night');
-  $('li.toggle a').find('img').attr({ 'src': '/i/night.png' });
 });
+
+// toggle number display
+$('li.toggle-nonum a').click(function() { $('div#overlay-number').toggleClass('nonum'); });
+

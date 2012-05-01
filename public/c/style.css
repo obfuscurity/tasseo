@@ -23,11 +23,11 @@ div#title {
   position: absolute;
   top: 0;
   right: 0;
-  margin: 5px 5px 0 0;
 }
 
 #title .toggle ul {
   list-style-type: none;
+  width: 100px;
 }
 
 #title .toggle ul li a {
@@ -36,6 +36,8 @@ div#title {
 
 #title .toggle ul li a img {
   opacity: 0.8;
+  float: left;
+  padding: 0 5px;
 }
 
 div#main {
@@ -98,6 +100,10 @@ div#nav {
 #overlay-name.night, #overlay-number.night {
   color: #fff;
   opacity: 0.9;
+}
+
+#overlay-number.nonum {
+  opacity: 0.0;
 }
 
 span.unit {

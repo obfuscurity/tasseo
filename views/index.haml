@@ -13,9 +13,12 @@
         %h1= dashboard
         .toggle
           %ul
-            %li.toggle
+            %li.toggle-nonum
               %a{ :href => "#" }
-                %img{ :src => "/i/night.png" }
+                %img{ :src => "/i/toggle-number.png" }
+            %li.toggle-night
+              %a{ :href => "#" }
+                %img{ :src => "/i/toggle-night.png" }
       - else
         %h1 Tasseo
     - if dashboard
