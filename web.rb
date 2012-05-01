@@ -11,6 +11,10 @@ module Tasseo
       use Rack::SslEnforcer if ENV['FORCE_HTTPS']
     end
 
+    before do
+      find_dashboards
+    end
+
     helpers do
       def find_dashboards
         @dashboards = []
@@ -21,13 +25,34 @@ module Tasseo
     end
 
     get '/' do
-      find_dashboards
-      haml :index, :locals => { :dashboard => nil, :list => @dashboards }
+      if !@dashboards.empty?
+        haml :index, :locals => {
+          :dashboard => nil,
+          :list => @dashboards,
+          :error => nil
+        }
+      else
+        haml :index, :locals => {
+          :dashboard => nil,
+          :list => nil,
+          :error => 'No dashboard files found.'
+        }
+      end
     end
 
     get %r{/([\S]+)} do
-      haml :index, :locals => { :dashboard => params[:captures].first }
+      path = params[:captures].first
+      if @dashboards.include?(path)
+        haml :index, :locals => { :dashboard => path }
+      else
+        haml :index, :locals => {
+          :dashboard => nil,
+          :list => @dashboards,
+          :error => 'That dashboard does not exist.'
+        }
+      end
     end
+
   end
 end
 
