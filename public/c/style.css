@@ -76,10 +76,6 @@ div#nav {
   padding: 0 10px 10px 0;
 }
 
-#graph svg.night {
-  opacity: 0.8;
-}
-
 #overlay-name {
   position: absolute;
   font-size: 12px;
@@ -89,10 +85,6 @@ div#nav {
   left: 20px;
   bottom: 20px;
   z-index: 200;
-}
-
-#overlay-name.night {
-  color: #fff;
 }
 
 #overlay-number {
@@ -105,7 +97,7 @@ div#nav {
   z-index: 200;
 }
 
-#overlay-number.night {
+#overlay-name.night, #overlay-number.night {
   color: #fff;
   opacity: 0.9;
 }
