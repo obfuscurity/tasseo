@@ -71,7 +71,8 @@ function refreshData() {
         $('.overlay-number' + m).append('<span class="unit">' + metrics[m].unit + '</span>');
       }
     } else {
-      $('.overlay-name' + m).html(aliases[m] + " <br /><b>not found</b>");
+      $('.overlay-name' + m).text(aliases[m])
+      $('.overlay-number' + m).html('<span class="error">NF</span>');
     }
   }
 }
