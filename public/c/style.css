@@ -40,6 +40,13 @@ div#title {
   padding: 0 5px;
 }
 
+#title p {
+  margin-left: 10px;
+  font-size: 20px;
+  font-family: Helvetica;
+  color: #999;
+}
+
 div#main {
   margin: 30px 10% 0px;
   text-align: center;
