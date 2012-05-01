@@ -30,6 +30,7 @@ for (var j=0; j<metrics.length; j++) {
 
 // refresh the graph
 function refreshData() {
+
   for (var k=0; k<graphs.length; k++) {
     getData(function(n, values) {
       for (var x=0; x<values.length; x++) {
@@ -56,24 +57,29 @@ function refreshData() {
   for (var m=0; m<graphs.length; m++) {
     // update our graph
     graphs[m].update();
-    var lastValue = datum[m][datum.length].y;
-    var lastValueDisplay;
-    if ((typeof lastValue == 'number') && lastValue < 2.0) {
-      lastValueDisplay = Math.round(lastValue*1000)/1000;
+    if (datum[m][datum.length] !== undefined) {
+      var lastValue = datum[m][datum.length].y;
+      var lastValueDisplay;
+      if ((typeof lastValue == 'number') && lastValue < 2.0) {
+        lastValueDisplay = Math.round(lastValue*1000)/1000;
+      } else {
+        lastValueDisplay = parseInt(lastValue)
+      }
+      $('.overlay-name' + m).text(aliases[m]);
+      $('.overlay-number' + m).text(lastValueDisplay);
+      if (metrics[m].unit) {
+        $('.overlay-number' + m).append('<span class="unit">' + metrics[m].unit + '</span>');
+      }
     } else {
-      lastValueDisplay = parseInt(lastValue)
-    }
-    $('.overlay-name' + m).text(aliases[m]);
-    $('.overlay-number' + m).text(lastValueDisplay);
-    if (metrics[m].unit) {
-      $('.overlay-number' + m).append('<span class="unit">' + metrics[m].unit + '</span>');
+      $('.overlay-name' + m).html(aliases[m] + " <br /><b>not found</b>");
     }
   }
 }
+
 var refreshInterval = (typeof refresh == 'undefined') ? 2000 : refresh;
 setInterval(refreshData, refreshInterval);
 
-// pull 5min of data from graphite
+// pull data from graphite
 function getData(cb, n) {
   var myDatum = [];
   $.ajax({
@@ -81,7 +87,8 @@ function getData(cb, n) {
     jsonp: 'jsonp',
     error: function(xhr, textStatus, errorThrown) { console.log(errorThrown); },
     url: urls[n]
-    }).done(function(d) {
+  }).done(function(d) {
+    if (d.length > 0) {
       myDatum[0] = {
         x: d[0].datapoints[0][1],
         y: d[0].datapoints[0][0] || 0
@@ -95,20 +102,23 @@ function getData(cb, n) {
         }
       }
       cb(n, myDatum);
+    }
   });
 }
 
 // toggle switch for night/day mode
-function toggleNightFn(toggleImg) {
-  return function() {
-    $('body').toggleClass('night');
-    $('div#title h1').toggleClass('night');
-    $('div#graph svg').toggleClass('night');
-    $('div#overlay-name').toggleClass('night');
-    $('div#overlay-number').toggleClass('night');
-    $('li.toggle a').find('img').attr({ 'src': toggleImg });
-  }
-}
-$('li.toggle a').toggle(
-  toggleNightFn('/i/day.png'),
-  toggleNightFn('/i/night.png'));
+$('li.toggle a').toggle(function() {
+  $('body').toggleClass('night');
+  $('div#title h1').toggleClass('night');
+  $('div#graph svg').css('opacity', '0.6');
+  $('div#overlay-name').toggleClass('night');
+  $('div#overlay-number').toggleClass('night');
+  $('li.toggle a').find('img').attr({ 'src': '/i/day.png' });
+}, function() {
+  $('body').toggleClass('night');
+  $('div#title h1').toggleClass('night');
+  $('div#graph svg').css('opacity', '1.0');
+  $('div#overlay-name').toggleClass('night');
+  $('div#overlay-number').toggleClass('night');
+  $('li.toggle a').find('img').attr({ 'src': '/i/night.png' });
+});
