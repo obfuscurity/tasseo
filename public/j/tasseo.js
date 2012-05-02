@@ -63,7 +63,9 @@ function refreshData() {
   for (var m=0; m<graphs.length; m++) {
     // update our graph
     graphs[m].update();
-    if (datum[m][datum[m].length - 1] !== undefined) {
+    if (metrics[m].target === false) {
+      continue;
+    } else if (datum[m][datum[m].length - 1] !== undefined) {
       var lastValue = datum[m][datum[m].length - 1].y;
       var lastValueDisplay;
       if ((typeof lastValue == 'number') && lastValue < 2.0) {
@@ -89,7 +91,8 @@ var myTheme = (typeof theme == 'undefined') ? 'default' : theme;
 // initial load screen
 refreshData();
 for (var g=0; g<graphs.length; g++) {
-  if (myTheme === "dark") {
+  if (metrics[g].target === false) {
+  } else if (myTheme === "dark") {
     $('.overlay-number' + g).html('<img src="/i/spin-night.gif" />');
   } else {
     $('.overlay-number' + g).html('<img src="/i/spin.gif" />');
@@ -103,29 +106,31 @@ setInterval(refreshData, refreshInterval);
 // pull data from graphite
 function getData(cb, n) {
   var myDatum = [];
-  $.ajax({
-    dataType: 'jsonp',
-    jsonp: 'jsonp',
-    error: function(xhr, textStatus, errorThrown) { console.log(errorThrown); },
-    url: urls[n]
-  }).done(function(d) {
-    if (d.length > 0) {
-      myDatum[0] = {
-        x: d[0].datapoints[0][1],
-        y: d[0].datapoints[0][0] || graphs[n].lastKnownValue || 0
-      };
-      for (var m=1; m<d[0].datapoints.length; m++) {
-        myDatum[m] = {
-          x: d[0].datapoints[m][1],
-          y: d[0].datapoints[m][0] || graphs[n].lastKnownValue
+  if (metrics[n].target !== false) {
+    $.ajax({
+      dataType: 'jsonp',
+      jsonp: 'jsonp',
+      error: function(xhr, textStatus, errorThrown) { console.log(errorThrown); },
+      url: urls[n]
+    }).done(function(d) {
+      if (d.length > 0) {
+        myDatum[0] = {
+          x: d[0].datapoints[0][1],
+          y: d[0].datapoints[0][0] || graphs[n].lastKnownValue || 0
         };
-        if (typeof d[0].datapoints[m][0] === "number") {
-          graphs[n].lastKnownValue = d[0].datapoints[m][0];
+        for (var m=1; m<d[0].datapoints.length; m++) {
+          myDatum[m] = {
+            x: d[0].datapoints[m][1],
+            y: d[0].datapoints[m][0] || graphs[n].lastKnownValue
+          };
+          if (typeof d[0].datapoints[m][0] === "number") {
+            graphs[n].lastKnownValue = d[0].datapoints[m][0];
+          }
         }
+        cb(n, myDatum);
       }
-      cb(n, myDatum);
-    }
-  });
+    });
+  }
 }
 
 // night mode toggle
