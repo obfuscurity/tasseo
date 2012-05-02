@@ -80,6 +80,20 @@ function refreshData() {
   }
 }
 
+// set our theme
+var myTheme = (typeof theme == 'undefined') ? 'default' : theme;
+
+// initial load screen
+refreshData();
+for (var g=0; g<graphs.length; g++) {
+  if (myTheme === "dark") {
+    $('.overlay-number' + g).html('<img src="/i/spin-night.gif" />');
+  } else {
+    $('.overlay-number' + g).html('<img src="/i/spin.gif" />');
+  }
+}
+
+// define our refresh and start interval
 var refreshInterval = (typeof refresh == 'undefined') ? 2000 : refresh;
 setInterval(refreshData, refreshInterval);
 
@@ -121,7 +135,7 @@ function toggleNightMode(opacity) {
 }
 
 // activate night mode from config
-if (theme === "dark") {
+if (myTheme === "dark") {
   toggleNightMode(0.8);
 }
 
