@@ -47,6 +47,18 @@ var metrics =
 ];
 ```
 
+As an alternative to static dashboard layouts, it's possible to use a `false` target to _pad_ cells on the dashboard grid. Because metrics are read in a predictable manner from their respective `.js` files, this provides a mechanism for organizing an otherwise uncontrollable layout.
+
+
+```json
+var metrics =
+[
+  { "target": "foo" },
+  { "target": false },
+  { "target": "bar" }
+];
+```
+
 ### Thresholds
 
 `warning` and `critical` thresholds are optional. If defined, the color of the graph will change when the current value exceeds the respective threshold. If the thresholds are reversed (i.e. `critical` is lower than `warning`), Tasseo understands that an inverse threshold is expected.
