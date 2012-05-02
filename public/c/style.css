@@ -4,7 +4,7 @@ body.night {
 }
 
 div#title {
-  margin: 20px 10% 0px;
+  margin: 50px 8% 0px;
 }
 
 #title h1 {
@@ -48,12 +48,12 @@ div#title {
 }
 
 div#main {
-  margin: 30px 10% 0px;
+  margin: 30px 8% 0px;
   text-align: center;
 }
 
 div#nav {
-  margin: 30px 10% 0px;
+  margin: 30px 8% 0px;
 }
 
 #nav ul {
@@ -80,12 +80,13 @@ div#nav {
 #graph {
   position: relative;
   float: left;
-  padding: 0 10px 10px 0;
+  padding: 10px;
+  margin: 10px;
 }
 
 #overlay-name {
   position: absolute;
-  font-size: 12px;
+  font-size: 24px;
   font-family: Helvetica;
   text-align: left;
   width: 150px;
@@ -106,7 +107,7 @@ div#nav {
 
 #overlay-name.night, #overlay-number.night {
   color: #fff;
-  opacity: 0.9;
+  opacity: 1.0;
 }
 
 #overlay-number.nonum {

@@ -17,7 +17,7 @@ for (var j=0; j<metrics.length; j++) {
   graphs[j] = new Rickshaw.Graph({
     element: document.querySelector('.graph' + j),
     width: 350,
-    height: 80,
+    height: 100,
     interpolation: 'step-after',
     series: [{
       name: aliases[j],
@@ -27,6 +27,8 @@ for (var j=0; j<metrics.length; j++) {
   });
   graphs[j].render();
 }
+
+Rickshaw.Graph.prototype.lastValue = 0;
 
 // refresh the graph
 function refreshData() {
@@ -92,14 +94,15 @@ function getData(cb, n) {
     if (d.length > 0) {
       myDatum[0] = {
         x: d[0].datapoints[0][1],
-        y: d[0].datapoints[0][0] || 0
+        y: d[0].datapoints[0][0] || graphs[n].lastValue || 0
       };
       for (var m=1; m<d[0].datapoints.length; m++) {
-        if (d[0].datapoints[m]) {
-          myDatum[m] = {
-            x: d[0].datapoints[m][1],
-            y: d[0].datapoints[m][0] || d[0].datapoints[m - 1][0]
-          };
+        myDatum[m] = {
+          x: d[0].datapoints[m][1],
+          y: d[0].datapoints[m][0] || graphs[n].lastValue || d[0].datapoints[m - 1][0]
+        };
+        if (d[0].datapoints[m][0]) {
+          graphs[n].lastValue = d[0].datapoints[m][0];
         }
       }
       cb(n, myDatum);
@@ -111,7 +114,7 @@ function getData(cb, n) {
 $('li.toggle-night a').toggle(function() {
   $('body').toggleClass('night');
   $('div#title h1').toggleClass('night');
-  $('div#graph svg').css('opacity', '0.6');
+  $('div#graph svg').css('opacity', '0.8');
   $('div#overlay-name').toggleClass('night');
   $('div#overlay-number').toggleClass('night');
 }, function() {
