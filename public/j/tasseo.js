@@ -29,7 +29,7 @@ for (var j=0; j<metrics.length; j++) {
 }
 
 // set our last known value at invocation
-Rickshaw.Graph.prototype.lastValue = 0;
+Rickshaw.Graph.prototype.lastKnownValue = 0;
 
 // refresh the graph
 function refreshData() {
@@ -41,16 +41,19 @@ function refreshData() {
       }
 
       // check our thresholds and update color
-      if (metrics[n].critical > metrics[n].warning) {
-        if (datum[n][datum.length].y > metrics[n].critical) {
+      var lastValue = datum[n][datum[n].length - 1].y;
+      var warning = metrics[n].warning;
+      var critical = metrics[n].critical;
+      if (critical > warning) {
+        if (lastValue > critical) {
           graphs[n].series[0].color = '#d59295';
-        } else if (datum[n][datum.length].y > metrics[n].warning) {
+        } else if (lastValue > warning) {
           graphs[n].series[0].color = '#f5cb56';
         }
       } else {
-        if (datum[n][datum.length].y < metrics[n].critical) {
+        if (lastValue < critical) {
           graphs[n].series[0].color = '#d59295';
-        } else if (datum[n][datum.length].y < metrics[n].warning) {
+        } else if (lastValue < warning) {
           graphs[n].series[0].color = '#f5cb56';
         }
       }
@@ -60,8 +63,8 @@ function refreshData() {
   for (var m=0; m<graphs.length; m++) {
     // update our graph
     graphs[m].update();
-    if (datum[m][datum.length] !== undefined) {
-      var lastValue = datum[m][datum.length].y;
+    if (datum[m][datum[m].length - 1] !== undefined) {
+      var lastValue = datum[m][datum[m].length - 1].y;
       var lastValueDisplay;
       if ((typeof lastValue == 'number') && lastValue < 2.0) {
         lastValueDisplay = Math.round(lastValue*1000)/1000;
@@ -109,15 +112,15 @@ function getData(cb, n) {
     if (d.length > 0) {
       myDatum[0] = {
         x: d[0].datapoints[0][1],
-        y: d[0].datapoints[0][0] || graphs[n].lastValue || 0
+        y: d[0].datapoints[0][0] || graphs[n].lastKnownValue || 0
       };
       for (var m=1; m<d[0].datapoints.length; m++) {
         myDatum[m] = {
           x: d[0].datapoints[m][1],
-          y: d[0].datapoints[m][0] || graphs[n].lastValue || d[0].datapoints[m - 1][0]
+          y: d[0].datapoints[m][0] || graphs[n].lastKnownValue
         };
-        if (d[0].datapoints[m][0]) {
-          graphs[n].lastValue = d[0].datapoints[m][0];
+        if (typeof d[0].datapoints[m][0] === "number") {
+          graphs[n].lastKnownValue = d[0].datapoints[m][0];
         }
       }
       cb(n, myDatum);
