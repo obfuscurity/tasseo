@@ -36,21 +36,22 @@ function refreshData() {
 
   for (var k=0; k<graphs.length; k++) {
     getData(function(n, values) {
+      var lastValue;
       for (var x=0; x<values.length; x++) {
         datum[n][x] = values[x];
       }
-
+      lastValue = datum[n][datum[n].length - 1];
       // check our thresholds and update color
       if (metrics[n].critical > metrics[n].warning) {
-        if (datum[n][datum.length].y > metrics[n].critical) {
+        if (lastValue.y > metrics[n].critical) {
           graphs[n].series[0].color = '#d59295';
-        } else if (datum[n][datum.length].y > metrics[n].warning) {
+        } else if (lastValue.y > metrics[n].warning) {
           graphs[n].series[0].color = '#f5cb56';
         }
       } else {
-        if (datum[n][datum.length].y < metrics[n].critical) {
+        if (lastValue.y < metrics[n].critical) {
           graphs[n].series[0].color = '#d59295';
-        } else if (datum[n][datum.length].y < metrics[n].warning) {
+        } else if (lastValue.y < metrics[n].warning) {
           graphs[n].series[0].color = '#f5cb56';
         }
       }
@@ -60,8 +61,8 @@ function refreshData() {
   for (var m=0; m<graphs.length; m++) {
     // update our graph
     graphs[m].update();
-    if (datum[m][datum.length] !== undefined) {
-      var lastValue = datum[m][datum.length].y;
+    if (datum[m][datum[m].length - 1] !== undefined) {
+      var lastValue = datum[m][datum[m].length - 1].y;
       var lastValueDisplay;
       if ((typeof lastValue == 'number') && lastValue < 2.0) {
         lastValueDisplay = Math.round(lastValue*1000)/1000;
