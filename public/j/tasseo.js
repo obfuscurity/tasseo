@@ -28,6 +28,7 @@ for (var j=0; j<metrics.length; j++) {
   graphs[j].render();
 }
 
+// set our last known value at invocation
 Rickshaw.Graph.prototype.lastValue = 0;
 
 // refresh the graph
@@ -110,19 +111,25 @@ function getData(cb, n) {
   });
 }
 
-// toggle night mode
+// night mode toggle
+function toggleNightMode(opacity) {
+  $('body').toggleClass('night');
+  $('div#title h1').toggleClass('night');
+  $('div#graph svg').css('opacity', opacity);
+  $('div#overlay-name').toggleClass('night');
+  $('div#overlay-number').toggleClass('night');
+}
+
+// activate night mode from config
+if (theme === "dark") {
+  toggleNightMode(0.8);
+}
+
+// active night mode by click
 $('li.toggle-night a').toggle(function() {
-  $('body').toggleClass('night');
-  $('div#title h1').toggleClass('night');
-  $('div#graph svg').css('opacity', '0.8');
-  $('div#overlay-name').toggleClass('night');
-  $('div#overlay-number').toggleClass('night');
+  toggleNightMode(0.8);
 }, function() {
-  $('body').toggleClass('night');
-  $('div#title h1').toggleClass('night');
-  $('div#graph svg').css('opacity', '1.0');
-  $('div#overlay-name').toggleClass('night');
-  $('div#overlay-number').toggleClass('night');
+  toggleNightMode(1.0);
 });
 
 // toggle number display

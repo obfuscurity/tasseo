@@ -54,6 +54,7 @@ var metrics =
 ### Dashboard Attributes
 
 * refresh - Refresh interval for charts, in milliseconds. (optional, defaults to _2000_)
+* theme - Default theme for dashboard. Currently the only option is `dark`. (optional)
 
 ### Metric Attributes
 
