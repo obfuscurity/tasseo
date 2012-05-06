@@ -7,37 +7,32 @@ div#title {
   margin: 50px 8% 0px;
 }
 
-#title h1 {
+#title span {
   font-size: 48px;
   font-family: Helvetica;
+  font-weight: bold;
   width: 50%;
   margin: 0;
 }
 
-#title h1.night {
+.night #title span {
   color: #fff;
   opacity: 0.9;
 }
 
-#title .toggle {
-  position: absolute;
-  top: 0;
+#title ul {
   right: 0;
-}
-
-#title .toggle ul {
   list-style-type: none;
-  width: 100px;
+  float: right;
 }
 
-#title .toggle ul li a {
-  text-decoration: none;
-}
-
-#title .toggle ul li a img {
-  opacity: 0.8;
+#title ul li {
   float: left;
-  padding: 0 5px;
+  margin-left: 10px;
+}
+
+#title ul li a img {
+  opacity: 0.8;
 }
 
 #title p {
