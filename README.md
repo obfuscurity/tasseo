@@ -65,6 +65,7 @@ var metrics =
 
 ### Dashboard Attributes
 
+* period - Range (in minutes) of data to query from Graphite. (optional, defaults to _5_)
 * refresh - Refresh interval for charts, in milliseconds. (optional, defaults to _2000_)
 * theme - Default theme for dashboard. Currently the only option is `dark`. (optional)
 
@@ -75,7 +76,6 @@ var metrics =
 * warning - Warning threshold. Exceeding this value causes the graph to turn yellow. (optional)
 * critical - Critical threshold. Exceeding this value causes the graph to turn red. (optional)
 * unit - Arbitrary string that can be used to designate a unit value; for example, "Mbps". (optional)
-* period - Range (in minutes) of data to query from Graphite. (optional, defaults to _5_)
 
 ## Deployment
 

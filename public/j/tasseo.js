@@ -1,3 +1,4 @@
+
 // add our containers
 for (var i=0; i<metrics.length; i++) {
   $('#main').append('<div id="graph" class="graph' + i + '"><div id="overlay-name" class="overlay-name' + i + '"></div><div id="overlay-number" class="overlay-number' + i + '"></div></div>');
@@ -8,30 +9,36 @@ var datum = [];    // metric data
 var urls = [];     // graphite urls
 var aliases = [];  // alias strings
 
+// minutes of data in the live feed
+var period = (typeof period == 'undefined') ? 5 : period;
+
 // construct a url
 function constructUrl(index, period) {
   urls[index] = url + '/render/?target=' + encodeURI(metrics[index].target) + '&from=-' + period + 'minutes&format=json';
 }
 
-// build our structures
-for (var j=0; j<metrics.length; j++) {
-  var period = metrics[j].period || 5;
-  constructUrl(j, period);
-  aliases[j] = metrics[j].alias || metrics[j].target;
-  datum[j] = [{ x:0, y:0 }];
-  graphs[j] = new Rickshaw.Graph({
-    element: document.querySelector('.graph' + j),
-    width: 350,
-    height: 100,
-    interpolation: 'step-after',
-    series: [{
-      name: aliases[j],
-      color: '#afdab1',
-      data: datum[j]
-    }]
-  });
-  graphs[j].render();
+// build our graph objects
+function constructGraphs() {
+  for (var j=0; j<metrics.length; j++) {
+    constructUrl(j, period);
+    aliases[j] = metrics[j].alias || metrics[j].target;
+    datum[j] = [{ x:0, y:0 }];
+    graphs[j] = new Rickshaw.Graph({
+      element: document.querySelector('.graph' + j),
+      width: 350,
+      height: 100,
+      interpolation: 'step-after',
+      series: [{
+        name: aliases[j],
+        color: '#afdab1',
+        data: datum[j]
+      }]
+    });
+    graphs[j].render();
+  }
 }
+
+constructGraphs();
 
 // set our last known value at invocation
 Rickshaw.Graph.prototype.lastKnownValue = 0;
@@ -107,6 +114,7 @@ function updateGraphs(m) {
 
 // set our theme
 var myTheme = (typeof theme == 'undefined') ? 'default' : theme;
+if (myTheme === "dark") { enableNightMode(); }
 
 // initial load screen
 refreshData();
@@ -156,26 +164,34 @@ function getData(cb, n) {
   }
 }
 
-// night mode toggle
-function toggleNightMode(opacity) {
-  $('body').toggleClass('night');
-  $('div#title h1').toggleClass('night');
-  $('div#graph svg').css('opacity', opacity);
-  $('div#overlay-name').toggleClass('night');
-  $('div#overlay-number').toggleClass('night');
-  $('div#toolbar ul li.timepanel').toggleClass('night');
+// activate night mode
+function enableNightMode() {
+  $('body').addClass('night');
+  $('div#title h1').addClass('night');
+  $('div#graph svg').css('opacity', '0.8');
+  $('div#overlay-name').addClass('night');
+  $('div#overlay-number').addClass('night');
+  $('div#toolbar ul li.timepanel').addClass('night');
 }
 
-// activate night mode from config
-if (myTheme === "dark") {
-  toggleNightMode(0.8);
+// deactivate night mode
+function disableNightMode() {
+  $('body').removeClass('night');
+  $('div#title h1').removeClass('night');
+  $('div#graph svg').css('opacity', '1.0');
+  $('div#overlay-name').removeClass('night');
+  $('div#overlay-number').removeClass('night');
+  $('div#toolbar ul li.timepanel').removeClass('night');
 }
 
 // activate night mode by click
-$('li.toggle-night a').toggle(function() {
-  toggleNightMode(0.8);
-}, function() {
-  toggleNightMode(1.0);
+$('li.toggle-night a').click(function() {
+  console.log(this);
+  if ($('body').hasClass('night')) {
+    disableNightMode();
+  } else {
+    enableNightMode();
+  }
 });
 
 // toggle number display
@@ -210,6 +226,13 @@ $('#toolbar ul li.timepanel a.play').click(function() {
   // explicitly clear the old Interval in case
   // someone "doubles up" on the live play button
   clearInterval(refreshId);
+  // remove and recreate the original graphs[]
+  // helps clear out any rendering artifacts
+  $('#graph svg').remove();
+  constructGraphs();
+  // reapply our style settings if night mode is active
+  if ($('body').hasClass('night')) { enableNightMode(); }
+  // restart our refresh interval
   refreshId = setInterval(refreshData, refreshInterval);
 });
 
