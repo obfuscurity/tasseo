@@ -61,12 +61,16 @@ function refreshData(immediately) {
           graphs[n].series[0].color = '#d59295';
         } else if (lastValue > warning) {
           graphs[n].series[0].color = '#f5cb56';
+        } else {
+          graphs[n].series[0].color = '#afdab1';
         }
       } else {
         if (lastValue < critical) {
           graphs[n].series[0].color = '#d59295';
         } else if (lastValue < warning) {
           graphs[n].series[0].color = '#f5cb56';
+        } else {
+          graphs[n].series[0].color = '#afdab1';
         }
       }
       // we want to render immediately, i.e.
