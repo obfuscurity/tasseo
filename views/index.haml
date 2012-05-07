@@ -11,13 +11,25 @@
     #title
       - if dashboard
         %span= dashboard
-        %ul
-          %li.toggle-nonum
-            %a{ :href => "#" }
-              %img{ :src => "/i/toggle-number.png" }
-          %li.toggle-night
-            %a{ :href => "#" }
-              %img{ :src => "/i/toggle-night.png" }
+        #toolbar
+          %ul.timepanel
+            %li.timepanel.live.selected
+              %a{ :href => "#", :class => "play" } live
+            %li.timepanel
+              %a{ :href => "#", :class => "range", :title => "60" } 1h
+            %li.timepanel
+              %a{ :href => "#", :class => "range", :title => "180" } 3h
+            %li.timepanel
+              %a{ :href => "#", :class => "range", :title => "1440" } 1d
+            %li.timepanel
+              %a{ :href => "#", :class => "range", :title => "10080" } 1w
+          %ul.toggle
+            %li.toggle-nonum
+              %a{ :href => "#" }
+                %img{ :src => "/i/toggle-number.png" }
+            %li.toggle-night
+              %a{ :href => "#" }
+                %img{ :src => "/i/toggle-night.png" }
       - else
         %span Tasseo
         - if error

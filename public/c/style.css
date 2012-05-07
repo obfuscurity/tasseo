@@ -11,8 +11,6 @@ div#title {
   font-size: 48px;
   font-family: Helvetica;
   font-weight: bold;
-  width: 50%;
-  margin: 0;
 }
 
 .night #title span {
@@ -20,15 +18,61 @@ div#title {
   opacity: 0.9;
 }
 
-#title ul {
+#toolbar {
   right: 0;
+  float: right;
+}
+
+#title ul {
   list-style-type: none;
+}
+
+#title ul.timepanel {
+  float: left;
+}
+
+#title ul.toggle {
   float: right;
 }
 
 #title ul li {
   float: left;
-  margin-left: 10px;
+}
+
+#title ul li.timepanel {
+  padding: 10px 0;
+  width: 90px;
+  text-align: center;
+  background-color: #999;
+}
+
+#title ul li.timepanel.live {
+  width: 120px;
+}
+
+#title ul li.timepanel.night {
+  background-color: #333;
+}
+
+#title ul li.timepanel.selected {
+  background-color: #333;
+  color: #fff;
+}
+
+#title ul li.timepanel.selected.night {
+  background-color: #999;
+}
+
+#title ul li.timepanel a {
+  font-family: Helvetica;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+}
+
+#title ul li.toggle-nonum, #title ul li.toggle-night {
+  margin-left: 20px;
 }
 
 #title ul li a img {

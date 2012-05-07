@@ -8,10 +8,15 @@ var datum = [];    // metric data
 var urls = [];     // graphite urls
 var aliases = [];  // alias strings
 
+// construct a url
+function constructUrl(index, period) {
+  urls[index] = url + '/render/?target=' + encodeURI(metrics[index].target) + '&from=-' + period + 'minutes&format=json';
+}
+
 // build our structures
 for (var j=0; j<metrics.length; j++) {
   var period = metrics[j].period || 5;
-  urls[j] = url + '/render/?target=' + encodeURI(metrics[j].target) + '&from=-' + period + 'minutes&format=json';
+  constructUrl(j, period);
   aliases[j] = metrics[j].alias || metrics[j].target;
   datum[j] = [{ x:0, y:0 }];
   graphs[j] = new Rickshaw.Graph({
@@ -32,7 +37,7 @@ for (var j=0; j<metrics.length; j++) {
 Rickshaw.Graph.prototype.lastKnownValue = 0;
 
 // refresh the graph
-function refreshData() {
+function refreshData(immediately) {
 
   for (var k=0; k<graphs.length; k++) {
     getData(function(n, values) {
@@ -57,31 +62,46 @@ function refreshData() {
           graphs[n].series[0].color = '#f5cb56';
         }
       }
+      // we want to render immediately, i.e.
+      // as soon as ajax completes
+      // used for time period / pause view
+      if (immediately) {
+        updateGraphs(n);
+      }
     }, k);
   }
-
-  for (var m=0; m<graphs.length; m++) {
-    // update our graph
-    graphs[m].update();
-    if (metrics[m].target === false) {
-      continue;
-    } else if (datum[m][datum[m].length - 1] !== undefined) {
-      var lastValue = datum[m][datum[m].length - 1].y;
-      var lastValueDisplay;
-      if ((typeof lastValue == 'number') && lastValue < 2.0) {
-        lastValueDisplay = Math.round(lastValue*1000)/1000;
-      } else {
-        lastValueDisplay = parseInt(lastValue)
-      }
-      $('.overlay-name' + m).text(aliases[m]);
-      $('.overlay-number' + m).text(lastValueDisplay);
-      if (metrics[m].unit) {
-        $('.overlay-number' + m).append('<span class="unit">' + metrics[m].unit + '</span>');
-      }
-    } else {
-      $('.overlay-name' + m).text(aliases[m])
-      $('.overlay-number' + m).html('<span class="error">NF</span>');
+  // we can wait until all data is gathered, i.e.
+  // the live refresh should happen synchronously
+  if (!immediately) {
+    for (var q=0; q<graphs.length; q++) {
+      updateGraphs(q);
     }
+  }
+}
+
+// perform the actual graph object and
+// overlay name and number updates
+function updateGraphs(m) {
+  // update our graph
+  graphs[m].update();
+  if (metrics[m].target === false) {
+    //continue;
+  } else if (datum[m][datum[m].length - 1] !== undefined) {
+    var lastValue = datum[m][datum[m].length - 1].y;
+    var lastValueDisplay;
+    if ((typeof lastValue == 'number') && lastValue < 2.0) {
+      lastValueDisplay = Math.round(lastValue*1000)/1000;
+    } else {
+      lastValueDisplay = parseInt(lastValue)
+    }
+    $('.overlay-name' + m).text(aliases[m]);
+    $('.overlay-number' + m).text(lastValueDisplay);
+    if (metrics[m].unit) {
+      $('.overlay-number' + m).append('<span class="unit">' + metrics[m].unit + '</span>');
+    }
+  } else {
+    $('.overlay-name' + m).text(aliases[m])
+    $('.overlay-number' + m).html('<span class="error">NF</span>');
   }
 }
 
@@ -101,7 +121,10 @@ for (var g=0; g<graphs.length; g++) {
 
 // define our refresh and start interval
 var refreshInterval = (typeof refresh == 'undefined') ? 2000 : refresh;
-setInterval(refreshData, refreshInterval);
+var refreshId = setInterval(refreshData, refreshInterval);
+
+// set our "live" interval hint
+$('#toolbar ul li.timepanel a.play').text(period + 'min');
 
 // pull data from graphite
 function getData(cb, n) {
@@ -140,6 +163,7 @@ function toggleNightMode(opacity) {
   $('div#graph svg').css('opacity', opacity);
   $('div#overlay-name').toggleClass('night');
   $('div#overlay-number').toggleClass('night');
+  $('div#toolbar ul li.timepanel').toggleClass('night');
 }
 
 // activate night mode from config
@@ -147,7 +171,7 @@ if (myTheme === "dark") {
   toggleNightMode(0.8);
 }
 
-// active night mode by click
+// activate night mode by click
 $('li.toggle-night a').toggle(function() {
   toggleNightMode(0.8);
 }, function() {
@@ -156,4 +180,36 @@ $('li.toggle-night a').toggle(function() {
 
 // toggle number display
 $('li.toggle-nonum a').click(function() { $('div#overlay-number').toggleClass('nonum'); });
+
+// time panel, pause live feed and show range
+$('#toolbar ul li.timepanel a.range').click(function() {
+  var period = $(this).attr("title");
+  for (var n=0; n<metrics.length; n++) {
+    constructUrl(n, period);
+  }
+  if (! $('#toolbar ul li.timepanel a.play').hasClass('pause')) {
+    $('#toolbar ul li.timepanel a.play').addClass('pause');
+  }
+  $('#toolbar ul li.timepanel a.play').text('paused');
+  $(this).parent('li').parent('ul').find('li').removeClass('selected');
+  $(this).parent('li').addClass('selected');
+  refreshData("now");
+  clearInterval(refreshId);
+});
+
+// time panel, resume live feed
+$('#toolbar ul li.timepanel a.play').click(function() {
+  for (var p=0; p<metrics.length; p++) {
+    constructUrl(p, 5);
+  }
+  $(this).parent('li').parent('ul').find('li').removeClass('selected');
+  $(this).parent('li').addClass('selected');
+  $(this).removeClass('pause');
+  $('#toolbar ul li.timepanel a.play').text(period + 'min');
+  refreshData("now");
+  // explicitly clear the old Interval in case
+  // someone "doubles up" on the live play button
+  clearInterval(refreshId);
+  refreshId = setInterval(refreshData, refreshInterval);
+});
 
