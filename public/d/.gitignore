@@ -1,7 +1,1 @@
-var metrics =
-[
-  {
-    "alias": "test metric",
-    "target": "will.not.work"
-  }
-];
+*.js
