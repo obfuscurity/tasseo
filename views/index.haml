@@ -37,7 +37,7 @@
     - if dashboard
       #main
         :javascript
-          var url = "#{ENV['GRAPHITE_URL']}";
+          var url = "#{url}";
         %script{ :type => "text/javascript", :src => "/d/#{dashboard}.js" }
         %script{ :type => "text/javascript", :src => "/j/tasseo.js" }
     - else
