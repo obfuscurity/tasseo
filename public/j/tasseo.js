@@ -69,6 +69,7 @@ function refreshData(immediately) {
       if (immediately) {
         updateGraphs(j);
       }
+      j = null;
       values = null;
     }, i);
   }
