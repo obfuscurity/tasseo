@@ -1,9 +1,4 @@
 
-// add our containers
-for (var i=0; i<metrics.length; i++) {
-  $('#main').append('<div id="graph" class="graph' + i + '"><div id="overlay-name" class="overlay-name' + i + '"></div><div id="overlay-number" class="overlay-number' + i + '"></div></div>');
-}
-
 var graphs = [];   // rickshaw objects
 var datum = [];    // metric data
 var urls = [];     // graphite urls
@@ -37,11 +32,6 @@ function constructGraphs() {
     graphs[j].render();
   }
 }
-
-constructGraphs();
-
-// set our last known value at invocation
-Rickshaw.Graph.prototype.lastKnownValue = 0;
 
 // refresh the graph
 function refreshData(immediately) {
@@ -90,54 +80,6 @@ function refreshData(immediately) {
   }
 }
 
-// perform the actual graph object and
-// overlay name and number updates
-function updateGraphs(m) {
-  // update our graph
-  graphs[m].update();
-  if (metrics[m].target === false) {
-    //continue;
-  } else if (datum[m][datum[m].length - 1] !== undefined) {
-    var lastValue = datum[m][datum[m].length - 1].y;
-    var lastValueDisplay;
-    if ((typeof lastValue == 'number') && lastValue < 2.0) {
-      lastValueDisplay = Math.round(lastValue*1000)/1000;
-    } else {
-      lastValueDisplay = parseInt(lastValue)
-    }
-    $('.overlay-name' + m).text(aliases[m]);
-    $('.overlay-number' + m).text(lastValueDisplay);
-    if (metrics[m].unit) {
-      $('.overlay-number' + m).append('<span class="unit">' + metrics[m].unit + '</span>');
-    }
-  } else {
-    $('.overlay-name' + m).text(aliases[m])
-    $('.overlay-number' + m).html('<span class="error">NF</span>');
-  }
-}
-
-// set our theme
-var myTheme = (typeof theme == 'undefined') ? 'default' : theme;
-if (myTheme === "dark") { enableNightMode(); }
-
-// initial load screen
-refreshData();
-for (var g=0; g<graphs.length; g++) {
-  if (metrics[g].target === false) {
-  } else if (myTheme === "dark") {
-    $('.overlay-number' + g).html('<img src="/i/spin-night.gif" />');
-  } else {
-    $('.overlay-number' + g).html('<img src="/i/spin.gif" />');
-  }
-}
-
-// define our refresh and start interval
-var refreshInterval = (typeof refresh == 'undefined') ? 2000 : refresh;
-var refreshId = setInterval(refreshData, refreshInterval);
-
-// set our "live" interval hint
-$('#toolbar ul li.timepanel a.play').text(period + 'min');
-
 // pull data from graphite
 function getData(cb, n) {
   var myDatum = [];
@@ -167,6 +109,65 @@ function getData(cb, n) {
     });
   }
 }
+
+// perform the actual graph object and
+// overlay name and number updates
+function updateGraphs(m) {
+  // update our graph
+  graphs[m].update();
+  if (metrics[m].target === false) {
+    //continue;
+  } else if (datum[m][datum[m].length - 1] !== undefined) {
+    var lastValue = datum[m][datum[m].length - 1].y;
+    var lastValueDisplay;
+    if ((typeof lastValue == 'number') && lastValue < 2.0) {
+      lastValueDisplay = Math.round(lastValue*1000)/1000;
+    } else {
+      lastValueDisplay = parseInt(lastValue)
+    }
+    $('.overlay-name' + m).text(aliases[m]);
+    $('.overlay-number' + m).text(lastValueDisplay);
+    if (metrics[m].unit) {
+      $('.overlay-number' + m).append('<span class="unit">' + metrics[m].unit + '</span>');
+    }
+  } else {
+    $('.overlay-name' + m).text(aliases[m])
+    $('.overlay-number' + m).html('<span class="error">NF</span>');
+  }
+}
+
+// add our containers
+for (var i=0; i<metrics.length; i++) {
+  $('#main').append('<div id="graph" class="graph' + i + '"><div id="overlay-name" class="overlay-name' + i + '"></div><div id="overlay-number" class="overlay-number' + i + '"></div></div>');
+}
+
+// build our graph objects
+constructGraphs();
+
+// set our last known value at invocation
+Rickshaw.Graph.prototype.lastKnownValue = 0;
+
+// set our theme
+var myTheme = (typeof theme == 'undefined') ? 'default' : theme;
+if (myTheme === "dark") { enableNightMode(); }
+
+// initial load screen
+refreshData();
+for (var g=0; g<graphs.length; g++) {
+  if (metrics[g].target === false) {
+  } else if (myTheme === "dark") {
+    $('.overlay-number' + g).html('<img src="/i/spin-night.gif" />');
+  } else {
+    $('.overlay-number' + g).html('<img src="/i/spin.gif" />');
+  }
+}
+
+// define our refresh and start interval
+var refreshInterval = (typeof refresh == 'undefined') ? 2000 : refresh;
+var refreshId = setInterval(refreshData, refreshInterval);
+
+// set our "live" interval hint
+$('#toolbar ul li.timepanel a.play').text(period + 'min');
 
 // activate night mode
 function enableNightMode() {
