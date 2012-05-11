@@ -69,6 +69,7 @@ function refreshData(immediately) {
       if (immediately) {
         updateGraphs(j);
       }
+      values = null;
     }, i);
   }
   // we can wait until all data is gathered, i.e.
