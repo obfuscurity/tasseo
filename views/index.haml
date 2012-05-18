@@ -7,6 +7,7 @@
     %script{ :type => "text/javascript", :src => "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" }
     %script{ :type => "text/javascript", :src => "/j/d3.v2.min.js" }
     %script{ :type => "text/javascript", :src => "/j/rickshaw.min.js" }
+    %script{ :type => "text/javascript", :src => "/j/crypto-min.js" }
   %body
     #title
       - if dashboard
@@ -38,6 +39,7 @@
       #main
         :javascript
           var url = "#{ENV['GRAPHITE_URL']}";
+          var auth = "#{ENV['GRAPHITE_AUTH']}";
         %script{ :type => "text/javascript", :src => "/d/#{dashboard}.js" }
         %script{ :type => "text/javascript", :src => "/j/tasseo.js" }
     - else

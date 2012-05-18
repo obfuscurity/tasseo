@@ -87,8 +87,14 @@ function getData(cb, i) {
   var myDatum = [];
   if (metrics[i].target !== false) {
     $.ajax({
-      dataType: 'jsonp',
-      jsonp: 'jsonp',
+      beforeSend : function(xhr) {
+        if (auth.length > 0) {
+          var bytes = Crypto.charenc.Binary.stringToBytes(auth);
+          var base64 = Crypto.util.bytesToBase64(bytes);
+          xhr.setRequestHeader("Authorization", "Basic " + base64);
+        }
+      },
+      dataType: 'json',
       error: function(xhr, textStatus, errorThrown) { console.log(errorThrown); },
       url: urls[i]
     }).done(function(d) {
