@@ -128,6 +128,16 @@ div#nav {
   height: 100px;
 }
 
+#graph svg {
+  border-left: 1px dotted #ddd;
+  border-right: 1px dotted #ddd;
+}
+
+.night #graph svg {
+  border-left: 1px dotted #333;
+  border-right: 1px dotted #333;
+}
+  
 #overlay-name {
   position: absolute;
   font-size: 24px;
