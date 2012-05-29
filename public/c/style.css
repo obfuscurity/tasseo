@@ -116,11 +116,16 @@ div#nav {
   color: red;
 }
 
-#graph {
+#graph, #false {
   position: relative;
   float: left;
   padding: 10px;
   margin: 10px;
+}
+
+#false {
+  width: 350px;
+  height: 100px;
 }
 
 #overlay-name {
