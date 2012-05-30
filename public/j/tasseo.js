@@ -28,7 +28,7 @@ function constructGraphs() {
     datum[i] = [{ x:0, y:0 }];
     graphs[i] = new Rickshaw.Graph({
       element: document.querySelector('.graph' + i),
-      width: 350,
+      width: 348,
       height: 100,
       interpolation: 'step-after',
       series: [{
