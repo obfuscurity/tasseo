@@ -22,8 +22,6 @@ function gatherRealMetrics() {
 // build our graph objects
 function constructGraphs() {
   for (var i=0; i<realMetrics.length; i++) {
-    console.log(metrics[i]);
-    console.log(realMetrics[i]);
     aliases[i] = realMetrics[i].alias || realMetrics[i].target;
     datum[i] = [{ x:0, y:0 }];
     graphs[i] = new Rickshaw.Graph({
