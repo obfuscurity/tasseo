@@ -70,17 +70,17 @@ function refreshData(immediately) {
       var warning = realMetrics[i].warning;
       var critical = realMetrics[i].critical;
       if (critical > warning) {
-        if (lastValue > critical) {
+        if (lastValue >= critical) {
           graphs[i].series[0].color = '#d59295';
-        } else if (lastValue > warning) {
+        } else if (lastValue >= warning) {
           graphs[i].series[0].color = '#f5cb56';
         } else {
           graphs[i].series[0].color = '#afdab1';
         }
       } else {
-        if (lastValue < critical) {
+        if (lastValue <= critical) {
           graphs[i].series[0].color = '#d59295';
-        } else if (lastValue < warning) {
+        } else if (lastValue <= warning) {
           graphs[i].series[0].color = '#f5cb56';
         } else {
           graphs[i].series[0].color = '#afdab1';
