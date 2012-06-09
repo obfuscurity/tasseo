@@ -202,6 +202,10 @@ constructUrl(period);
 var myTheme = (typeof theme == 'undefined') ? 'default' : theme;
 if (myTheme === "dark") { enableNightMode(); }
 
+// hide our toolbar if necessary
+var toolbar = (typeof toolbar == 'undefined') ? true : toolbar;
+if (!toolbar) { $('div#toolbar').css('display', 'none'); }
+
 // initial load screen
 refreshData();
 for (var i=0; i<graphs.length; i++) {
