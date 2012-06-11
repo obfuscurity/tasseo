@@ -203,7 +203,6 @@ var myTheme = (typeof theme == 'undefined') ? 'default' : theme;
 if (myTheme === "dark") { enableNightMode(); }
 
 // initial load screen
-refreshData();
 for (var i=0; i<graphs.length; i++) {
   if (realMetrics[i].target === false) {
     //continue;
@@ -213,6 +212,7 @@ for (var i=0; i<graphs.length; i++) {
     $('.overlay-number' + i).html('<img src="/i/spin.gif" />');
   }
 }
+refreshData("now");
 
 // define our refresh and start interval
 var refreshInterval = (typeof refresh == 'undefined') ? 2000 : refresh;
