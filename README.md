@@ -80,7 +80,8 @@ var metrics =
 
 ## Deployment
 
-The only required environment variable is `GRAPHITE_URL`. This should be set to the base URL of your Graphite composer (e.g. `https://graphite.yourdomain.com`). If your server requires Basic Auth, you can set the `GRAPHITE_AUTH` variable (e.g. `username:password`).
+The only required environment variable is `GRAPHITE_URL`. This should be set to the base URL of your Graphite composer (e.g. `https://graphite.yourdomain.com`).
+As we are using CORS for requesting the data from graphite, you need to be logged in to the Graphite composer (if it is protected).
 
 ### Development
 
@@ -88,7 +89,6 @@ The only required environment variable is `GRAPHITE_URL`. This should be set to 
 $ rvm use 1.9.2
 $ bundle install
 $ export GRAPHITE_URL=...
-$ export GRAPHITE_AUTH=... # e.g. username:password (optional)
 $ foreman start
 $ open http://127.0.0.1:5000
 ```
@@ -99,7 +99,6 @@ $ open http://127.0.0.1:5000
 $ export DEPLOY=production/staging/you
 $ heroku create -r $DEPLOY -s cedar tasseo-$DEPLOY
 $ heroku config:set -r $DEPLOY GRAPHITE_URL=...
-$ heroku config:set -r $DEPLOY GRAPHITE_AUTH=...
 $ git push $DEPLOY master
 $ heroku scale -r $DEPLOY web=1
 $ heroku open -r $DEPLOY
