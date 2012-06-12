@@ -80,7 +80,9 @@ var metrics =
 
 ## Deployment
 
-The only required environment variable is `GRAPHITE_URL`. This should be set to the base URL of your Graphite composer (e.g. `https://graphite.yourdomain.com`). If your server requires Basic Auth, you can set the `GRAPHITE_AUTH` variable (e.g. `username:password`).
+The only required environment variable is `GRAPHITE_URL`. This should be set to the base URL of your Graphite composer (e.g. `https://graphite.yourdomain.com`).
+As we are using CORS for requesting the data from graphite, you need to be logged in to the Graphite composer (if it is protected).
+You have to set the environment variable `GRAPHITE_AUTH` to something to enable CORS with authentication, too.
 
 ### Development
 
@@ -88,7 +90,7 @@ The only required environment variable is `GRAPHITE_URL`. This should be set to 
 $ rvm use 1.9.2
 $ bundle install
 $ export GRAPHITE_URL=...
-$ export GRAPHITE_AUTH=... # e.g. username:password (optional)
+$ export GRAPHITE_AUTH=... # e.g. 'yep' :) (optional)
 $ foreman start
 $ open http://127.0.0.1:5000
 ```
@@ -110,9 +112,11 @@ $ heroku open -r $DEPLOY
 In order to support CORS with JSON instead of JSONP, we need to allow specific headers and allow the cross-domain origin request. The following are suggested settings for Apache 2.x. Adjust as necessary for your environment or webserver.
 
 ```
-Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Origin "http://$TasseoUrl"
 Header set Access-Control-Allow-Methods "GET, OPTIONS"
 Header set Access-Control-Allow-Headers "origin, authorization, accept"
+# if you use basic authentication
+Header set Access-Control-Allow-Credentials true
 ```
 
 ## License

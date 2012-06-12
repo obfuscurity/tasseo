@@ -107,13 +107,8 @@ function refreshData(immediately) {
 function getData(cb) {
   var myDatum = [];
   $.ajax({
-    beforeSend: function(xhr) {
-      if (auth.length > 0) {
-        var bytes = Crypto.charenc.Binary.stringToBytes(auth);
-        var base64 = Crypto.util.bytesToBase64(bytes);
-        xhr.setRequestHeader("Authorization", "Basic " + base64);
-      }
-    },
+    xhrFields: { withCredentials: (auth.length > 0) },
+    crossDomain: true,
     dataType: 'json',
     error: function(xhr, textStatus, errorThrown) { console.log(errorThrown); },
     url: myUrl
@@ -134,7 +129,7 @@ function getData(cb) {
             graphs[i].lastKnownValue = d[i].datapoints[j][0];
           }
         }
-      } 
+      }
     }
     cb(myDatum);
   });
