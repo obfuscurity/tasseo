@@ -68,6 +68,7 @@ var metrics =
 * period - Range (in minutes) of data to query from Graphite. (optional, defaults to _5_)
 * refresh - Refresh interval for charts, in milliseconds. (optional, defaults to _2000_)
 * theme - Default theme for dashboard. Currently the only option is `dark`. (optional)
+* toolbar - Dictates whether the toolbar is shown or not. (optional, default true)
 
 ### Metric Attributes
 
