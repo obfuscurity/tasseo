@@ -110,9 +110,10 @@ $ heroku open -r $DEPLOY
 In order to support CORS with JSON instead of JSONP, we need to allow specific headers and allow the cross-domain origin request. The following are suggested settings for Apache 2.x. Adjust as necessary for your environment or webserver.
 
 ```
-Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Origin "http://$TasseoUrl"
 Header set Access-Control-Allow-Methods "GET, OPTIONS"
 Header set Access-Control-Allow-Headers "origin, authorization, accept"
+Header set Access-Control-Allow-Credentials true
 ```
 
 ## License
