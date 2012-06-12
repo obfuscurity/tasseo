@@ -113,6 +113,7 @@ In order to support CORS with JSON instead of JSONP, we need to allow specific h
 Header set Access-Control-Allow-Origin "http://$TasseoUrl"
 Header set Access-Control-Allow-Methods "GET, OPTIONS"
 Header set Access-Control-Allow-Headers "origin, authorization, accept"
+# if you use basic authentication
 Header set Access-Control-Allow-Credentials true
 ```
 
