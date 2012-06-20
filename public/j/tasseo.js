@@ -49,7 +49,7 @@ function constructUrl(period) {
     }
     targets += ('target=' + encodeURI(realMetrics[i].target));
   }
-  myUrl = url + '/render/?' + targets + '&from=-' + period + 'minutes&format=json';
+  myUrl = url + '/render/?' + targets + '&from=-' + period + 'minutes&format=json&jsonp=?';
 }
 
 // refresh the graph
@@ -114,7 +114,7 @@ function getData(cb) {
         xhr.setRequestHeader("Authorization", "Basic " + base64);
       }
     },
-    dataType: 'json',
+    dataType: 'jsonp',
     error: function(xhr, textStatus, errorThrown) { console.log(errorThrown); },
     url: myUrl
   }).done(function(d) {
