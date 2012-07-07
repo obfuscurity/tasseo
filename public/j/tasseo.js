@@ -1,110 +1,108 @@
 
-var graphs = [];      // rickshaw objects
-var datum = [];       // metric data
-var aliases = [];     // alias strings
-var realMetrics = []; // non-false targets
+var graphs = {};      // rickshaw objects
+var datum = {};       // metric data
+var aliases = {};     // alias strings
+var realMetrics = {}; // non-false targets
 
 // minutes of data in the live feed
-var period = (typeof period == 'undefined') ? 5 : period;
+var period = (typeof period == 'undefined') ? 20 : period;
 
 // gather our non-false targets
 function gatherRealMetrics() {
-  var falseTargets = 0;
-  for (var i=0; i<metrics.length; i++) {
-    if (metrics[i].target === false) {
-    falseTargets++;
+  for (var metric in metrics) {
+    if (metrics[metric].target === false) {
     } else {
-      realMetrics[i - falseTargets] = metrics[i];
+      realMetrics[metrics[metric].target] = metrics[metric];
+      realMetrics[metrics[metric].target]['selector'] = metrics[metric].target.replace(/\./g, '-');
     }
   }
 }
 
 // build our graph objects
 function constructGraphs() {
-  for (var i=0; i<realMetrics.length; i++) {
-    aliases[i] = realMetrics[i].alias || realMetrics[i].target;
-    datum[i] = [{ x:0, y:0 }];
-    graphs[i] = new Rickshaw.Graph({
-      element: document.querySelector('.graph' + i),
+  for (var metric in realMetrics) {
+    var target = realMetrics[metric].target
+    var alias = realMetrics[metric].alias || realMetrics[metric].target;
+    aliases[target] = alias;
+    datum[target] = [{ x:0, y:0 }];
+    graphs[target] = new Rickshaw.Graph({
+      element: document.querySelector('.graph' + realMetrics[metric].selector),
       width: 348,
       height: 100,
       interpolation: 'step-after',
       series: [{
-        name: aliases[i],
+        name: aliases[target],
         color: '#afdab1',
-        data: datum[i]
+        data: datum[target]
       }]
     });
-    graphs[i].render();
+    graphs[target].render();
   }
 }
 
 // construct url
-var myUrl;
-function constructUrl(period) {
-  var targets = "";
-  for (var i=0; i<realMetrics.length; i++) {
-    if (i != 0) {
-      targets += '&';
-    }
-    targets += ('target=' + encodeURI(realMetrics[i].target));
-  }
-  myUrl = url + '/render/?' + targets + '&from=-' + period + 'minutes&format=json';
+function constructUrl(metric) {
+  var source = realMetrics[metric];
+  var now = new Date();
+  var offset = now.getTimezoneOffset();
+  now = parseInt((now.getTime() + offset * 60) / 1000);
+  var start = now - (period * 60);
+  var end = now;
+  return url + '/' + encodeURI(metric) + '?source=' + source + '&resolution=1&start_time=' + start + '&end_time=' + end;
 }
 
 // refresh the graph
 function refreshData(immediately) {
-
-  getData(function(values) {
-    for (var i=0; i<graphs.length; i++) {
-      for (var j=0; j<values[i].length; j++) {
-        if (typeof values[i][j] !== "undefined") {
-          datum[i][j] = values[i][j];
+  for (var metric in realMetrics) {
+    getData(metric, function(values) {
+      console.log(values)
+      for (var i = 0; i < values.length; i++) {
+        if (typeof values[i] !== "undefined") {
+          datum[metric][i] = values[i];
         }
       }
-
       // check our thresholds and update color
-      var lastValue = datum[i][datum[i].length - 1].y;
-      var warning = realMetrics[i].warning;
-      var critical = realMetrics[i].critical;
+      var lastValue = datum[metric][datum[metric].length - 1].y;
+      var warning = realMetrics[metric].warning;
+      var critical = realMetrics[metric].critical;
       if (critical > warning) {
         if (lastValue >= critical) {
-          graphs[i].series[0].color = '#d59295';
+          graphs[metric].series[0].color = '#d59295';
         } else if (lastValue >= warning) {
-          graphs[i].series[0].color = '#f5cb56';
+          graphs[metric].series[0].color = '#f5cb56';
         } else {
-          graphs[i].series[0].color = '#afdab1';
+          graphs[metric].series[0].color = '#afdab1';
         }
       } else {
         if (lastValue <= critical) {
-          graphs[i].series[0].color = '#d59295';
+          graphs[metric].series[0].color = '#d59295';
         } else if (lastValue <= warning) {
-          graphs[i].series[0].color = '#f5cb56';
+          graphs[metric].series[0].color = '#f5cb56';
         } else {
-          graphs[i].series[0].color = '#afdab1';
+          graphs[metric].series[0].color = '#afdab1';
         }
       }
       // we want to render immediately, i.e.
       // as soon as ajax completes
       // used for time period / pause view
       if (immediately) {
-        updateGraphs(i);
+        updateGraph(metric);
       }
-    }
+    });
     values = null;
-  });
+  }
 
   // we can wait until all data is gathered, i.e.
   // the live refresh should happen synchronously
   if (!immediately) {
-    for (var i=0; i<graphs.length; i++) {
-      updateGraphs(i);
+    for (var graph in graphs) {
+      updateGraph(graph);
     }
   }
 }
 
 // retrieve the data from Graphite
-function getData(cb) {
+function getData(metric, cb) {
   var myDatum = [];
   $.ajax({
     beforeSend: function(xhr) {
@@ -116,25 +114,22 @@ function getData(cb) {
     },
     dataType: 'json',
     error: function(xhr, textStatus, errorThrown) { console.log(errorThrown); },
-    url: myUrl
+    url: constructUrl(metric),
+    cache: false
   }).done(function(d) {
-    if (d.length > 0) {
-      for (var i=0; i<d.length; i++) {
-        myDatum[i] = [];
-        myDatum[i][0] = {
-          x: d[i].datapoints[0][1],
-          y: d[i].datapoints[0][0] || graphs[i].lastKnownValue || 0
-        };
-        for (var j=1; j<d[i].datapoints.length; j++) {
-          myDatum[i][j] = {
-            x: d[i].datapoints[j][1],
-            y: d[i].datapoints[j][0] || graphs[i].lastKnownValue
-          };
-          if (typeof d[i].datapoints[j][0] === "number") {
-            graphs[i].lastKnownValue = d[i].datapoints[j][0];
-          }
-        }
-      } 
+    var source = realMetrics[metric].source;
+    myDatum[0] = {
+      x: d.measurements[source][0]['measure_time'],
+      y: d.measurements[source][0]['value'] || 0
+    };
+    for (var j = 1; j < d.measurements[source].length; j++) {
+      myDatum[j] = {
+        x: d.measurements[source][j]['measure_time'],
+        y: d.measurements[source][j]['value'] || graphs[0].lastKnownValue
+      };
+      if (typeof d.measurements[source][0]['value'] === "number") {
+        graphs[d.name].lastKnownValue = d.measurements[source][0]['value'];
+      }
     }
     cb(myDatum);
   });
@@ -142,41 +137,40 @@ function getData(cb) {
 
 // perform the actual graph object and
 // overlay name and number updates
-function updateGraphs(i) {
+function updateGraph(graph) {
   // update our graph
-  graphs[i].update();
-  if (datum[i][datum[i].length - 1] !== undefined) {
-    var lastValue = datum[i][datum[i].length - 1].y;
+  graphs[graph].update();
+  if (datum[graph][datum[graph].length - 1] !== undefined) {
+    var lastValue = datum[graph][datum[graph].length - 1].y;
     var lastValueDisplay;
     if ((typeof lastValue == 'number') && lastValue < 2.0) {
       lastValueDisplay = Math.round(lastValue*1000)/1000;
     } else {
       lastValueDisplay = parseInt(lastValue);
     }
-    $('.overlay-name' + i).text(aliases[i]);
-    $('.overlay-number' + i).text(lastValueDisplay);
-    if (realMetrics[i].unit) {
-      $('.overlay-number' + i).append('<span class="unit">' + realMetrics[i].unit + '</span>');
+    $('.overlay-name' + realMetrics[graph].selector).text(aliases[graph]);
+    $('.overlay-number' + realMetrics[graph].selector).text(lastValueDisplay);
+    if (realMetrics[graph].unit) {
+      $('.overlay-number' + realMetrics[graph].selector).append('<span class="unit">' + realMetrics[graph].unit + '</span>');
     }
   } else {
-    $('.overlay-name' + i).text(aliases[i]);
-    $('.overlay-number' + i).html('<span class="error">NF</span>');
+    $('.overlay-name' + realMetrics[graph].selector).text(aliases[graph]);
+    $('.overlay-number' + realMetrics[graph].selector).html('<span class="error">NF</span>');
   }
 }
 
 // add our containers
 function buildContainers() {
   var falseTargets = 0;
-  for (var i=0; i<metrics.length; i++) {
-    if (metrics[i].target === false) {
+  for (var metric in metrics) {
+    if (metrics[metric].target === false) {
       $('#main').append('<div id="false"></div>');
       falseTargets++;
     } else {
-      var j = i - falseTargets;
       $('#main').append(
-        '<div id="graph" class="graph' + j + '">' +
-        '<div id="overlay-name" class="overlay-name' + j + '"></div>' +
-        '<div id="overlay-number" class="overlay-number' + j + '"></div>' +
+        '<div id="graph" class="graph' + metrics[metric].selector + '">' +
+        '<div id="overlay-name" class="overlay-name' + metrics[metric].selector + '"></div>' +
+        '<div id="overlay-number" class="overlay-number' + metrics[metric].selector + '"></div>' +
         '</div>'
       );
     }
@@ -207,19 +201,19 @@ var toolbar = (typeof toolbar == 'undefined') ? true : toolbar;
 if (!toolbar) { $('div#toolbar').css('display', 'none'); }
 
 // initial load screen
-for (var i=0; i<graphs.length; i++) {
-  if (realMetrics[i].target === false) {
+for (var graph in graphs) {
+  if (realMetrics[graph].target === false) {
     //continue;
   } else if (myTheme === "dark") {
-    $('.overlay-number' + i).html('<img src="/i/spin-night.gif" />');
+    $('.overlay-number' + realMetrics[graph].selector).html('<img src="/i/spin-night.gif" />');
   } else {
-    $('.overlay-number' + i).html('<img src="/i/spin.gif" />');
+    $('.overlay-number' + realMetrics[graph].selector).html('<img src="/i/spin.gif" />');
   }
 }
 refreshData("now");
 
 // define our refresh and start interval
-var refreshInterval = (typeof refresh == 'undefined') ? 2000 : refresh;
+var refreshInterval = (typeof refresh == 'undefined') ? 20000 : refresh;
 var refreshId = setInterval(refreshData, refreshInterval);
 
 // set our "live" interval hint
