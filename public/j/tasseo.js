@@ -27,7 +27,7 @@ function constructGraphs() {
     datum[target] = [{ x:0, y:0 }];
     graphs[target] = new Rickshaw.Graph({
       element: document.querySelector('.graph' + realMetrics[metric].selector),
-      width: 208,
+      width: 348,
       height: 100,
       interpolation: 'step-after',
       series: [{
@@ -84,7 +84,7 @@ function refreshData(immediately) {
       // we want to render immediately, i.e.
       // as soon as ajax completes
       // used for time period / pause view
-      updateGraph(metric);
+      if (immediately) updateGraph(metric);
     });
     values = null;
   }
@@ -149,12 +149,7 @@ function updateGraph(graph) {
   graphs[graph].update();
   if (datum[graph][datum[graph].length - 1] !== undefined) {
     var lastValue = datum[graph][datum[graph].length - 1].y;
-    var lastValueDisplay;
-    if ((typeof lastValue == 'number') && lastValue < 2.0) {
-      lastValueDisplay = Math.round(lastValue*1000)/1000;
-    } else {
-      lastValueDisplay = parseInt(lastValue);
-    }
+    var lastValueDisplay = Math.round(lastValue * 100) / 100;
     $('.overlay-name' + realMetrics[graph].selector).text(aliases[graph]);
     $('.overlay-number' + realMetrics[graph].selector).text(lastValueDisplay);
     if (realMetrics[graph].unit) {
