@@ -27,7 +27,7 @@ function constructGraphs() {
     datum[target] = [{ x:0, y:0 }];
     graphs[target] = new Rickshaw.Graph({
       element: document.querySelector('.graph' + realMetrics[metric].selector),
-      width: 348,
+      width: 208,
       height: 100,
       interpolation: 'step-after',
       series: [{
@@ -42,7 +42,7 @@ function constructGraphs() {
 
 // construct url
 function constructUrl(metric) {
-  var source = realMetrics[metric];
+  var source = realMetrics[metric].source;
   var now = new Date();
   var offset = now.getTimezoneOffset();
   now = parseInt((now.getTime() + offset * 60) / 1000);
@@ -55,7 +55,6 @@ function constructUrl(metric) {
 function refreshData(immediately) {
   for (var metric in realMetrics) {
     getData(metric, function(values) {
-      console.log(values)
       for (var i = 0; i < values.length; i++) {
         if (typeof values[i] !== "undefined") {
           datum[metric][i] = values[i];
@@ -85,9 +84,7 @@ function refreshData(immediately) {
       // we want to render immediately, i.e.
       // as soon as ajax completes
       // used for time period / pause view
-      if (immediately) {
-        updateGraph(metric);
-      }
+      updateGraph(metric);
     });
     values = null;
   }
@@ -101,6 +98,14 @@ function refreshData(immediately) {
   }
 }
 
+function displayTransform(value, period, transform) {
+  if (transform !== undefined && transform.length > 0) {
+    var p = period, x = value;
+    return eval(transform);
+  } else {
+    return value;
+  }
+}
 // retrieve the data from Graphite
 function getData(metric, cb) {
   var myDatum = [];
@@ -118,17 +123,19 @@ function getData(metric, cb) {
     cache: false
   }).done(function(d) {
     var source = realMetrics[metric].source;
+    var transform = d.attributes.display_transform;
+    var period = d.period;
     myDatum[0] = {
-      x: d.measurements[source][0]['measure_time'],
-      y: d.measurements[source][0]['value'] || 0
+      x: d.measurements[source][0].measure_time,
+      y: displayTransform(d.measurements[source][0].value, period, transform) || 0
     };
     for (var j = 1; j < d.measurements[source].length; j++) {
       myDatum[j] = {
-        x: d.measurements[source][j]['measure_time'],
-        y: d.measurements[source][j]['value'] || graphs[0].lastKnownValue
+        x: d.measurements[source][j].measure_time,
+        y: displayTransform(d.measurements[source][j].value, period, transform) || graphs[metric].lastKnownValue
       };
-      if (typeof d.measurements[source][0]['value'] === "number") {
-        graphs[d.name].lastKnownValue = d.measurements[source][0]['value'];
+      if (typeof d.measurements[source][0].value === "number") {
+        graphs[d.name].lastKnownValue = d.measurements[source][0].value;
       }
     }
     cb(myDatum);
@@ -188,9 +195,6 @@ constructGraphs();
 
 // set our last known value at invocation
 Rickshaw.Graph.prototype.lastKnownValue = 0;
-
-// build our url
-constructUrl(period);
 
 // set our theme
 var myTheme = (typeof theme == 'undefined') ? 'default' : theme;
