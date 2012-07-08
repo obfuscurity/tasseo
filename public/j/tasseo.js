@@ -252,25 +252,20 @@ $('li.toggle-nonum a').click(function() { $('div#overlay-number').toggleClass('n
 
 // time panel, pause live feed and show range
 $('#toolbar ul li.timepanel a.range').click(function() {
-  var period = $(this).attr("title");
-  for (var i=0; i<realMetrics.length; i++) {
-    constructUrl(period);
-  }
+  period = $(this).attr("title");
+  refreshData("now")
   if (! $('#toolbar ul li.timepanel a.play').hasClass('pause')) {
     $('#toolbar ul li.timepanel a.play').addClass('pause');
   }
   $('#toolbar ul li.timepanel a.play').text('paused');
   $(this).parent('li').parent('ul').find('li').removeClass('selected');
   $(this).parent('li').addClass('selected');
-  refreshData("now");
   clearInterval(refreshId);
 });
 
 // time panel, resume live feed
 $('#toolbar ul li.timepanel a.play').click(function() {
-  for (var i=0; i<realMetrics.length; i++) {
-    constructUrl(5);
-  }
+  period = 20;
   $(this).parent('li').parent('ul').find('li').removeClass('selected');
   $(this).parent('li').addClass('selected');
   $(this).removeClass('pause');
