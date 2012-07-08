@@ -12,8 +12,9 @@ function gatherRealMetrics() {
   for (var metric in metrics) {
     if (metrics[metric].target === false) {
     } else {
-      realMetrics[metrics[metric].target] = metrics[metric];
-      realMetrics[metrics[metric].target]['selector'] = metrics[metric].target.replace(/\./g, '-');
+      var name = metrics[metric].target + '-' + metrics[metric].source
+      realMetrics[name] = metrics[metric];
+      realMetrics[name]['selector'] = metrics[metric].target.replace(/\./g, '-');
     }
   }
 }
@@ -21,34 +22,35 @@ function gatherRealMetrics() {
 // build our graph objects
 function constructGraphs() {
   for (var metric in realMetrics) {
-    var target = realMetrics[metric].target
+    var name = realMetrics[metric].target + '-' + realMetrics[metric].source
     var alias = realMetrics[metric].alias || realMetrics[metric].target;
-    aliases[target] = alias;
-    datum[target] = [{ x:0, y:0 }];
-    graphs[target] = new Rickshaw.Graph({
+    aliases[name] = alias;
+    datum[name] = [{ x:0, y:0 }];
+    graphs[name] = new Rickshaw.Graph({
       element: document.querySelector('.graph' + realMetrics[metric].selector),
       width: 348,
       height: 100,
       interpolation: 'step-after',
       series: [{
-        name: aliases[target],
+        name: aliases[name],
         color: '#afdab1',
-        data: datum[target]
+        data: datum[name]
       }]
     });
-    graphs[target].render();
+    graphs[name].render();
   }
 }
 
 // construct url
 function constructUrl(metric) {
   var source = realMetrics[metric].source;
+  var target = realMetrics[metric].target;
   var now = new Date();
   var offset = now.getTimezoneOffset();
   now = parseInt((now.getTime() + offset * 60) / 1000);
   var start = now - (period * 60);
   var end = now;
-  return url + '/' + encodeURI(metric) + '?source=' + source + '&resolution=1&start_time=' + start + '&end_time=' + end;
+  return url + '/' + encodeURI(target) + '?source=' + source + '&resolution=1&start_time=' + start + '&end_time=' + end;
 }
 
 // refresh the graph
@@ -135,7 +137,7 @@ function getData(metric, cb) {
         y: displayTransform(d.measurements[source][j].value, period, transform) || graphs[metric].lastKnownValue
       };
       if (typeof d.measurements[source][0].value === "number") {
-        graphs[d.name].lastKnownValue = d.measurements[source][0].value;
+        graphs[metric].lastKnownValue = d.measurements[source][0].value;
       }
     }
     cb(myDatum);
