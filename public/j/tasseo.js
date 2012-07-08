@@ -56,7 +56,7 @@ function constructUrl(metric) {
 // refresh the graph
 function refreshData(immediately) {
   for (var metric in realMetrics) {
-    getData(metric, function(values) {
+    getData(metric, function(metric, values) {
       for (var i = 0; i < values.length; i++) {
         if (typeof values[i] !== "undefined") {
           datum[metric][i] = values[i];
@@ -127,20 +127,22 @@ function getData(metric, cb) {
     var source = realMetrics[metric].source;
     var transform = d.attributes.display_transform;
     var period = d.period;
-    myDatum[0] = {
-      x: d.measurements[source][0].measure_time,
-      y: displayTransform(d.measurements[source][0].value, period, transform) || 0
-    };
-    for (var j = 1; j < d.measurements[source].length; j++) {
-      myDatum[j] = {
-        x: d.measurements[source][j].measure_time,
-        y: displayTransform(d.measurements[source][j].value, period, transform) || graphs[metric].lastKnownValue
+    if (d.measurements[source] !== undefined && d.measurements[source].length > 0) {
+      myDatum[0] = {
+        x: d.measurements[source][0].measure_time,
+        y: displayTransform(d.measurements[source][0].value, period, transform) || 0
       };
-      if (typeof d.measurements[source][0].value === "number") {
-        graphs[metric].lastKnownValue = d.measurements[source][0].value;
+      for (var j = 1; j < d.measurements[source].length; j++) {
+        myDatum[j] = {
+          x: d.measurements[source][j].measure_time,
+          y: displayTransform(d.measurements[source][j].value, period, transform) || graphs[metric].lastKnownValue
+        };
+        if (typeof d.measurements[source][0].value === "number") {
+          graphs[metric].lastKnownValue = d.measurements[source][0].value;
+        }
       }
+      cb(metric, myDatum);
     }
-    cb(myDatum);
   });
 }
 
