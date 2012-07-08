@@ -14,7 +14,7 @@ function gatherRealMetrics() {
     } else {
       var name = metrics[metric].target + '-' + metrics[metric].source
       realMetrics[name] = metrics[metric];
-      realMetrics[name]['selector'] = metrics[metric].target.replace(/\./g, '-');
+      realMetrics[name]['selector'] = metrics[metric].target.replace(/[\.:]/g, '-');
     }
   }
 }
