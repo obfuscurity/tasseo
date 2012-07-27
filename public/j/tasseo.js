@@ -1,13 +1,13 @@
 
-var LibratoMetrics = {
-  url: 'https://metrics-api.librato.com/v1/metrics',
+var Tasseo = {
+  realMetrics: {}, // non-false targets
   graphs: {},      // rickshaw objects
   datum: {},       // metric data
   aliases: {},     // alias strings
-  realMetrics: {}, // non-false targets
   // minutes of data in the live feed
   period: (typeof period == 'undefined') ? 20 : period,
 
+  //
   // gather our non-false targets
   gatherRealMetrics: function() {
     for (var metric in this.metrics) {
@@ -19,7 +19,42 @@ var LibratoMetrics = {
       }
     }
   },
+  // perform the actual graph object and
+  // overlay name and number updates
+  updateGraph: function(graph) {
+    // update our graph
+    this.graphs[graph].update();
+    if (this.datum[graph][this.datum[graph].length - 1] !== undefined) {
+      var lastValue = this.datum[graph][this.datum[graph].length - 1].y;
+      var lastValueDisplay = Math.round(lastValue * 100) / 100;
+      $('.overlay-name' + this.realMetrics[graph].selector).text(this.aliases[graph]);
+      $('.overlay-number' + this.realMetrics[graph].selector).text(lastValueDisplay);
+      if (this.realMetrics[graph].unit) {
+        $('.overlay-number' + this.realMetrics[graph].selector).append('<span class="unit">' + this.realMetrics[graph].unit + '</span>');
+      }
+    } else {
+      $('.overlay-name' + this.realMetrics[graph].selector).text(this.aliases[graph]);
+      $('.overlay-number' + this.realMetrics[graph].selector).html('<span class="error">NF</span>');
+    }
+  },
 
+  // add our containers
+  buildContainers: function() {
+    var falseTargets = 0;
+    for (var metric in this.metrics) {
+      if (metrics[metric].target === false) {
+        $('#main').append('<div id="false"></div>');
+        falseTargets++;
+      } else {
+        $('#main').append(
+          '<div id="graph" class="graph' + this.metrics[metric].selector + '">' +
+          '<div id="overlay-name" class="overlay-name' + this.metrics[metric].selector + '"></div>' +
+          '<div id="overlay-number" class="overlay-number' + this.metrics[metric].selector + '"></div>' +
+          '</div>'
+        );
+      }
+    }
+  },
   // build our graph objects
   constructGraphs: function() {
     for (var metric in this.realMetrics) {
@@ -41,19 +76,6 @@ var LibratoMetrics = {
       this.graphs[name].render();
     }
   },
-
-  // construct url
-  constructUrl: function(metric) {
-    var source = this.realMetrics[metric].source;
-    var target = this.realMetrics[metric].target;
-    var now = new Date();
-    var offset = now.getTimezoneOffset();
-    now = parseInt((now.getTime() + offset * 60) / 1000);
-    var start = now - (this.period * 60);
-    var end = now;
-    return this.url + '/' + encodeURI(target) + '?source=' + source + '&resolution=1&start_time=' + start + '&end_time=' + end;
-  },
-
   // refresh the graph
   refreshData: function(immediately) {
     for (var metric in this.realMetrics) {
@@ -99,6 +121,24 @@ var LibratoMetrics = {
         this.updateGraph(graph);
       }
     }
+  },
+
+
+
+};
+
+var LibratoMetrics = $.extend({
+  url: 'https://metrics-api.librato.com/v1/metrics',
+  // construct url
+  constructUrl: function(metric) {
+    var source = this.realMetrics[metric].source;
+    var target = this.realMetrics[metric].target;
+    var now = new Date();
+    var offset = now.getTimezoneOffset();
+    now = parseInt((now.getTime() + offset * 60) / 1000);
+    var start = now - (this.period * 60);
+    var end = now;
+    return this.url + '/' + encodeURI(target) + '?source=' + source + '&resolution=1&start_time=' + start + '&end_time=' + end;
   },
 
   displayTransform: function(value, period, transform) {
@@ -153,42 +193,6 @@ var LibratoMetrics = {
 
   },
 
-  // perform the actual graph object and
-  // overlay name and number updates
-  updateGraph: function(graph) {
-    // update our graph
-    this.graphs[graph].update();
-    if (this.datum[graph][this.datum[graph].length - 1] !== undefined) {
-      var lastValue = this.datum[graph][this.datum[graph].length - 1].y;
-      var lastValueDisplay = Math.round(lastValue * 100) / 100;
-      $('.overlay-name' + this.realMetrics[graph].selector).text(this.aliases[graph]);
-      $('.overlay-number' + this.realMetrics[graph].selector).text(lastValueDisplay);
-      if (this.realMetrics[graph].unit) {
-        $('.overlay-number' + this.realMetrics[graph].selector).append('<span class="unit">' + this.realMetrics[graph].unit + '</span>');
-      }
-    } else {
-      $('.overlay-name' + this.realMetrics[graph].selector).text(this.aliases[graph]);
-      $('.overlay-number' + this.realMetrics[graph].selector).html('<span class="error">NF</span>');
-    }
-  },
-
-  // add our containers
-  buildContainers: function() {
-    var falseTargets = 0;
-    for (var metric in this.metrics) {
-      if (metrics[metric].target === false) {
-        $('#main').append('<div id="false"></div>');
-        falseTargets++;
-      } else {
-        $('#main').append(
-          '<div id="graph" class="graph' + this.metrics[metric].selector + '">' +
-          '<div id="overlay-name" class="overlay-name' + this.metrics[metric].selector + '"></div>' +
-          '<div id="overlay-number" class="overlay-number' + this.metrics[metric].selector + '"></div>' +
-          '</div>'
-        );
-      }
-    }
-  },
   initialize: function() {
     this.metrics = metrics;
     // filter out false targets
@@ -210,7 +214,7 @@ var LibratoMetrics = {
       }
     }
   }
-}
+}, Tasseo);
 
 
 LibratoMetrics.initialize();
