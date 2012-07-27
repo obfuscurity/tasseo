@@ -229,8 +229,12 @@ if (!toolbar) { $('div#toolbar').css('display', 'none'); }
 LibratoMetrics.refreshData("now");
 
 // define our refresh and start interval
+function refreshData() {
+  LibratoMetrics.refreshData();
+}
+
 var refreshInterval = (typeof refresh == 'undefined') ? 20000 : refresh;
-var refreshId = setInterval(LibratoMetrics.refreshData, refreshInterval);
+var refreshId = setInterval(refreshData, refreshInterval);
 
 // set our "live" interval hint
 $('#toolbar ul li.timepanel a.play').text(LibratoMetrics.period + 'min');
