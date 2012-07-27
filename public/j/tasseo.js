@@ -101,7 +101,7 @@ function refreshData(immediately) {
 }
 
 function displayTransform(value, period, transform) {
-  if (transform !== undefined && transform.length > 0) {
+  if (transform !== undefined && transform !== null && transform.length > 0) {
     var p = period, x = value;
     return eval(transform);
   } else {
