@@ -11,14 +11,14 @@ var Tasseo = {
   // gather our non-false targets
   gatherRealMetrics: function() {
     for (var metric in this.metrics) {
-      if (this.metrics[metric].target === false) {
-      } else {
+      if (this.metrics[metric].target !== false) {
         var name = this.metrics[metric].target + '-' + this.metrics[metric].source
         this.realMetrics[name] = this.metrics[metric];
         this.realMetrics[name]['selector'] = this.metrics[metric].target.replace(/[\.:]/g, '-');
       }
     }
   },
+
   // perform the actual graph object and
   // overlay name and number updates
   updateGraph: function(graph) {
@@ -55,6 +55,7 @@ var Tasseo = {
       }
     }
   },
+
   // build our graph objects
   constructGraphs: function() {
     for (var metric in this.realMetrics) {
@@ -76,6 +77,7 @@ var Tasseo = {
       this.graphs[name].render();
     }
   },
+
   // refresh the graph
   refreshData: function(immediately) {
     for (var metric in this.realMetrics) {
