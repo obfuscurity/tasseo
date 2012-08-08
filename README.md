@@ -115,6 +115,20 @@ Header set Access-Control-Allow-Methods "GET, OPTIONS"
 Header set Access-Control-Allow-Headers "origin, authorization, accept"
 ```
 
+If your Graphite composer is proteced by basic authentication, you have to ensure that the HTTP verb OPTIONS is allowed unauthenticated. This looks like the following for Apache:
+```
+<Location />
+    AuthName "graphs restricted"
+    AuthType Basic
+    AuthUserFile /etc/apache2/htpasswd
+    <LimitExcept OPTIONS>
+      require valid-user
+    </LimitExcept>
+</Location>
+```
+
+See http://blog.rogeriopvl.com/archives/nginx-and-the-http-options-method/ for an Nginx example.
+
 ## License
 
 Tasseo is distributed under a 3-clause BSD license. Third-party software libraries included with this project are distributed under their respective licenses.
