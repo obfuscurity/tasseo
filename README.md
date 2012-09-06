@@ -129,6 +129,19 @@ If your Graphite composer is proteced by basic authentication, you have to ensur
 
 See http://blog.rogeriopvl.com/archives/nginx-and-the-http-options-method/ for an Nginx example.
 
+## GitHub Authentication
+
+To authenticate against a GitHub organization, set the following environment variables:
+
+```bash
+$ export GITHUB_CLIENT_ID=<id>
+$ export GITHUB_CLIENT_SECRET=<secret>
+$ export GITHUB_AUTH_ORGANIZATION=<org>
+```
+
+To register an OAuth application, go here: https://github.com/settings/applications
+
+
 ## License
 
 Tasseo is distributed under a 3-clause BSD license. Third-party software libraries included with this project are distributed under their respective licenses.
