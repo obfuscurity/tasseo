@@ -41,13 +41,18 @@ function constructGraphs() {
 
 // construct url
 var myUrl;
+var padnulls = (typeof padnulls == 'undefined') ? true : padnulls;
 function constructUrl(period) {
   var targets = "";
   for (var i=0; i<realMetrics.length; i++) {
     if (i != 0) {
       targets += '&';
     }
-    targets += ('target=' + encodeURI(realMetrics[i].target));
+    if (padnulls === true) {
+      targets += ('target=keepLastValue(' + encodeURI(realMetrics[i].target) + ')');
+    } else {
+      targets += ('target=' + encodeURI(realMetrics[i].target));
+    }
   }
   myUrl = url + '/render/?' + targets + '&from=-' + period + 'minutes&format=json';
 }
@@ -121,18 +126,9 @@ function getData(cb) {
     if (d.length > 0) {
       for (var i=0; i<d.length; i++) {
         myDatum[i] = [];
-        myDatum[i][0] = {
-          x: d[i].datapoints[0][1],
-          y: d[i].datapoints[0][0] || graphs[i].lastKnownValue || 0
-        };
-        for (var j=1; j<d[i].datapoints.length; j++) {
-          myDatum[i][j] = {
-            x: d[i].datapoints[j][1],
-            y: d[i].datapoints[j][0] || graphs[i].lastKnownValue
-          };
-          if (typeof d[i].datapoints[j][0] === "number") {
-            graphs[i].lastKnownValue = d[i].datapoints[j][0];
-          }
+        myDatum[i][0] = { x: d[i].datapoints[0][1], y: d[i].datapoints[0][0] };
+        for (var j=0; j<d[i].datapoints.length; j++) {
+          myDatum[i][j] = { x: d[i].datapoints[j][1], y: d[i].datapoints[j][0] };
         }
       } 
     }
@@ -191,9 +187,6 @@ buildContainers();
 
 // build our graph objects
 constructGraphs();
-
-// set our last known value at invocation
-Rickshaw.Graph.prototype.lastKnownValue = 0;
 
 // build our url
 constructUrl(period);
