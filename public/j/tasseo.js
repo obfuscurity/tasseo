@@ -246,7 +246,7 @@ function disableNightMode() {
 }
 
 // activate night mode by click
-$('li.toggle-night a').click(function() {
+$('li.toggle-night').on('click', 'a', function() {
   if ($('body').hasClass('night')) {
     disableNightMode();
   } else {
@@ -255,10 +255,10 @@ $('li.toggle-night a').click(function() {
 });
 
 // toggle number display
-$('li.toggle-nonum a').click(function() { $('div#overlay-number').toggleClass('nonum'); });
+$('li.toggle-nonum').on('click', 'a', function() { $('div#overlay-number').toggleClass('nonum'); });
 
 // time panel, pause live feed and show range
-$('#toolbar ul li.timepanel a.range').click(function() {
+$('#toolbar ul li.timepanel').on('click', 'a.range', function() {
   var period = $(this).attr("title");
   for (var i=0; i<realMetrics.length; i++) {
     constructUrl(period);
@@ -274,7 +274,7 @@ $('#toolbar ul li.timepanel a.range').click(function() {
 });
 
 // time panel, resume live feed
-$('#toolbar ul li.timepanel a.play').click(function() {
+$('#toolbar ul li.timepanel').on('click', 'a.play', function() {
   for (var i=0; i<realMetrics.length; i++) {
     constructUrl(5);
   }
