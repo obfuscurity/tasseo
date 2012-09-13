@@ -69,6 +69,7 @@ var metrics =
 * refresh - Refresh interval for charts, in milliseconds. (optional, defaults to _2000_)
 * theme - Default theme for dashboard. Currently the only option is `dark`. (optional)
 * toolbar - Dictates whether the toolbar is shown or not. (optional, defaults to _true_)
+* padnulls - Determines whether to pad null values or not. (optional, defaults to _true_)
 
 ### Metric Attributes
 
