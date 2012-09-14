@@ -50,6 +50,10 @@ describe Tasseo::Application do
     end
 
     context 'html' do
+      it 'should return ok' do
+        get '/'
+        last_response.should be_ok
+      end
     end
   end
 
