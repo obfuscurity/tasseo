@@ -22,7 +22,7 @@ module Tasseo
 
     before do
       if organization = ENV['GITHUB_AUTH_ORGANIZATION']
-        github_organization_authenticate!(organization)
+        github_organization_authenticate!(organization) unless request.path == '/health'
       end
 
       find_dashboards
@@ -57,6 +57,11 @@ module Tasseo
           :error => 'No dashboard files found.'
         }
       end
+    end
+
+    get '/health' do
+      content_type :json
+      {'status' => 'ok'}.to_json
     end
 
     get %r{/([\S]+)} do
