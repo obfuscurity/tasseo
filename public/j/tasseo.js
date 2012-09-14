@@ -1,8 +1,9 @@
 
-var graphs = [];      // rickshaw objects
-var datum = [];       // metric data
-var aliases = [];     // alias strings
-var realMetrics = []; // non-false targets
+var graphs = [];        // rickshaw objects
+var datum = [];         // metric data
+var aliases = [];       // alias strings
+var descriptions = [];  // description strings
+var realMetrics = [];   // non-false targets
 
 // minutes of data in the live feed
 var period = (typeof period == 'undefined') ? 5 : period;
@@ -23,6 +24,7 @@ function gatherRealMetrics() {
 function constructGraphs() {
   for (var i=0; i<realMetrics.length; i++) {
     aliases[i] = realMetrics[i].alias || realMetrics[i].target;
+    descriptions[i] = realMetrics[i].description || null;
     datum[i] = [{ x:0, y:0 }];
     graphs[i] = new Rickshaw.Graph({
       element: document.querySelector('.graph' + i),
@@ -160,6 +162,9 @@ function updateGraphs(i) {
     } else {
       lastValueDisplay = parseInt(lastValue);
     }
+    if (realMetrics[i].description) {
+      $('.description' + i).html('Note:<br /><br />' + descriptions[i]);
+    }
     $('.overlay-name' + i).text(aliases[i]);
     $('.overlay-number' + i).text(lastValueDisplay);
     if (realMetrics[i].unit) {
@@ -181,7 +186,8 @@ function buildContainers() {
     } else {
       var j = i - falseTargets;
       $('.main').append(
-        '<div class="graph graph' + j + '">' +
+        '<div id="' + j + '" class="graph graph' + j + '">' +
+        '<span class="description description' + j + '"></span>' +
         '<div class="overlay-name overlay-name' + j + '"></div>' +
         '<div class="overlay-number overlay-number' + j + '"></div>' +
         '</div>'
@@ -244,6 +250,18 @@ $('.title').on('hover', 'span', function() {
   });
 });
 
+// display description
+$(document).on('mouseenter', 'div.graph', function() {
+  if ($(this).find('span.description').text().length > 0) {
+    $(this).find('span.description').css('visibility', 'visible');
+  }
+});
+
+// hide description
+$(document).on('mouseleave', 'div.graph', function() {
+  $(this).find('span.description').css('visibility', 'hidden');
+});
+
 // clear navigation list on focusout
 $('.title span').on('focusout', 'select', function() {
   $('.title span').html(window.location.pathname.replace(/^\//, ''));
@@ -259,6 +277,7 @@ function enableNightMode() {
   $('body').addClass('night');
   $('div.title h1').addClass('night');
   $('div.graph svg').css('opacity', '0.8');
+  $('span.description').addClass('night');
   $('div.overlay-name').addClass('night');
   $('div.overlay-number').addClass('night');
   $('div.toolbar ul li.timepanel').addClass('night');
@@ -269,6 +288,7 @@ function disableNightMode() {
   $('body').removeClass('night');
   $('div.title h1').removeClass('night');
   $('div.graph svg').css('opacity', '1.0');
+  $('span.description').removeClass('night');
   $('div.overlay-name').removeClass('night');
   $('div.overlay-number').removeClass('night');
   $('div.toolbar ul li.timepanel').removeClass('night');

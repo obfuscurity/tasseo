@@ -142,11 +142,38 @@ div.nav {
   border-left: 1px dotted #333;
   border-right: 1px dotted #333;
 }
-  
+
+span.description {
+  visibility: hidden;
+  position: absolute;
+  display: block;
+  z-index: 300;
+  min-width: 300px;
+  min-height: 50px;
+  margin: -50px 0 0 -20px;
+  background-color: rgba(255, 255, 255, 0.85);
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  border: 3px solid #cecccc;
+  -moz-box-shadow: 5px 5px 15px 2px rgba(134, 134, 134, 0.76);
+  -webkit-box-shadow: 5px 5px 15px 2px rgba(134, 134, 134, 0.76);
+  box-shadow: 5px 5px 15px 2px rgba(134, 134, 134, 0.76);
+  padding: 15px;
+  text-align: left;
+}
+
+.night span.description {
+  border: 0;
+}
+
+span.description:hover {
+  visibility: visible;
+}
+
 .overlay-name {
   position: absolute;
   font-size: 24px;
-  font-family: Helvetica;
   text-align: left;
   width: 150px;
   left: 20px;
