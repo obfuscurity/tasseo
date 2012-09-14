@@ -29,6 +29,10 @@ module Tasseo
     end
 
     helpers do
+      def dashboards
+        @dashboards
+      end
+
       def find_dashboards
         @dashboards = []
         Dir.foreach("public/d").grep(/\.js/).sort.each do |f|
@@ -38,24 +42,29 @@ module Tasseo
     end
 
     get '/' do
-      if !@dashboards.empty?
-        if request.accept.include?("application/json")
-          content_type "application/json"
+      if !dashboards.empty?
+        if request.accept.include?('application/json')
+          content_type 'application/json'
           status 200
-          { :dashboards => @dashboards }.to_json
+          { :dashboards => dashboards }.to_json
         else
           haml :index, :locals => {
             :dashboard => nil,
-            :list => @dashboards,
+            :list => dashboards,
             :error => nil
           }
         end
       else
-        haml :index, :locals => {
-          :dashboard => nil,
-          :list => nil,
-          :error => 'No dashboard files found.'
-        }
+        if request.accept.include?('application/json')
+          content_type 'application/json'
+          status 204
+        else
+          haml :index, :locals => {
+            :dashboard => nil,
+            :list => nil,
+            :error => 'No dashboard files found.'
+          }
+        end
       end
     end
 
@@ -66,12 +75,12 @@ module Tasseo
 
     get %r{/([\S]+)} do
       path = params[:captures].first
-      if @dashboards.include?(path)
+      if dashboards.include?(path)
         haml :index, :locals => { :dashboard => path }
       else
         haml :index, :locals => {
           :dashboard => nil,
-          :list => @dashboards,
+          :list => dashboards,
           :error => 'That dashboard does not exist.'
         }
       end

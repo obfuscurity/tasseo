@@ -10,6 +10,33 @@ describe Tasseo::Application do
     Tasseo::Application
   end
 
+  describe '/' do
+    context 'JSON' do
+      before do
+        header 'Accept', 'application/json'
+      end
+  
+      context 'without dashboards' do
+        before do
+          Tasseo::Application.any_instance.stub(:dashboards) { [] }
+        end
+        
+        it 'should return ok' do
+          get '/'
+          last_response.status.should eq(204)
+        end
+
+        it 'should return an empty array if there are no dashboards' do
+          get '/'
+          last_response.body.should be_empty
+        end
+      end
+    end
+
+    context 'html' do
+    end
+  end
+
   describe 'GET /health' do
     it 'should respond with a 200' do
       get '/health'
