@@ -21,7 +21,7 @@ describe Tasseo::Application do
           Tasseo::Application.any_instance.stub(:dashboards) { [] }
         end
         
-        it 'should return ok' do
+        it 'should return a 204' do
           get '/'
           last_response.status.should eq(204)
         end
@@ -29,6 +29,22 @@ describe Tasseo::Application do
         it 'should return an empty array if there are no dashboards' do
           get '/'
           last_response.body.should be_empty
+        end
+      end
+
+      context 'with dashboards' do
+        before do
+          Tasseo::Application.any_instance.stub(:dashboards) { ['foo'] }
+        end
+
+        it 'should return ok' do
+          get '/'
+          last_response.should be_ok
+        end
+
+        it 'should return an array of dashboards' do
+          get '/'
+          last_response.body.should eq({'dashboards' => ['foo']}.to_json)
         end
       end
     end
