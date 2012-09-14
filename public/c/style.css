@@ -23,7 +23,7 @@ div.title {
   min-width: 200px;
 }
 
-#toolbar {
+.toolbar {
   right: 0;
   float: right;
 }
@@ -91,59 +91,59 @@ div.title {
   color: #999;
 }
 
-div#main {
+div.main {
   margin: 30px 8% 0px;
   text-align: center;
 }
 
-div#nav {
+div.nav {
   margin: 30px 8% 0px;
 }
 
-#nav ul {
+.nav ul {
   margin-left: 10px;
   list-style-type: none;
   padding: 0;
 }
 
-#nav li {
+.nav li {
   padding-bottom: 3px;
 }
 
-#nav li a {
+.nav li a {
   font-size: 20px;
   font-family: Helvetica;
   text-decoration: none;
   color: #999;
 }
 
-#nav li a:hover {
+.nav li a:hover {
   color: red;
 }
 
-#graph, #false {
+.graph, .false {
   position: relative;
   float: left;
   padding: 10px;
   margin: 10px;
 }
 
-#false {
+.false {
   width: 350px;
   height: 104px;
 }
 
-#graph svg {
+.graph svg {
   border-left: 1px dotted #ddd;
   border-right: 1px dotted #ddd;
 }
 
-.night #graph svg {
+.night .graph svg {
   border-left: 1px dotted #333;
   border-right: 1px dotted #333;
 }
   
-#overlay-name {
+.overlay-name {
   position: absolute;
   font-size: 24px;
   font-family: Helvetica;
@@ -154,7 +154,7 @@ div#nav {
   z-index: 200;
 }
 
-#overlay-number {
+.overlay-number {
   position: absolute;
   font-size: 48px;
   font-family: Helvetica;
@@ -164,16 +164,16 @@ div#nav {
   z-index: 200;
 }
 
-#overlay-name.night, #overlay-number.night {
+.overlay-name.night, .overlay-number.night {
   color: #fff;
   opacity: 1.0;
 }
 
-#overlay-number.nonum {
+.overlay-number.nonum {
   opacity: 0.0;
 }
 
-#overlay-number span.error {
+.overlay-number span.error {
   color: red;
 }
 

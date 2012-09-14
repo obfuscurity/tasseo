@@ -176,14 +176,14 @@ function buildContainers() {
   var falseTargets = 0;
   for (var i=0; i<metrics.length; i++) {
     if (metrics[i].target === false) {
-      $('#main').append('<div id="false"></div>');
+      $('.main').append('<div class="false"></div>');
       falseTargets++;
     } else {
       var j = i - falseTargets;
-      $('#main').append(
-        '<div id="graph" class="graph' + j + '">' +
-        '<div id="overlay-name" class="overlay-name' + j + '"></div>' +
-        '<div id="overlay-number" class="overlay-number' + j + '"></div>' +
+      $('.main').append(
+        '<div class="graph graph' + j + '">' +
+        '<div class="overlay-name overlay-name' + j + '"></div>' +
+        '<div class="overlay-number overlay-number' + j + '"></div>' +
         '</div>'
       );
     }
@@ -208,7 +208,7 @@ if (myTheme === "dark") { enableNightMode(); }
 
 // hide our toolbar if necessary
 var toolbar = (typeof toolbar == 'undefined') ? true : toolbar;
-if (!toolbar) { $('div#toolbar').css('display', 'none'); }
+if (!toolbar) { $('div.toolbar').css('display', 'none'); }
 
 // initial load screen
 for (var i=0; i<graphs.length; i++) {
@@ -227,7 +227,7 @@ var refreshInterval = (typeof refresh == 'undefined') ? 2000 : refresh;
 var refreshId = setInterval(refreshData, refreshInterval);
 
 // set our "live" interval hint
-$('#toolbar ul li.timepanel a.play').text(period + 'min');
+$('.toolbar ul li.timepanel a.play').text(period + 'min');
 
 // populate and render our navigation list
 $('.title').on('hover', 'span', function() {
@@ -257,21 +257,21 @@ $('.title span').on('change', 'select', function() {
 // activate night mode
 function enableNightMode() {
   $('body').addClass('night');
-  $('div#title h1').addClass('night');
-  $('div#graph svg').css('opacity', '0.8');
-  $('div#overlay-name').addClass('night');
-  $('div#overlay-number').addClass('night');
-  $('div#toolbar ul li.timepanel').addClass('night');
+  $('div.title h1').addClass('night');
+  $('div.graph svg').css('opacity', '0.8');
+  $('div.overlay-name').addClass('night');
+  $('div.overlay-number').addClass('night');
+  $('div.toolbar ul li.timepanel').addClass('night');
 }
 
 // deactivate night mode
 function disableNightMode() {
   $('body').removeClass('night');
-  $('div#title h1').removeClass('night');
-  $('div#graph svg').css('opacity', '1.0');
-  $('div#overlay-name').removeClass('night');
-  $('div#overlay-number').removeClass('night');
-  $('div#toolbar ul li.timepanel').removeClass('night');
+  $('div.title h1').removeClass('night');
+  $('div.graph svg').css('opacity', '1.0');
+  $('div.overlay-name').removeClass('night');
+  $('div.overlay-number').removeClass('night');
+  $('div.toolbar ul li.timepanel').removeClass('night');
 }
 
 // activate night mode by click
@@ -284,18 +284,18 @@ $('li.toggle-night').on('click', 'a', function() {
 });
 
 // toggle number display
-$('li.toggle-nonum').on('click', 'a', function() { $('div#overlay-number').toggleClass('nonum'); });
+$('li.toggle-nonum').on('click', 'a', function() { $('div.overlay-number').toggleClass('nonum'); });
 
 // time panel, pause live feed and show range
-$('#toolbar ul li.timepanel').on('click', 'a.range', function() {
+$('.toolbar ul li.timepanel').on('click', 'a.range', function() {
   var period = $(this).attr("title");
   for (var i=0; i<realMetrics.length; i++) {
     constructUrl(period);
   }
-  if (! $('#toolbar ul li.timepanel a.play').hasClass('pause')) {
-    $('#toolbar ul li.timepanel a.play').addClass('pause');
+  if (! $('.toolbar ul li.timepanel a.play').hasClass('pause')) {
+    $('.toolbar ul li.timepanel a.play').addClass('pause');
   }
-  $('#toolbar ul li.timepanel a.play').text('paused');
+  $('.toolbar ul li.timepanel a.play').text('paused');
   $(this).parent('li').parent('ul').find('li').removeClass('selected');
   $(this).parent('li').addClass('selected');
   refreshData("now");
@@ -303,21 +303,21 @@ $('#toolbar ul li.timepanel').on('click', 'a.range', function() {
 });
 
 // time panel, resume live feed
-$('#toolbar ul li.timepanel').on('click', 'a.play', function() {
+$('.toolbar ul li.timepanel').on('click', 'a.play', function() {
   for (var i=0; i<realMetrics.length; i++) {
     constructUrl(5);
   }
   $(this).parent('li').parent('ul').find('li').removeClass('selected');
   $(this).parent('li').addClass('selected');
   $(this).removeClass('pause');
-  $('#toolbar ul li.timepanel a.play').text(period + 'min');
+  $('.toolbar ul li.timepanel a.play').text(period + 'min');
   refreshData("now");
   // explicitly clear the old Interval in case
   // someone "doubles up" on the live play button
   clearInterval(refreshId);
   // remove and recreate the original graphs[]
   // helps clear out any rendering artifacts
-  $('#graph svg').remove();
+  $('.graph svg').remove();
   constructGraphs();
   // reapply our style settings if night mode is active
   if ($('body').hasClass('night')) { enableNightMode(); }

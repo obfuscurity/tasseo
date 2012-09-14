@@ -12,7 +12,7 @@
     .title
       - if dashboard
         %span= dashboard
-        #toolbar
+        .toolbar
           %ul.timepanel
             %li.timepanel.live.selected
               %a{ :href => "#", :class => "play" } live
@@ -36,7 +36,7 @@
         - if error
           %p= error
     - if dashboard
-      #main
+      .main
         :javascript
           var url = "#{ENV['GRAPHITE_URL']}";
           var auth = "#{ENV['GRAPHITE_AUTH']}";
@@ -44,7 +44,7 @@
         %script{ :type => "text/javascript", :src => "/j/tasseo.js" }
     - else
       - if list
-        #nav
+        .nav
           %ul
             - list.each do |d|
               %li
