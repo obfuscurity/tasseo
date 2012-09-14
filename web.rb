@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'rack-ssl-enforcer'
 require 'haml'
+require 'json'
 require 'sinatra_auth_github'
 
 module Tasseo
@@ -38,11 +39,17 @@ module Tasseo
 
     get '/' do
       if !@dashboards.empty?
-        haml :index, :locals => {
-          :dashboard => nil,
-          :list => @dashboards,
-          :error => nil
-        }
+        if request.accept.include?("application/json")
+          content_type "application/json"
+          status 200
+          { :dashboards => @dashboards }.to_json
+        else
+          haml :index, :locals => {
+            :dashboard => nil,
+            :list => @dashboards,
+            :error => nil
+          }
+        end
       else
         haml :index, :locals => {
           :dashboard => nil,

@@ -108,6 +108,17 @@ function refreshData(immediately) {
   }
 }
 
+// retrieve dashboard list
+function getDashboards(cb) {
+  $.ajax({
+    dataType: 'json',
+    error: function(xhr, textStatus, errorThrown) { console.log(errorThrown); },
+    url: '/'
+  }).done(function(d) {
+    cb(d.dashboards);
+  });
+}
+
 // retrieve the data from Graphite
 function getData(cb) {
   var myDatum = [];
@@ -217,6 +228,31 @@ var refreshId = setInterval(refreshData, refreshInterval);
 
 // set our "live" interval hint
 $('#toolbar ul li.timepanel a.play').text(period + 'min');
+
+// populate and render our navigation list
+$('.title').on('hover', 'span', function() {
+  getDashboards(function(list) {
+    $('.title span').html('<select><option value="/">welcome</option></select>');
+    for (var i in list) {
+      if (list[i] === window.location.pathname.replace(/^\//, '')) {
+        $('.title select').append('<option selected="selected">' + list[i] + '</option>');
+      } else {
+        $('.title select').append('<option>' + list[i] + '</option>');
+      }
+    }
+    $('.title span select').focus();
+  });
+});
+
+// clear navigation list on focusout
+$('.title span').on('focusout', 'select', function() {
+  $('.title span').html(window.location.pathname.replace(/^\//, ''));
+});
+
+// navigate to selection
+$('.title span').on('change', 'select', function() {
+  window.location.pathname = '/' + $(this).val();
+});
 
 // activate night mode
 function enableNightMode() {

@@ -3,19 +3,24 @@ body.night {
   background-color: #000;
 }
 
-div#title {
+div.title {
   margin: 50px 8% 0px;
 }
 
-#title span {
-  font-size: 48px;
+.title span {
+  font-size: 3.0em;
   font-family: Helvetica;
   font-weight: bold;
 }
 
-.night #title span {
+.night .title span {
   color: #fff;
   opacity: 0.9;
+}
+
+.title span select {
+  font-size: 0.4em;
+  min-width: 200px;
 }
 
 #toolbar {
@@ -23,47 +28,47 @@ div#title {
   float: right;
 }
 
-#title ul {
+.title ul {
   list-style-type: none;
 }
 
-#title ul.timepanel {
+.title ul.timepanel {
   float: left;
 }
 
-#title ul.toggle {
+.title ul.toggle {
   float: right;
 }
 
-#title ul li {
+.title ul li {
   float: left;
 }
 
-#title ul li.timepanel {
+.title ul li.timepanel {
   padding: 10px 0;
   width: 90px;
   text-align: center;
   background-color: #999;
 }
 
-#title ul li.timepanel.live {
+.title ul li.timepanel.live {
   width: 120px;
 }
 
-#title ul li.timepanel.night {
+.title ul li.timepanel.night {
   background-color: #333;
 }
 
-#title ul li.timepanel.selected {
+.title ul li.timepanel.selected {
   background-color: #333;
   color: #fff;
 }
 
-#title ul li.timepanel.selected.night {
+.title ul li.timepanel.selected.night {
   background-color: #999;
 }
 
-#title ul li.timepanel a {
+.title ul li.timepanel a {
   font-family: Helvetica;
   font-size: 18px;
   font-weight: bold;
@@ -71,15 +76,15 @@ div#title {
   text-decoration: none;
 }
 
-#title ul li.toggle-nonum, #title ul li.toggle-night {
+.title ul li.toggle-nonum, .title ul li.toggle-night {
   margin-left: 20px;
 }
 
-#title ul li a img {
+.title ul li a img {
   opacity: 0.8;
 }
 
-#title p {
+.title p {
   margin-left: 10px;
   font-size: 20px;
   font-family: Helvetica;
