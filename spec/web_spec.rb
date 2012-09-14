@@ -10,5 +10,15 @@ describe Tasseo::Application do
     Tasseo::Application
   end
 
-  it 'should have some tests'
+  describe 'GET /health' do
+    it 'should respond with a 200' do
+      get '/health'
+      last_response.should be_ok
+    end
+
+    it 'should respond with the text "ok"' do
+      get '/health'
+      last_response.body.should eq('ok')
+    end
+  end
 end

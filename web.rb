@@ -59,6 +59,10 @@ module Tasseo
       end
     end
 
+    get '/health' do
+      'ok'
+    end
+
     get %r{/([\S]+)} do
       path = params[:captures].first
       if @dashboards.include?(path)
