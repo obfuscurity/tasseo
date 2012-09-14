@@ -22,7 +22,7 @@ module Tasseo
 
     before do
       if organization = ENV['GITHUB_AUTH_ORGANIZATION']
-        github_organization_authenticate!(organization)
+        github_organization_authenticate!(organization) unless request.path == '/health'
       end
 
       find_dashboards
