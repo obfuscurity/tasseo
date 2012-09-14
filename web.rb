@@ -60,7 +60,8 @@ module Tasseo
     end
 
     get '/health' do
-      'ok'
+      content_type :json
+      {'status' => 'ok'}.to_json
     end
 
     get %r{/([\S]+)} do

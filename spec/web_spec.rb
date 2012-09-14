@@ -18,7 +18,12 @@ describe Tasseo::Application do
 
     it 'should respond with the text "ok"' do
       get '/health'
-      last_response.body.should eq('ok')
+      last_response.body.should eq({'status' => 'ok'}.to_json)
+    end
+
+    it 'should be JSON' do
+      get '/health'
+      last_response.headers['Content-Type'].should eq('application/json;charset=utf-8')
     end
 
     context 'GITHUB_AUTH_ORGANIZATION is set' do
