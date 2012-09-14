@@ -1,4 +1,8 @@
 
+* {
+  font-family: Helvetica;
+}
+
 body.night {
   background-color: #000;
 }
@@ -9,7 +13,6 @@ div.title {
 
 .title span {
   font-size: 3.0em;
-  font-family: Helvetica;
   font-weight: bold;
 }
 
@@ -69,7 +72,6 @@ div.title {
 }
 
 .title ul li.timepanel a {
-  font-family: Helvetica;
   font-size: 18px;
   font-weight: bold;
   color: #fff;
@@ -87,7 +89,6 @@ div.title {
 .title p {
   margin-left: 10px;
   font-size: 20px;
-  font-family: Helvetica;
   color: #999;
 }
 
@@ -112,7 +113,6 @@ div.nav {
 
 .nav li a {
   font-size: 20px;
-  font-family: Helvetica;
   text-decoration: none;
   color: #999;
 }
@@ -157,7 +157,6 @@ div.nav {
 .overlay-number {
   position: absolute;
   font-size: 48px;
-  font-family: Helvetica;
   font-weight: bold;
   right: 20px;
   bottom: 20px;
@@ -183,11 +182,9 @@ span.unit {
 
 div.x_label {
   font-size: 13px;
-  font-family: Helvetica;
 }
 
 div.item {
   font-size: 12px;
-  font-family: Helvetica;
 }
 
