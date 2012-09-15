@@ -10,7 +10,7 @@ describe Tasseo::Application do
     Tasseo::Application
   end
 
-  describe '/' do
+  describe 'GET /' do
     context 'JSON' do
       before do
         header 'Accept', 'application/json'
