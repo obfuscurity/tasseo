@@ -141,7 +141,6 @@ function getData(cb) {
     if (d.length > 0) {
       for (var i=0; i<d.length; i++) {
         myDatum[i] = [];
-        myDatum[i][0] = { x: d[i].datapoints[0][1], y: d[i].datapoints[0][0] };
         for (var j=0; j<d[i].datapoints.length; j++) {
           myDatum[i][j] = { x: d[i].datapoints[j][1], y: d[i].datapoints[j][0] };
         }
