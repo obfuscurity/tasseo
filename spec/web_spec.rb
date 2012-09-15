@@ -18,7 +18,7 @@ describe Tasseo::Application do
   
       context 'without dashboards' do
         before do
-          Tasseo::Application.any_instance.stub(:dashboards) { [] }
+          app.any_instance.stub(:dashboards) { [] }
         end
         
         it 'should return a 204' do
@@ -34,7 +34,7 @@ describe Tasseo::Application do
 
       context 'with dashboards' do
         before do
-          Tasseo::Application.any_instance.stub(:dashboards) { ['foo'] }
+          app.any_instance.stub(:dashboards) { ['foo'] }
         end
 
         it 'should return ok' do
@@ -92,7 +92,7 @@ describe Tasseo::Application do
   describe 'GET *' do
     context 'dashboard exists' do
       it 'should be ok' do
-        Tasseo::Application.any_instance.stub(:dashboards) { ['foo'] }
+        app.any_instance.stub(:dashboards) { ['foo'] }
         get '/foo'
         last_response.should be_ok
       end
@@ -100,7 +100,7 @@ describe Tasseo::Application do
 
     context 'dashboard does not exist' do
       it 'should 404' do
-        Tasseo::Application.any_instance.stub(:dashboards) { [] }
+        app.any_instance.stub(:dashboards) { [] }
         get '/foo'
         last_response.status.should eq(404)
       end
