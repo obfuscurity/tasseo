@@ -88,4 +88,22 @@ describe Tasseo::Application do
       end
     end
   end
+
+  describe 'GET *' do
+    context 'dashboard exists' do
+      it 'should be ok' do
+        Tasseo::Application.any_instance.stub(:dashboards) { ['foo'] }
+        get '/foo'
+        last_response.should be_ok
+      end
+    end
+
+    context 'dashboard does not exist' do
+      it 'should not be ok' do
+        Tasseo::Application.any_instance.stub(:dashboards) { [] }
+        get '/foo'
+        last_response.should_not be_ok
+      end
+    end
+  end
 end

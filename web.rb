@@ -78,11 +78,12 @@ module Tasseo
       if dashboards.include?(path)
         haml :index, :locals => { :dashboard => path }
       else
-        haml :index, :locals => {
+        body = haml :index, :locals => {
           :dashboard => nil,
           :list => dashboards,
           :error => 'That dashboard does not exist.'
         }
+        [404, body]
       end
     end
   end
