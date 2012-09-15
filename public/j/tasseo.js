@@ -31,6 +31,8 @@ function constructGraphs() {
       width: 348,
       height: 100,
       interpolation: 'step-after',
+      renderer: 'area',
+      stroke: true,
       series: [{
         name: aliases[i],
         color: '#afdab1',
