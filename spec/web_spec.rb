@@ -99,10 +99,10 @@ describe Tasseo::Application do
     end
 
     context 'dashboard does not exist' do
-      it 'should not be ok' do
+      it 'should 404' do
         Tasseo::Application.any_instance.stub(:dashboards) { [] }
         get '/foo'
-        last_response.should_not be_ok
+        last_response.status.should eq(404)
       end
     end
   end
