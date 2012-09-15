@@ -1,5 +1,7 @@
 # Tasseo
 
+[![Build Status](https://secure.travis-ci.org/obfuscurity/tasseo.png)](http://travis-ci.org/obfuscurity/tasseo)
+
 Reading the tea leaves.
 
 ![graph](https://github.com/obfuscurity/tasseo/raw/master/public/i/tasseo.png "Tasseo Dashboard")
