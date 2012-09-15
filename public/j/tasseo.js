@@ -47,7 +47,7 @@ function constructGraphs() {
 var myUrl;
 var padnulls = (typeof padnulls == 'undefined') ? true : padnulls;
 function constructUrl(period) {
-  var targets = "";
+  var targets = '';
   for (var i=0; i<realMetrics.length; i++) {
     if (i != 0) {
       targets += '&';
@@ -67,7 +67,7 @@ function refreshData(immediately) {
   getData(function(values) {
     for (var i=0; i<graphs.length; i++) {
       for (var j=0; j<values[i].length; j++) {
-        if (typeof values[i][j] !== "undefined") {
+        if (typeof values[i][j] !== 'undefined') {
           datum[i][j] = values[i][j];
         }
       }
@@ -131,7 +131,7 @@ function getData(cb) {
       if (auth.length > 0) {
         var bytes = Crypto.charenc.Binary.stringToBytes(auth);
         var base64 = Crypto.util.bytesToBase64(bytes);
-        xhr.setRequestHeader("Authorization", "Basic " + base64);
+        xhr.setRequestHeader('Authorization', 'Basic ' + base64);
       }
     },
     dataType: 'json',
@@ -212,7 +212,7 @@ constructUrl(period);
 
 // set our theme
 var myTheme = (typeof theme == 'undefined') ? 'default' : theme;
-if (myTheme === "dark") { enableNightMode(); }
+if (myTheme === 'dark') { enableNightMode(); }
 
 // hide our toolbar if necessary
 var toolbar = (typeof toolbar == 'undefined') ? true : toolbar;
@@ -222,19 +222,19 @@ if (!toolbar) { $('div.toolbar').css('display', 'none'); }
 for (var i=0; i<graphs.length; i++) {
   if (realMetrics[i].target === false) {
     //continue;
-  } else if (myTheme === "dark") {
-    $('.overlay-number' + i).html('<img src="/i/spin-night.gif" />');
+  } else if (myTheme === 'dark') {
+    $('.overlay-number' + i + ' span').html('<img src="/i/spin-night.gif" />');
   } else {
     $('.overlay-number' + i).html('<img src="/i/spin.gif" />');
   }
 }
-refreshData("now");
+refreshData('now');
 
 // define our refresh and start interval
 var refreshInterval = (typeof refresh == 'undefined') ? 2000 : refresh;
 var refreshId = setInterval(refreshData, refreshInterval);
 
-// set our "live" interval hint
+// set our 'live' interval hint
 $('.toolbar ul li.timepanel a.play').text(period + 'min');
 
 // populate and render our navigation list
@@ -310,7 +310,7 @@ $('li.toggle-nonum').on('click', 'a', function() { $('div.overlay-number').toggl
 
 // time panel, pause live feed and show range
 $('.toolbar ul li.timepanel').on('click', 'a.range', function() {
-  var period = $(this).attr("title");
+  var period = $(this).attr('title');
   for (var i=0; i<realMetrics.length; i++) {
     constructUrl(period);
   }
@@ -320,7 +320,7 @@ $('.toolbar ul li.timepanel').on('click', 'a.range', function() {
   $('.toolbar ul li.timepanel a.play').text('paused');
   $(this).parent('li').parent('ul').find('li').removeClass('selected');
   $(this).parent('li').addClass('selected');
-  refreshData("now");
+  refreshData('now');
   clearInterval(refreshId);
 });
 
@@ -333,9 +333,9 @@ $('.toolbar ul li.timepanel').on('click', 'a.play', function() {
   $(this).parent('li').addClass('selected');
   $(this).removeClass('pause');
   $('.toolbar ul li.timepanel a.play').text(period + 'min');
-  refreshData("now");
+  refreshData('now');
   // explicitly clear the old Interval in case
-  // someone "doubles up" on the live play button
+  // someone 'doubles up' on the live play button
   clearInterval(refreshId);
   // remove and recreate the original graphs[]
   // helps clear out any rendering artifacts
