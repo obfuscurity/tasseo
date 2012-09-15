@@ -85,7 +85,6 @@ module Tasseo
         }
       end
     end
-
   end
 end
 
