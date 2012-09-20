@@ -5,7 +5,7 @@ require 'json'
 require 'sinatra_auth_github'
 
 module Tasseo
-  class Application < Sinatra::Base
+  class Web < Sinatra::Base
 
     configure do
       enable :logging
@@ -33,9 +33,13 @@ module Tasseo
         @dashboards
       end
 
+      def dashboards_dir
+        "#{File.dirname(__FILE__)}/public/d"
+      end
+
       def find_dashboards
         @dashboards = []
-        Dir.foreach("public/d").grep(/\.js/).sort.each do |f|
+        Dir.foreach(dashboards_dir).grep(/\.js/).sort.each do |f|
           @dashboards.push(f.split(".").first)
         end
       end
