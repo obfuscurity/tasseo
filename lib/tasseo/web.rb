@@ -34,7 +34,7 @@ module Tasseo
       end
 
       def dashboards_dir
-        "#{File.dirname(__FILE__)}/public/d"
+        "dashboards"
       end
 
       def find_dashboards

@@ -16,7 +16,7 @@ The default behavior is designed for a Carbon retention policy with a 1-second r
 
 ### Examples
 
-Creating your own dashboard is as simple as dropping a JSON file into the `public/d` directory, committing it, and pushing the code to a Heroku app. The name of your file (minus the `.js` suffix) becomes the name of your dashboard. Here's an example configuration that you could put in e.g. `public/d/example.js`:
+Creating your own dashboard is as simple as dropping a JSON file into the `dashboards` directory, committing it, and pushing the code to a Heroku app. The name of your file (minus the `.js` suffix) becomes the name of your dashboard. Here's an example configuration that you could put in e.g. `public/d/example.js`:
 
 ```json
 var metrics =
