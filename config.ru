@@ -1,4 +1,3 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require "web"
+require "tasseo/web"
 
-run Tasseo::Application
+run Tasseo::Web
