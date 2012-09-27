@@ -12,6 +12,7 @@ module Tasseo
       enable :sessions
       mime_type :js, 'text/javascript'
       use Rack::SslEnforcer if ENV['FORCE_HTTPS']
+      use Rack::Static, :urls => ['/dashboards/']
 
       if ENV['GITHUB_AUTH_ORGANIZATION']
         set :github_options, { :scopes => "user" }
@@ -34,7 +35,7 @@ module Tasseo
       end
 
       def dashboards_dir
-        "dashboards"
+        'dashboards'
       end
 
       def find_dashboards
