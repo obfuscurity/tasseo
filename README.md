@@ -8,7 +8,7 @@ Reading the tea leaves.
 
 ## Overview
 
-Tasseo is a lightweight, easily configurable, real-time dashboard for Graphite events. Charts are refreshed every two seconds and provide a heads-up view of the most current value.
+Tasseo is a lightweight, easily configurable, near-realtime dashboard for Graphite events. Charts are refreshed every two seconds and provide a heads-up view of the most current value.
 
 The default behavior is designed for a Carbon retention policy with a 1-second resolution for at least 5 minutes, although this can be modified within the dashboard and metric attributes.
 
