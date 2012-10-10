@@ -1,13 +1,13 @@
 require 'rack/test'
 require 'spec_helper'
 
-require 'web'
+require 'tasseo/web'
 
-describe Tasseo::Application do
+describe Tasseo::Web do
   include Rack::Test::Methods
 
   def app
-    Tasseo::Application
+    Tasseo::Web
   end
 
   describe 'GET /' do

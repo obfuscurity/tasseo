@@ -5,13 +5,14 @@ require 'json'
 require 'sinatra_auth_github'
 
 module Tasseo
-  class Application < Sinatra::Base
+  class Web < Sinatra::Base
 
     configure do
       enable :logging
       enable :sessions
       mime_type :js, 'text/javascript'
       use Rack::SslEnforcer if ENV['FORCE_HTTPS']
+      use Rack::Static, :urls => ['/dashboards/']
 
       if ENV['GITHUB_AUTH_ORGANIZATION']
         set :github_options, { :scopes => "user" }
@@ -33,9 +34,13 @@ module Tasseo
         @dashboards
       end
 
+      def dashboards_dir
+        'dashboards'
+      end
+
       def find_dashboards
         @dashboards = []
-        Dir.foreach("public/d").grep(/\.js/).sort.each do |f|
+        Dir.foreach(dashboards_dir).grep(/\.js/).sort.each do |f|
           @dashboards.push(f.split(".").first)
         end
       end
