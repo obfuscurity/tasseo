@@ -3,11 +3,11 @@
   %head
     %title Tasseo
     %meta{ "http-equiv" => "Content-Type", :content => "text/html;charset=utf-8" }
-    %link{ :rel => "stylesheet", :type => "text/css", :href => "/c/style.css" }
+    %link{ :rel => "stylesheet", :type => "text/css", :href => "c/style.css" }
     %script{ :type => "text/javascript", :src => "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" }
-    %script{ :type => "text/javascript", :src => "/j/d3.v2.min.js" }
-    %script{ :type => "text/javascript", :src => "/j/rickshaw.min.js" }
-    %script{ :type => "text/javascript", :src => "/j/crypto-min.js" }
+    %script{ :type => "text/javascript", :src => "j/d3.v2.min.js" }
+    %script{ :type => "text/javascript", :src => "j/rickshaw.min.js" }
+    %script{ :type => "text/javascript", :src => "j/crypto-min.js" }
   %body
     .title
       - if dashboard
@@ -27,10 +27,10 @@
           %ul.toggle
             %li.toggle-nonum
               %a{ :href => "#" }
-                %img{ :src => "/i/toggle-number.png" }
+                %img{ :src => "i/toggle-number.png" }
             %li.toggle-night
               %a{ :href => "#" }
-                %img{ :src => "/i/toggle-night.png" }
+                %img{ :src => "i/toggle-night.png" }
       - else
         %span Tasseo
         - if error
@@ -40,12 +40,12 @@
         :javascript
           var url = "#{ENV['GRAPHITE_URL']}";
           var auth = "#{ENV['GRAPHITE_AUTH']}";
-        %script{ :type => "text/javascript", :src => "/dashboards/#{dashboard}.js" }
-        %script{ :type => "text/javascript", :src => "/j/tasseo.js" }
+        %script{ :type => "text/javascript", :src => "dashboards/#{dashboard}.js" }
+        %script{ :type => "text/javascript", :src => "j/tasseo.js" }
     - else
       - if list
         .nav
           %ul
             - list.each do |d|
               %li
-                %a{ :href => "/#{d}" } #{d}
+                %a{ :href => "#{d}" } #{d}
