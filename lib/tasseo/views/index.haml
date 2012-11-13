@@ -39,8 +39,7 @@
       .main
         :javascript
           var graphiteUrl = "#{ENV['GRAPHITE_URL']}";
-          var graphiteUser = "#{ENV['GRAPHITE_USER']}";
-          var graphitePass = "#{ENV['GRAPHITE_PASS']}";
+          var graphiteAuth = "#{ENV['GRAPHITE_AUTH']}";
         %script{ :type => "text/javascript", :src => "dashboards/#{dashboard}.js" }
         %script{ :type => "text/javascript", :src => "j/tasseo.js" }
     - else
