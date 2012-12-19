@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
 gem "sinatra"
-gem "thin"
+gem "thin", "~> 1.5.0"
 gem "rack-ssl-enforcer"
 gem "haml"
 gem 'sinatra_auth_github'
