@@ -35,7 +35,7 @@ module Tasseo
       end
 
       def dashboards_dir
-        'dashboards'
+        File.expand_path('../../../dashboards', __FILE__)
       end
 
       def find_dashboards

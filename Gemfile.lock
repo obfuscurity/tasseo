@@ -2,9 +2,9 @@ GEM
   remote: http://rubygems.org/
   specs:
     addressable (2.3.2)
-    daemons (1.1.8)
+    daemons (1.1.9)
     diff-lcs (1.1.3)
-    eventmachine (0.12.10)
+    eventmachine (1.0.0)
     faraday (0.8.4)
       multipart-post (~> 1.1)
     faraday_middleware (0.9.0)
@@ -48,7 +48,7 @@ GEM
     sinatra_auth_github (0.12.0)
       sinatra (~> 1.0)
       warden-github (~> 0.12.0)
-    thin (1.3.1)
+    thin (1.5.0)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
@@ -75,4 +75,4 @@ DEPENDENCIES
   rspec
   sinatra
   sinatra_auth_github (= 0.12.0)
-  thin
+  thin (~> 1.5.0)
