@@ -16,15 +16,18 @@ module Tasseo
 
       set :session_secret, ENV['SESSION_SECRET'] || Digest::SHA1.hexdigest(Time.now.to_f.to_s)
 
-      if ENV['GITHUB_AUTH_ORGANIZATION']
+      if ENV['GITHUB_AUTH_TEAM']
+        register Sinatra::Auth::Github
+      else if ENV['GITHUB_AUTH_ORGANIZATION']
         set :github_options, { :scopes => "user" }
-
         register Sinatra::Auth::Github
       end
     end
 
     before do
-      if organization = ENV['GITHUB_AUTH_ORGANIZATION']
+      if team = ENV['GITHUB_AUTH_TEAM']
+        github_team_authenticate!(team) unless request.path == '/health'
+      else if organization = ENV['GITHUB_AUTH_ORGANIZATION']
         github_organization_authenticate!(organization) unless request.path == '/health'
       end
 
