@@ -76,8 +76,9 @@ var metrics =
 ### Metric Attributes
 
 * alias - Short name for the metric. (optional)
-* target - Full target name as used by Graphite. Can contain a combination of chained functions. (__mandatory__)
+* target - Full target name as used by Graphite. Can contain a combination of chained functions. (mandatory)
 * description - Text description or comment. (optional)
+* link - External link to apply to metric name or alias. (optional)
 * warning - Warning threshold. Exceeding this value causes the graph to turn yellow. (optional)
 * critical - Critical threshold. Exceeding this value causes the graph to turn red. (optional)
 * unit - Arbitrary string that can be used to designate a unit value; for example, "Mbps". (optional)
