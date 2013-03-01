@@ -133,6 +133,10 @@ div.nav {
   height: 104px;
 }
 
+.graph a {
+  color: #000;
+}
+
 .graph svg {
   border-left: 1px dotted #ddd;
   border-right: 1px dotted #ddd;
