@@ -18,7 +18,7 @@ module Tasseo
 
       if ENV['GITHUB_AUTH_TEAM']
         register Sinatra::Auth::Github
-      else if ENV['GITHUB_AUTH_ORGANIZATION']
+      elsif ENV['GITHUB_AUTH_ORGANIZATION']
         set :github_options, { :scopes => "user" }
         register Sinatra::Auth::Github
       end
@@ -27,7 +27,7 @@ module Tasseo
     before do
       if team = ENV['GITHUB_AUTH_TEAM']
         github_team_authenticate!(team) unless request.path == '/health'
-      else if organization = ENV['GITHUB_AUTH_ORGANIZATION']
+      elsif organization = ENV['GITHUB_AUTH_ORGANIZATION']
         github_organization_authenticate!(organization) unless request.path == '/health'
       end
 
