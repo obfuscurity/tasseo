@@ -15,11 +15,9 @@ module Tasseo
       use Rack::Static, :urls => ['/dashboards/']
 
       set :session_secret, ENV['SESSION_SECRET'] || Digest::SHA1.hexdigest(Time.now.to_f.to_s)
+      set :github_options, { :scopes => "user" }
 
-      if ENV['GITHUB_AUTH_TEAM']
-        register Sinatra::Auth::Github
-      elsif ENV['GITHUB_AUTH_ORGANIZATION']
-        set :github_options, { :scopes => "user" }
+      if ENV['GITHUB_AUTH_TEAM'] || ENV['GITHUB_AUTH_ORGANIZATION']
         register Sinatra::Auth::Github
       end
     end
