@@ -30,9 +30,10 @@ var metrics =
 ];
 ```
 
-The `target` attribute is the only mandatory field. As you might expect, each dashboard can contain an arbitrary list of different Graphite metrics. Another perfectly valid example:
+The `target` attribute is the only mandatory field. As you might expect, each dashboard can contain an arbitrary list of different Graphite metrics. Another perfectly valid example, this time including the dashboard-level attribute `period`:
 
 ```json
+var period = 3;
 var metrics =
 [
   { "target": "pulse.hermes-econns-apps-per-minute" },
@@ -67,6 +68,8 @@ var metrics =
 
 ### Dashboard Attributes
 
+Dashboard-level attributes are top-level variables defined in your dashboard configuration.
+
 * period - Range (in minutes) of data to query from Graphite. (optional, defaults to _5_)
 * refresh - Refresh interval for charts, in milliseconds. (optional, defaults to _2000_)
 * theme - Default theme for dashboard. Currently the only option is `dark`. (optional)
@@ -74,6 +77,8 @@ var metrics =
 * padnulls - Determines whether to pad null values or not. (optional, defaults to _true_)
 
 ### Metric Attributes
+
+Metric-level attributes are attributes of the metric object(s) in your `metrics` array.
 
 * alias - Short name for the metric. (optional)
 * target - Full target name as used by Graphite. Can contain a combination of chained functions. (mandatory)
