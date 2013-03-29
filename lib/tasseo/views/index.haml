@@ -38,8 +38,8 @@
     - if dashboard
       .main
         :javascript
-          var url = "#{ENV['GRAPHITE_URL']}";
-          var auth = "#{ENV['GRAPHITE_AUTH']}";
+          var url = "#{ENV['LIBRATO_URL']}";
+          var auth = "#{ENV['LIBRATO_AUTH']}";
         %script{ :type => "text/javascript", :src => "dashboards/#{dashboard}.js" }
         %script{ :type => "text/javascript", :src => "j/tasseo.js" }
     - else
