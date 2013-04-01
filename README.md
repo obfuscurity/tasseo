@@ -1,12 +1,14 @@
 # Tasseo
 
+[![Build Status](https://secure.travis-ci.org/obfuscurity/tasseo.png)](http://travis-ci.org/obfuscurity/tasseo)
+
 Reading the tea leaves.
 
-![graph](https://github.com/obfuscurity/tasseo/raw/master/public/i/tasseo.png "Tasseo Dashboard")
+![graph](https://github.com/obfuscurity/tasseo/raw/master/lib/tasseo/public/i/tasseo.png "Tasseo Dashboard")
 
 ## Overview
 
-Tasseo is a lightweight, easily configurable, real-time dashboard for Graphite events. Charts are refreshed every two seconds and provide a heads-up view of the most current value.
+Tasseo is a lightweight, easily configurable, near-realtime dashboard for Graphite events. Charts are refreshed every two seconds and provide a heads-up view of the most current value.
 
 The default behavior is designed for a Carbon retention policy with a 1-second resolution for at least 5 minutes, although this can be modified within the dashboard and metric attributes.
 
@@ -14,7 +16,7 @@ The default behavior is designed for a Carbon retention policy with a 1-second r
 
 ### Examples
 
-Creating your own dashboard is as simple as dropping a JSON file into the `public/d` directory, committing it, and pushing the code to a Heroku app. The name of your file (minus the `.js` suffix) becomes the name of your dashboard. Here's an example configuration that you could put in e.g. `public/d/example.js`:
+Creating your own dashboard is as simple as dropping a JSON file into the `dashboards` directory, committing it, and pushing the code to a Heroku app. The name of your file (minus the `.js` suffix) becomes the name of your dashboard. Here's an example configuration that you could put in e.g. `dashboards/example.js`:
 
 ```json
 var metrics =
@@ -28,9 +30,10 @@ var metrics =
 ];
 ```
 
-The `target` attribute is the only mandatory field. As you might expect, each dashboard can contain an arbitrary list of different Graphite metrics. Another perfectly valid example:
+The `target` attribute is the only mandatory field. As you might expect, each dashboard can contain an arbitrary list of different Graphite metrics. Another perfectly valid example, this time including the dashboard-level attribute `period`:
 
 ```json
+var period = 3;
 var metrics =
 [
   { "target": "pulse.hermes-econns-apps-per-minute" },
@@ -65,15 +68,22 @@ var metrics =
 
 ### Dashboard Attributes
 
+Dashboard-level attributes are top-level variables defined in your dashboard configuration.
+
 * period - Range (in minutes) of data to query from Graphite. (optional, defaults to _5_)
 * refresh - Refresh interval for charts, in milliseconds. (optional, defaults to _2000_)
 * theme - Default theme for dashboard. Currently the only option is `dark`. (optional)
 * toolbar - Dictates whether the toolbar is shown or not. (optional, defaults to _true_)
+* padnulls - Determines whether to pad null values or not. (optional, defaults to _true_)
 
 ### Metric Attributes
 
+Metric-level attributes are attributes of the metric object(s) in your `metrics` array.
+
 * alias - Short name for the metric. (optional)
-* target - Full target name as used by Graphite. Can contain a combination of chained functions. (__mandatory__)
+* target - Full target name as used by Graphite. Can contain a combination of chained functions. (mandatory)
+* description - Text description or comment. (optional)
+* link - External link to apply to metric name or alias. (optional)
 * warning - Warning threshold. Exceeding this value causes the graph to turn yellow. (optional)
 * critical - Critical threshold. Exceeding this value causes the graph to turn red. (optional)
 * unit - Arbitrary string that can be used to designate a unit value; for example, "Mbps". (optional)
@@ -114,6 +124,33 @@ Header set Access-Control-Allow-Origin "*"
 Header set Access-Control-Allow-Methods "GET, OPTIONS"
 Header set Access-Control-Allow-Headers "origin, authorization, accept"
 ```
+
+If your Graphite composer is proteced by basic authentication, you have to ensure that the HTTP verb OPTIONS is allowed unauthenticated. This looks like the following for Apache:
+```
+<Location />
+    AuthName "graphs restricted"
+    AuthType Basic
+    AuthUserFile /etc/apache2/htpasswd
+    <LimitExcept OPTIONS>
+      require valid-user
+    </LimitExcept>
+</Location>
+```
+
+See http://blog.rogeriopvl.com/archives/nginx-and-the-http-options-method/ for an Nginx example.
+
+## GitHub Authentication
+
+To authenticate against a GitHub organization, set the following environment variables:
+
+```bash
+$ export GITHUB_CLIENT_ID=<id>
+$ export GITHUB_CLIENT_SECRET=<secret>
+$ export GITHUB_AUTH_ORGANIZATION=<org>
+```
+
+To register an OAuth application, go here: https://github.com/settings/applications
+
 
 ## License
 

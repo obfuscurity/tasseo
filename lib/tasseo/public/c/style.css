@@ -1,147 +1,183 @@
 
+* {
+  font-family: Helvetica;
+}
+
 body.night {
   background-color: #000;
 }
 
-div#title {
+div.title {
   margin: 50px 8% 0px;
 }
 
-#title span {
-  font-size: 48px;
-  font-family: Helvetica;
+.title span {
+  font-size: 3.0em;
   font-weight: bold;
 }
 
-.night #title span {
+.night .title span {
   color: #fff;
   opacity: 0.9;
 }
 
-#toolbar {
+.title span select {
+  font-size: 0.4em;
+  min-width: 200px;
+}
+
+.toolbar {
   right: 0;
   float: right;
 }
 
-#title ul {
+.title ul {
   list-style-type: none;
 }
 
-#title ul.timepanel {
+.title ul.timepanel {
   float: left;
 }
 
-#title ul.toggle {
+.title ul.toggle {
   float: right;
 }
 
-#title ul li {
+.title ul li {
   float: left;
 }
 
-#title ul li.timepanel {
+.title ul li.timepanel {
   padding: 10px 0;
   width: 90px;
   text-align: center;
   background-color: #999;
 }
 
-#title ul li.timepanel.live {
+.title ul li.timepanel.live {
   width: 120px;
 }
 
-#title ul li.timepanel.night {
+.title ul li.timepanel.night {
   background-color: #333;
 }
 
-#title ul li.timepanel.selected {
+.title ul li.timepanel.selected {
   background-color: #333;
   color: #fff;
 }
 
-#title ul li.timepanel.selected.night {
+.title ul li.timepanel.selected.night {
   background-color: #999;
 }
 
-#title ul li.timepanel a {
-  font-family: Helvetica;
+.title ul li.timepanel a {
   font-size: 18px;
   font-weight: bold;
   color: #fff;
   text-decoration: none;
 }
 
-#title ul li.toggle-nonum, #title ul li.toggle-night {
+.title ul li.toggle-nonum, .title ul li.toggle-night {
   margin-left: 20px;
 }
 
-#title ul li a img {
+.title ul li a img {
   opacity: 0.8;
 }
 
-#title p {
+.title p {
   margin-left: 10px;
   font-size: 20px;
-  font-family: Helvetica;
   color: #999;
 }
 
-div#main {
+div.main {
   margin: 30px 8% 0px;
   text-align: center;
 }
 
-div#nav {
+div.nav {
   margin: 30px 8% 0px;
 }
 
-#nav ul {
+.nav ul {
   margin-left: 10px;
   list-style-type: none;
   padding: 0;
 }
 
-#nav li {
+.nav li {
   padding-bottom: 3px;
 }
 
-#nav li a {
+.nav li a {
   font-size: 20px;
-  font-family: Helvetica;
   text-decoration: none;
   color: #999;
 }
 
-#nav li a:hover {
+.nav li a:hover {
   color: red;
 }
 
-#graph, #false {
+.graph, .false {
   position: relative;
   float: left;
   padding: 10px;
   margin: 10px;
 }
 
-#false {
+.false {
   width: 350px;
   height: 104px;
 }
 
-#graph svg {
+.graph a {
+  color: #000;
+}
+
+.graph svg {
   border-left: 1px dotted #ddd;
   border-right: 1px dotted #ddd;
 }
 
-.night #graph svg {
+.night .graph svg {
   border-left: 1px dotted #333;
   border-right: 1px dotted #333;
 }
-  
-#overlay-name {
+
+span.description {
+  visibility: hidden;
+  position: absolute;
+  display: block;
+  z-index: 300;
+  min-width: 300px;
+  min-height: 50px;
+  margin: -50px 0 0 -20px;
+  background-color: rgba(255, 255, 255, 0.85);
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  border: 3px solid #cecccc;
+  -moz-box-shadow: 5px 5px 15px 2px rgba(134, 134, 134, 0.76);
+  -webkit-box-shadow: 5px 5px 15px 2px rgba(134, 134, 134, 0.76);
+  box-shadow: 5px 5px 15px 2px rgba(134, 134, 134, 0.76);
+  padding: 15px;
+  text-align: left;
+}
+
+.night span.description {
+  border: 0;
+}
+
+span.description:hover {
+  visibility: visible;
+}
+
+.overlay-name {
   position: absolute;
   font-size: 24px;
-  font-family: Helvetica;
   text-align: left;
   width: 150px;
   left: 20px;
@@ -149,26 +185,25 @@ div#nav {
   z-index: 200;
 }
 
-#overlay-number {
+.overlay-number {
   position: absolute;
   font-size: 48px;
-  font-family: Helvetica;
   font-weight: bold;
   right: 20px;
   bottom: 20px;
   z-index: 200;
 }
 
-#overlay-name.night, #overlay-number.night {
+.overlay-name.night, .overlay-number.night {
   color: #fff;
   opacity: 1.0;
 }
 
-#overlay-number.nonum {
+.overlay-number.nonum {
   opacity: 0.0;
 }
 
-#overlay-number span.error {
+.overlay-number span.error {
   color: red;
 }
 
@@ -178,11 +213,9 @@ span.unit {
 
 div.x_label {
   font-size: 13px;
-  font-family: Helvetica;
 }
 
 div.item {
   font-size: 12px;
-  font-family: Helvetica;
 }
 
