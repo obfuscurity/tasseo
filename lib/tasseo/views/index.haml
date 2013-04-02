@@ -37,9 +37,19 @@
           %p= error
     - if dashboard
       .main
-        :javascript
-          var url = "#{ENV['GRAPHITE_URL']}";
-          var auth = "#{ENV['GRAPHITE_AUTH']}";
+        - if ENV['LIBRATO_AUTH']
+          :javascript
+            var TasseoOptions = {
+              backend: 'librato',
+              auth: "#{ENV['LIBRATO_AUTH']}"
+            }
+        - else
+          :javascript
+            var TasseoOptions = {
+              backend: 'graphite',
+              url: "#{ENV['GRAPHITE_URL']}",
+              auth: "#{ENV['GRAPHITE_AUTH']}"
+            }
         %script{ :type => "text/javascript", :src => "dashboards/#{dashboard}.js" }
         %script{ :type => "text/javascript", :src => "j/tasseo.js" }
     - else
