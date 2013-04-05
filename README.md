@@ -73,15 +73,15 @@ Dashboard-level attributes are top-level variables defined in your dashboard con
 * period - Range (in minutes) of data to query from Graphite. (optional, defaults to _5_)
 * refresh - Refresh interval for charts, in milliseconds. (optional, defaults to _2000_)
 * theme - Default theme for dashboard. Currently the only option is `dark`. (optional)
-* toolbar - Dictates whether the toolbar is shown or not. (optional, defaults to _true_)
 * padnulls - Determines whether to pad null values or not. (optional, defaults to _true_)
-* title - Dictates whether the title is show or not. (optional, defaults to _true_)
-
-* normalColor - Set normal graph color (optional, defaults to `#afdab1`)
-* criticalColor - Set graph color the current value when exceeds the `critical` threshold (optional, defaults to `#d59295`)
-* warningColor - Set graph color the current value when exceeds the `warning` threshold (optional, defaults to `#f5cb56`)
-
-* interpolation, renderer, stroke - set custom graphing options (see [Rickshaw documentation](https://github.com/shutterstock/rickshaw#rickshawgraph))
+* title - Dictates whether the dashboard title is shown or not. (optional, defaults to _true_)
+* toolbar - Dictates whether the toolbar is shown or not. (optional, defaults to _true_)
+* normalColor - Set normal graph color. (optional, defaults to `#afdab1`)
+* criticalColor - Set `critical` graph color. (optional, defaults to `#d59295`)
+* warningColor - Set `warning` graph color. (optional, defaults to `#f5cb56`)
+* interpolation - Line smoothing method supported by D3. (optional, defaults to _step-after_)
+* renderer - Rendering method supported by D3. (optional, defaults to _area_)
+* stroke - Dictates whether stroke outline is shown or not. (optional, defaults to _true_)
 
 ### Metric Attributes
 
