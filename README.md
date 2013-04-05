@@ -75,6 +75,13 @@ Dashboard-level attributes are top-level variables defined in your dashboard con
 * theme - Default theme for dashboard. Currently the only option is `dark`. (optional)
 * toolbar - Dictates whether the toolbar is shown or not. (optional, defaults to _true_)
 * padnulls - Determines whether to pad null values or not. (optional, defaults to _true_)
+* title - Dictates whether the title is show or not. (optional, defaults to _true_)
+
+* normalColor - Set normal graph color (optional, defaults to `#afdab1`)
+* criticalColor - Set graph color the current value when exceeds the `critical` threshold (optional, defaults to `#d59295`)
+* warningColor - Set graph color the current value when exceeds the `warning` threshold (optional, defaults to `#f5cb56`)
+
+* interpolation, renderer, stroke - set custom graphing options (see [Rickshaw documentation](https://github.com/shutterstock/rickshaw#rickshawgraph))
 
 ### Metric Attributes
 
