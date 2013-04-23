@@ -99,7 +99,7 @@ Metric-level attributes are attributes of the metric object(s) in your `metrics`
 
 The only required environment variable is `GRAPHITE_URL`. This should be set to the base URL of your Graphite composer (e.g. `https://graphite.yourdomain.com`). If your server requires Basic Auth, you can set the `GRAPHITE_AUTH` variable (e.g. `username:password`).
 
-### Development
+### Local
 
 ```bash
 $ rvm use 1.9.2
@@ -110,7 +110,7 @@ $ foreman start
 $ open http://127.0.0.1:5000
 ```
 
-### Production
+### Heroku
 
 ```bash
 $ export DEPLOY=production/staging/you
