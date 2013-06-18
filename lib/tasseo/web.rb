@@ -14,6 +14,7 @@ module Tasseo
       use Rack::SslEnforcer if ENV['FORCE_HTTPS']
       use Rack::Static, :urls => ['/dashboards/']
 
+      set :protection, :except => :frame_options
       set :session_secret, ENV['SESSION_SECRET'] || Digest::SHA1.hexdigest(Time.now.to_f.to_s)
       set :github_options, { :scopes => "user" }
 
