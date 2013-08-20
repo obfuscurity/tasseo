@@ -5,9 +5,11 @@
     %meta{ "http-equiv" => "Content-Type", :content => "text/html;charset=utf-8" }
     %link{ :rel => "stylesheet", :type => "text/css", :href => "c/style.css" }
     %script{ :type => "text/javascript", :src => "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" }
+    %script{ :type => "text/javascript", :src => "http://underscorejs.org/underscore-min.js" }
     %script{ :type => "text/javascript", :src => "j/d3.v2.min.js" }
     %script{ :type => "text/javascript", :src => "j/rickshaw.min.js" }
     %script{ :type => "text/javascript", :src => "j/crypto-min.js" }
+    %script{ :type => "text/javascript", :src => "j/tasseo.js" }
   %body
     .title
       - if dashboard
@@ -37,11 +39,37 @@
           %p= error
     - if dashboard
       .main
+        %script{ :type => "text/javascript", :src => "dashboards/#{dashboard}.js" }
         :javascript
           var url = "#{ENV['GRAPHITE_URL']}";
           var auth = "#{ENV['GRAPHITE_AUTH']}";
-        %script{ :type => "text/javascript", :src => "dashboards/#{dashboard}.js" }
-        %script{ :type => "text/javascript", :src => "j/tasseo.js" }
+
+          /* gather all configuration settings from global variables and turn
+           * them into proper options.
+           */
+          var period = (typeof period == 'undefined') ? 5 : period;
+
+          var graphiteOptions = {}
+          if (typeof padnulls != 'undefined') graphiteOptions['padnulls'] = padnulls;
+
+          var dashboardOptions = {}
+          if (typeof interpolation != 'undefined') dashboardOptions['interpolation'] = interpolation;
+          if (typeof renderer != 'undefined')      dashboardOptions['renderer'] = renderer;
+          if (typeof stroke != 'undefined')        dashboardOptions['stroke'] = stroke;
+
+          if (typeof criticalColor != 'undefined') dashboardOptions['criticalColor'] = criticalColor;
+          if (typeof warningColor != 'undefined')  dashboardOptions['warningColor'] = warningColor;
+          if (typeof normalColor != 'undefined')   dashboardOptions['normalColor'] = normalColor;
+
+          var uiOptions = {}
+          if (typeof title != 'undefined')                    uiOptions['title'] = title;
+          if (typeof toolbar != 'undefined')                  uiOptions['toolbar'] = toolbar;
+          if (typeof theme != 'undefined' && theme == "dark") uiOptions['darkMode'] = true;
+
+          var datasource = new TasseoGraphiteDatasource(url, auth, period, graphiteOptions)
+          var dashboard = new TasseoDashboard(metrics, datasource, period, dashboardOptions)
+          var ui = new TasseoUi(dashboard, uiOptions)
+
     - else
       - if list
         .nav
