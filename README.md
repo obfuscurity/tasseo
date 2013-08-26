@@ -146,6 +146,27 @@ If your Graphite composer is proteced by basic authentication, you have to ensur
 
 See http://blog.rogeriopvl.com/archives/nginx-and-the-http-options-method/ for an Nginx example.
 
+## Alternate Backends
+
+### Librato Metrics
+
+Taseso can be configured to fetch metrics from [Librato Metrics](https://metrics.librato.com/)
+instead of Graphite by setting the `LIBRATO_AUTH` environment variable instead of `GRAPHITE_AUTH`.
+
+The format of the data is:
+
+    LIBRATO_AUTH=<username>:<token>
+
+If you are sending data less frequently than 1 second, you should adjust the
+`period=` and `refresh=` configuration settings accordingly.
+
+For instance, if you were sending metrics every 60 seconds, this could be sufficient:
+
+    period = 60
+    refresh = 30000
+
+
+
 ## GitHub Authentication
 
 To authenticate against a GitHub organization, set the following environment variables:
@@ -165,3 +186,4 @@ Tasseo is distributed under a 3-clause BSD license. Third-party software librari
 
 * d3.js - [3-clause BSD](https://github.com/mbostock/d3/blob/master/LICENSE)
 * Rickshaw - [MIT](https://github.com/shutterstock/rickshaw)
+* underscore.js - [MIT](https://github.com/jashkenas/underscore/blob/master/LICENSE)
