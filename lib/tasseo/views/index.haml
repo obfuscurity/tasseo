@@ -41,16 +41,25 @@
       .main
         %script{ :type => "text/javascript", :src => "dashboards/#{dashboard}.js" }
         :javascript
-          var url = "#{ENV['GRAPHITE_URL']}";
-          var auth = "#{ENV['GRAPHITE_AUTH']}";
+
+          var datasource;
+
+          var graphiteUrl = "#{ENV['GRAPHITE_URL']}";
+          var graphiteAuth = "#{ENV['GRAPHITE_AUTH']}";
+          var libratoAuth = "#{ENV['LIBRATO_AUTH']}";
+
+          if (libratoAuth != "") {
+            datasource = new TasseoLibratoDatasource(libratoAuth)
+          } else {
+            var graphiteOptions = {}
+            if (typeof padnulls != 'undefined') graphiteOptions['padnulls'] = padnulls;
+            datasource = new TasseoGraphiteDatasource(graphiteUrl, graphiteAuth, graphiteOptions)
+          }
 
           /* gather all configuration settings from global variables and turn
            * them into proper options.
            */
           var period = (typeof period == 'undefined') ? 5 : period;
-
-          var graphiteOptions = {}
-          if (typeof padnulls != 'undefined') graphiteOptions['padnulls'] = padnulls;
 
           var dashboardOptions = {}
           if (typeof interpolation != 'undefined') dashboardOptions['interpolation'] = interpolation;
@@ -66,7 +75,6 @@
           if (typeof toolbar != 'undefined')                  uiOptions['toolbar'] = toolbar;
           if (typeof theme != 'undefined' && theme == "dark") uiOptions['darkMode'] = true;
 
-          var datasource = new TasseoGraphiteDatasource(url, auth, graphiteOptions)
           var dashboard = new TasseoDashboard(metrics, datasource, period, dashboardOptions)
           var ui = new TasseoUi(dashboard, uiOptions)
 
