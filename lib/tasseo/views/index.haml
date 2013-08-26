@@ -66,7 +66,7 @@
           if (typeof toolbar != 'undefined')                  uiOptions['toolbar'] = toolbar;
           if (typeof theme != 'undefined' && theme == "dark") uiOptions['darkMode'] = true;
 
-          var datasource = new TasseoGraphiteDatasource(url, auth, period, graphiteOptions)
+          var datasource = new TasseoGraphiteDatasource(url, auth, graphiteOptions)
           var dashboard = new TasseoDashboard(metrics, datasource, period, dashboardOptions)
           var ui = new TasseoUi(dashboard, uiOptions)
 
