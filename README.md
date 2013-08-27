@@ -157,6 +157,16 @@ The format of the data is:
 
     LIBRATO_AUTH=<username>:<token>
 
+By default, all sources for a metric are aggregated. To limit to a specific
+source, specify the `source:` option when defining a metric. For instance, to
+limit to the "web1" source:
+
+    {
+      target: "fetch.timer",
+      source: "web1"
+    }
+
+
 If you are sending data less frequently than 1 second, you should adjust the
 `period=` and `refresh=` configuration settings accordingly.
 
