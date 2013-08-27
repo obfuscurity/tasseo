@@ -150,7 +150,7 @@ See http://blog.rogeriopvl.com/archives/nginx-and-the-http-options-method/ for a
 
 ### Librato Metrics
 
-Taseso can be configured to fetch metrics from [Librato Metrics](https://metrics.librato.com/)
+Tasseo can be configured to fetch metrics from [Librato Metrics](https://metrics.librato.com/)
 instead of Graphite by setting the `LIBRATO_AUTH` environment variable instead of `GRAPHITE_AUTH`.
 
 The format of the data is:
