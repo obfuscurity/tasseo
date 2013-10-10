@@ -59,7 +59,8 @@
           /* gather all configuration settings from global variables and turn
            * them into proper options.
            */
-          var period = (typeof period == 'undefined') ? 5 : period;
+          var realtimePeriod = (typeof period == 'undefined') ? 5 : period;
+          var refreshInterval = (typeof refresh == 'undefined') ? 2000 : refresh;
 
           var dashboardOptions = {}
           if (typeof interpolation != 'undefined') dashboardOptions['interpolation'] = interpolation;
@@ -70,12 +71,15 @@
           if (typeof warningColor != 'undefined')  dashboardOptions['warningColor'] = warningColor;
           if (typeof normalColor != 'undefined')   dashboardOptions['normalColor'] = normalColor;
 
-          var uiOptions = {}
+          var uiOptions = {
+            refreshInterval: refreshInterval,
+            realtimePeriod: realtimePeriod
+          }
           if (typeof title != 'undefined')                    uiOptions['title'] = title;
           if (typeof toolbar != 'undefined')                  uiOptions['toolbar'] = toolbar;
           if (typeof theme != 'undefined' && theme == "dark") uiOptions['darkMode'] = true;
 
-          var dashboard = new TasseoDashboard(metrics, datasource, period, dashboardOptions)
+          var dashboard = new TasseoDashboard(metrics, datasource, realtimePeriod, dashboardOptions)
           var ui = new TasseoUi(dashboard, uiOptions)
 
     - else
