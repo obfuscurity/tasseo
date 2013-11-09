@@ -8,9 +8,11 @@ Reading the tea leaves.
 
 ## Overview
 
-Tasseo is a lightweight, easily configurable, near-realtime dashboard for Graphite events. Charts are refreshed every two seconds and provide a heads-up view of the most current value.
+Tasseo is a lightweight, easily configurable, near-realtime dashboard for time-series metrics. Charts are refreshed every two seconds and provide a heads-up view of the most current value.
 
-The default behavior is designed for a Carbon retention policy with a 1-second resolution for at least 5 minutes, although this can be modified within the dashboard and metric attributes.
+The default behavior is designed for a retention policy with a 1-second resolution for at least 5 minutes, although this can be modified within the dashboard and metric attributes.
+
+Tasseo was originally designed for the Graphite TSDB, but has since been extended to support InfluxDB and Librato Metrics backend sources.
 
 ## Configuration
 
@@ -153,27 +155,43 @@ See http://blog.rogeriopvl.com/archives/nginx-and-the-http-options-method/ for a
 Tasseo can be configured to fetch metrics from [Librato Metrics](https://metrics.librato.com/)
 instead of Graphite by setting the `LIBRATO_AUTH` environment variable instead of `GRAPHITE_AUTH`.
 
-The format of the data is:
+The format of this variable is:
 
-    LIBRATO_AUTH=<username>:<token>
+```
+LIBRATO_AUTH=<username>:<token>
+```
 
 By default, all sources for a metric are aggregated. To limit to a specific
 source, specify the `source:` option when defining a metric. For instance, to
 limit to the "web1" source:
 
-    {
-      target: "fetch.timer",
-      source: "web1"
-    }
-
+```
+{
+  target: "fetch.timer",
+  source: "web1"
+}
+```
 
 If you are sending data less frequently than 1 second, you should adjust the
 `period=` and `refresh=` configuration settings accordingly.
 
 For instance, if you were sending metrics every 60 seconds, this could be sufficient:
 
-    period = 60
-    refresh = 30000
+```
+var period = 60;
+var refresh = 30000;
+```
+
+### InfluxDB
+
+Tasseo can also be configured to fetch metrics from an [InfluxDB](http://influxdb.org/) server. The necessary environment variables are `INFLUXDB_URL` and `INFLUXDB_AUTH`.
+
+The formats of these variables are:
+
+```
+INFLUXDB_URL=http://sandbox.influxdb.org:9061/db/<database>
+INFLUXDB_AUTH=<username>:<password>
+```
 
 
 
