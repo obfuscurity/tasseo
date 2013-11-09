@@ -175,6 +175,17 @@ For instance, if you were sending metrics every 60 seconds, this could be suffic
     period = 60
     refresh = 30000
 
+### InfluxDB Metrics
+
+Tasseo can also be configured to fetch metrics from an [InfluxDB](http://influxdb.org/) service. The necessary environment variables are `INFLUXDB_URL` and `INFLUXDB_AUTH`.
+
+The formats of these variables are:
+
+```
+INFLUXDB_URL=http://sandbox.influxdb.org:9061/db/<database>
+INFLUXDB_AUTH=<username>:<password>
+```
+
 
 
 ## GitHub Authentication
