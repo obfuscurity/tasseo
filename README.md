@@ -184,7 +184,7 @@ var refresh = 30000;
 
 ### InfluxDB
 
-Tasseo can also be configured to fetch metrics from an [InfluxDB](http://influxdb.org/) service. The necessary environment variables are `INFLUXDB_URL` and `INFLUXDB_AUTH`.
+Tasseo can also be configured to fetch metrics from an [InfluxDB](http://influxdb.org/) server. The necessary environment variables are `INFLUXDB_URL` and `INFLUXDB_AUTH`.
 
 The formats of these variables are:
 
