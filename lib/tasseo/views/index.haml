@@ -47,9 +47,13 @@
           var graphiteUrl = "#{ENV['GRAPHITE_URL']}";
           var graphiteAuth = "#{ENV['GRAPHITE_AUTH']}";
           var libratoAuth = "#{ENV['LIBRATO_AUTH']}";
+          var influxDbUrl = "#{ENV['INFLUXDB_URL']}";
+          var influxDbAuth = "#{ENV['INFLUXDB_AUTH']}";
 
           if (libratoAuth != "") {
             datasource = new TasseoLibratoDatasource(libratoAuth)
+          } else if (influxDbUrl != "") {
+            datasource = new TasseoInfluxDBDatasource(influxDbUrl, influxDbAuth)
           } else {
             var graphiteOptions = {}
             if (typeof padnulls != 'undefined') graphiteOptions['padnulls'] = padnulls;
