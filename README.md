@@ -153,27 +153,32 @@ See http://blog.rogeriopvl.com/archives/nginx-and-the-http-options-method/ for a
 Tasseo can be configured to fetch metrics from [Librato Metrics](https://metrics.librato.com/)
 instead of Graphite by setting the `LIBRATO_AUTH` environment variable instead of `GRAPHITE_AUTH`.
 
-The format of the data is:
+The format of this variable is:
 
-    LIBRATO_AUTH=<username>:<token>
+```
+LIBRATO_AUTH=<username>:<token>
+```
 
 By default, all sources for a metric are aggregated. To limit to a specific
 source, specify the `source:` option when defining a metric. For instance, to
 limit to the "web1" source:
 
-    {
-      target: "fetch.timer",
-      source: "web1"
-    }
-
+```
+{
+  target: "fetch.timer",
+  source: "web1"
+}
+```
 
 If you are sending data less frequently than 1 second, you should adjust the
 `period=` and `refresh=` configuration settings accordingly.
 
 For instance, if you were sending metrics every 60 seconds, this could be sufficient:
 
-    period = 60
-    refresh = 30000
+```
+var period = 60;
+var refresh = 30000;
+```
 
 ### InfluxDB Metrics
 
