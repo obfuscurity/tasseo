@@ -182,7 +182,7 @@ var period = 60;
 var refresh = 30000;
 ```
 
-### InfluxDB Metrics
+### InfluxDB
 
 Tasseo can also be configured to fetch metrics from an [InfluxDB](http://influxdb.org/) service. The necessary environment variables are `INFLUXDB_URL` and `INFLUXDB_AUTH`.
 
