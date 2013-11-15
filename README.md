@@ -201,6 +201,7 @@ Sample target configuration:
   target: "foo",
   series: "data"
 }
+```
 
 
 ## GitHub Authentication
