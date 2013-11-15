@@ -96,6 +96,7 @@ Metric-level attributes are attributes of the metric object(s) in your `metrics`
 * warning - Warning threshold. Exceeding this value causes the graph to turn yellow. (optional)
 * critical - Critical threshold. Exceeding this value causes the graph to turn red. (optional)
 * unit - Arbitrary string that can be used to designate a unit value; for example, "Mbps". (optional)
+* series - Name of the InfluxDB series that each target belongs to. (mandatory for InfluxDB)
 
 ## Deployment
 
@@ -184,7 +185,7 @@ var refresh = 30000;
 
 ### InfluxDB
 
-Tasseo can also be configured to fetch metrics from an [InfluxDB](http://influxdb.org/) server. The necessary environment variables are `INFLUXDB_URL` and `INFLUXDB_AUTH`.
+Tasseo can also be configured to fetch metrics from an [InfluxDB](http://influxdb.org/) server. The necessary environment variables are `INFLUXDB_URL` and `INFLUXDB_AUTH`. Within the configuration, each target must also contain a `series` attribute that 
 
 The formats of these variables are:
 
@@ -193,6 +194,13 @@ INFLUXDB_URL=http://sandbox.influxdb.org:9061/db/<database>
 INFLUXDB_AUTH=<username>:<password>
 ```
 
+Sample target configuration:
+
+```
+{
+  target: "foo",
+  series: "data"
+}
 
 
 ## GitHub Authentication
