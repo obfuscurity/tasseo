@@ -203,6 +203,8 @@ Sample target configuration:
 }
 ```
 
+Is equivalent to the InfluxDB query `select foo from data`.
+
 
 ## GitHub Authentication
 
