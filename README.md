@@ -98,6 +98,7 @@ Metric-level attributes are attributes of the metric object(s) in your `metrics`
 * unit - Arbitrary string that can be used to designate a unit value; for example, "Mbps". (optional)
 * series - Name of the InfluxDB series that each target belongs to. (mandatory for InfluxDB)
 * transform - A function that takes the value and returns a transformed value. (optional)
+* where - A `where` clause to pass to InfluxDB.
 
 ## Deployment
 
