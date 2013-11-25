@@ -97,7 +97,7 @@ Metric-level attributes are attributes of the metric object(s) in your `metrics`
 * critical - Critical threshold. Exceeding this value causes the graph to turn red. (optional)
 * unit - Arbitrary string that can be used to designate a unit value; for example, "Mbps". (optional)
 * series - Name of the InfluxDB series that each target belongs to. (mandatory for InfluxDB)
-* transform - A function that takes the value and returns a transformed value. For example, log disk usage in MB, but report some on the dashboard in GB.
+* transform - A function that takes the value and returns a transformed value. (optional)
 
 ## Deployment
 
@@ -199,12 +199,16 @@ Sample target configuration:
 
 ```
 {
-  target: "foo",
-  series: "data"
+  target: "available",
+  series: "disk_usage",
+  transform: function(value) {
+    // metric is logged in MB but we want to display GB
+    return value / 1024;
+  }
 }
 ```
 
-Is equivalent to the InfluxDB query `select foo from data`.
+Is equivalent to the InfluxDB query `select available from disk_usage`.
 
 
 ## GitHub Authentication
