@@ -1,5 +1,6 @@
 source "http://rubygems.org"
 
+gem "foreman"
 gem "sinatra"
 gem "thin", "~> 1.5.0"
 gem "rack-ssl-enforcer"
