@@ -186,7 +186,7 @@ var refresh = 30000;
 
 ### InfluxDB
 
-Tasseo can also be configured to fetch metrics from an [InfluxDB](http://influxdb.org/) server. The necessary environment variables are `INFLUXDB_URL` and `INFLUXDB_AUTH`. Within the configuration, each target must also contain a `series` attribute that 
+Tasseo can also be configured to fetch metrics from an [InfluxDB](http://influxdb.org/) server. The necessary environment variables are `INFLUXDB_URL` and `INFLUXDB_AUTH`. Within the configuration, each target must also contain a `series` attribute.
 
 The formats of these variables are:
 
@@ -195,17 +195,20 @@ INFLUXDB_URL=http://sandbox.influxdb.org:9061/db/<database>
 INFLUXDB_AUTH=<username>:<password>
 ```
 
-Sample target configuration:
+Sample configuration:
 
 ```
-{
-  target: "available",
-  series: "disk_usage",
-  transform: function(value) {
-    // metric is logged in MB but we want to display GB
-    return value / 1024;
+var metrics =
+[
+  {
+    target: "available",
+    series: "disk_usage",
+    transform: function(value) {
+      // metric is logged in MB but we want to display GB
+      return value / 1024;
+    }
   }
-}
+]
 ```
 
 Is equivalent to the InfluxDB query `select available from disk_usage`.
