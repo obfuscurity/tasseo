@@ -82,10 +82,20 @@ module Tasseo
       {'status' => 'ok'}.to_json
     end
 
+    is_influx = !!ENV["INFLUXDB_URL"]
+    data_source_url = is_influx ? ENV["INFLUXDB_URL"] : ENV["GRAPHITE_URL"]
+    auth_details = is_influx ? ENV["INFLUXDB_AUTH"] : ENV["GRAPHITE_AUTH"]
+    auth_details = auth_details.split(':') if auth_details
     if ENV['USE_PROXY']
       get %r{/proxy/(.*)} do
-        uri = URI("#{ENV['GRAPHITE_URL'] || ENV['INFLUXDB_URL']}/#{params[:captures].first}?#{request.query_string}")
-        res = Net::HTTP.get_response(uri)
+        uri = URI("#{data_source_url}/#{params[:captures].first}?#{request.query_string}")
+        req = Net::HTTP::Get.new(uri)
+        if auth_details
+          req.basic_auth(auth_details[0], auth_details[1])
+        end
+        res = Net::HTTP.start(uri.hostname, uri.port) {|http|
+          http.request(req)
+        }
         content_type :json
         res.body
       end
