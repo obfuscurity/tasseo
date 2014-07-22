@@ -44,10 +44,10 @@
 
           var datasource;
 
-          var graphiteUrl = "#{ENV['GRAPHITE_URL']}";
+          var graphiteUrl = "#{ENV['USE_PROXY'] ? '/proxy' : ENV['GRAPHITE_URL']}";
           var graphiteAuth = "#{ENV['GRAPHITE_AUTH']}";
           var libratoAuth = "#{ENV['LIBRATO_AUTH']}";
-          var influxDbUrl = "#{ENV['INFLUXDB_URL']}";
+          var influxDbUrl = "#{ENV['USE_PROXY'] ? '/proxy' : ENV['INFLUXDB_URL']}";
           var influxDbAuth = "#{ENV['INFLUXDB_AUTH']}";
 
           if (libratoAuth != "") {

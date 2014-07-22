@@ -82,6 +82,15 @@ module Tasseo
       {'status' => 'ok'}.to_json
     end
 
+    if ENV['USE_PROXY']
+      get %r{/proxy/(.*)} do
+        uri = URI("#{ENV['GRAPHITE_URL'] || ENV['INFLUXDB_URL']}/#{params[:captures].first}?#{request.query_string}")
+        res = Net::HTTP.get_response(uri)
+        content_type :json
+        res.body
+      end
+    end
+
     get %r{/([\S]+)} do
       path = params[:captures].first
       if dashboards.include?(path)
