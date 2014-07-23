@@ -91,10 +91,6 @@ describe Tasseo::Web do
 
   describe 'GET /proxy' do
     context '/ JSON' do
-      before do
-        ENV["USE_PROXY"]="true"
-        ENV["GRAPHITE_URL"]="http://echo.jsontest.com"
-      end
       it 'should return an array of dashboards' do
         get '/proxy/foo/bar'
         JSON.parse(last_response.body).should eq({'foo' => 'bar'})
