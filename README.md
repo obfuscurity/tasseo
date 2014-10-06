@@ -12,7 +12,7 @@ Tasseo is a lightweight, easily configurable, near-realtime dashboard for time-s
 
 The default behavior is designed for a retention policy with a 1-second resolution for at least 5 minutes, although this can be modified within the dashboard and metric attributes.
 
-Tasseo was originally designed for the Graphite TSDB, but has since been extended to support InfluxDB and Librato Metrics backend sources.
+Tasseo was originally designed for the Graphite TSDB, but has since been extended to support InfluxDB, Librato Metrics, and Amazon CloudWatch backend sources.
 
 ## Configuration
 
@@ -99,6 +99,8 @@ Metric-level attributes are attributes of the metric object(s) in your `metrics`
 * series - Name of the InfluxDB series that each target belongs to. (mandatory for InfluxDB)
 * transform - A function that takes the value and returns a transformed value. (optional)
 * where - A `where` clause to pass to InfluxDB. (optional for InfluxDB)
+* Amazon CloudWatch specific fields which are documented [here](http://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html) and are discussed in the *Amazon CloudWatch* section below
+  * Namespace, MetricName, Dimensions, Statistics, EndTime, StartTime, Period, Unit
 
 ## Deployment
 
@@ -213,6 +215,39 @@ var metrics =
 ```
 
 Is equivalent to the InfluxDB query `select available from disk_usage`.
+
+### Amazon CloudWatch
+
+Tasseo can be configured to fetch metrics from [Amazon CloudWatch](http://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/Welcome.html)
+instead of Graphite by setting the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables instead of `GRAPHITE_AUTH`. **As warned [here](http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/browser-configuring.html)**, only use AWS IAM code credentials that have read only access to specific resources. These environment variables are used on the client and may be downloaded by anyone who happens to browse to your deployed dashboard.
+
+By default, metric values are aggregated, come in 1 minute segments (CloudWatch's minimum), and span the default Tasseo 5 minute period (these correspond to the fields: "Statistics", "Period", and "EndTime"/"StartTime"). These fields are documented further [here](http://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html). The fields "Namespace", "MetricName", "Dimensions", must be specified by the user. Although a target is required to be present, its value is irrelevant. An example for getting the Put latency off of a Kinesis Stream:
+
+```
+{
+    'target': '',
+    'Namespace': 'AWS/Kinesis',
+    'MetricName': 'PutRecord.Latency',
+    'Dimensions': [
+      {
+        'Name': 'StreamName',
+        'Value': 'what-i-named-my-stream'
+      }
+    ]
+  }
+```
+
+To view data on a bigger window, you should adjust the
+`period=` configuration variable accordingly. `period`, given in minutes, will affect the window set by "StartTime" and "EndTime". You can override any of the CloudWatch settings from your metric JSON.
+
+For instance, if you wanted to see metrics for the last hour, and have them refresh every minute, this could be sufficient:
+
+```
+var period = 60; // 60 minutes
+var refresh = 1 * 60 * 1000; // 1 minute
+```
+
+To get an idea of what values for "Namespace", "MetricName", "Dimensions" are necessary for your purposes, consult your [CloudWatch dashboard](https://console.aws.amazon.com/cloudwatch/home#metrics:) or browse the response of the [listMetrics](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/frames.html#\!AWS/CloudWatch.html) API.
 
 
 ## GitHub Authentication
