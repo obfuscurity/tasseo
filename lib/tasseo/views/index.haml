@@ -10,7 +10,8 @@
     %script{ :type => "text/javascript", :src => "j/rickshaw.min.js" }
     %script{ :type => "text/javascript", :src => "j/crypto-min.js" }
     %script{ :type => "text/javascript", :src => "j/tasseo.js" }
-    %script{ :type => "text/javascript", :src => "https://sdk.amazonaws.com/js/aws-sdk-2.0.18.min.js" }
+    - if ENV['AWS_ACCESS_KEY_ID']
+      %script{ :type => "text/javascript", :src => "https://sdk.amazonaws.com/js/aws-sdk-2.0.18.min.js" }
   %body
     .title
       - if dashboard
@@ -57,7 +58,7 @@
             datasource = new TasseoLibratoDatasource(libratoAuth)
           } else if (influxDbUrl != "") {
             datasource = new TasseoInfluxDBDatasource(influxDbUrl, influxDbAuth)
-          } else if (awsAccessKeyId != "") {
+          } else if (usingCloudWatch) {
             datasource = new TasseoAWSCloudWatchDatasource(awsAccessKeyId, awsSecretAccessKey)
           } else {
             var graphiteOptions = {}
