@@ -58,7 +58,7 @@
             datasource = new TasseoLibratoDatasource(libratoAuth)
           } else if (influxDbUrl != "") {
             datasource = new TasseoInfluxDBDatasource(influxDbUrl, influxDbAuth)
-          } else if (usingCloudWatch) {
+          } else if (typeof usingCloudWatch != 'undefined' && usingCloudWatch) {
             datasource = new TasseoAWSCloudWatchDatasource(awsAccessKeyId, awsSecretAccessKey)
           } else {
             var graphiteOptions = {}
