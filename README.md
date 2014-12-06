@@ -98,6 +98,7 @@ Metric-level attributes are attributes of the metric object(s) in your `metrics`
 * unit - Arbitrary string that can be used to designate a unit value; for example, "Mbps". (optional)
 * series - Name of the InfluxDB series that each target belongs to. (mandatory for InfluxDB)
 * transform - A function that takes the value and returns a transformed value. (optional)
+* scale - Use a dynamic y-axis scale rather than defaulting to zero min. (optional)
 * where - A `where` clause to pass to InfluxDB. (optional for InfluxDB)
 * Amazon CloudWatch specific fields which are documented [here](http://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html) and are discussed in the *Amazon CloudWatch* section below
   * Namespace, MetricName, Dimensions, Statistics, EndTime, StartTime, Period, Unit
@@ -209,7 +210,9 @@ var metrics =
     transform: function(value) {
       // metric is logged in MB but we want to display GB
       return value / 1024;
-    }
+    },
+    // minimum y axis value will equal minimum metric y value (instead of 0)
+    scale: true
   }
 ]
 ```
