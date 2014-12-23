@@ -227,9 +227,9 @@ instead of Graphite by setting the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KE
 Sample execute:
 
 ```
-export AWS_ACCESS_KEY_ID=AKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-export AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-export AWS_REGION=us-east-1
+export AWS_ACCESS_KEY_ID=${your_access_key}
+export AWS_SECRET_ACCESS_KEY=${your_secret_access_key}
+export AWS_REGION=${your_region}
 ```
 
 By default, metric values are aggregated, come in 1 minute segments (CloudWatch's minimum), and span the default Tasseo 5 minute period (these correspond to the fields: "Statistics", "Period", and "EndTime"/"StartTime"). These fields are documented further [here](http://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html). The fields "Namespace", "MetricName", "Dimensions", must be specified by the user. Although a target is required to be present, its value is irrelevant. An example for getting the Put latency off of a Kinesis Stream:
