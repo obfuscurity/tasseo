@@ -222,7 +222,15 @@ Is equivalent to the InfluxDB query `select available from disk_usage`.
 ### Amazon CloudWatch
 
 Tasseo can be configured to fetch metrics from [Amazon CloudWatch](http://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/Welcome.html)
-instead of Graphite by setting the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables instead of `GRAPHITE_AUTH`. **As warned [here](http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/browser-configuring.html)**, only use AWS IAM code credentials that have read only access to specific resources. These environment variables are used on the client and may be downloaded by anyone who happens to browse to your deployed dashboard. In addition, you will need to write `var usingCloudWatch = true;` in the metric configuration file.
+instead of Graphite by setting the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` and `AWS_REGION` environment variables instead of `GRAPHITE_AUTH`. **As warned [here](http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/browser-configuring.html)**, only use AWS IAM code credentials that have read only access to specific resources. These environment variables are used on the client and may be downloaded by anyone who happens to browse to your deployed dashboard. In addition, you will need to write `var usingCloudWatch = true;` in the metric configuration file.
+
+Sample execute:
+
+```
+export AWS_ACCESS_KEY_ID=${your_access_key}
+export AWS_SECRET_ACCESS_KEY=${your_secret_access_key}
+export AWS_REGION=${your_region}
+```
 
 By default, metric values are aggregated, come in 1 minute segments (CloudWatch's minimum), and span the default Tasseo 5 minute period (these correspond to the fields: "Statistics", "Period", and "EndTime"/"StartTime"). These fields are documented further [here](http://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html). The fields "Namespace", "MetricName", "Dimensions", must be specified by the user. Although a target is required to be present, its value is irrelevant. An example for getting the Put latency off of a Kinesis Stream:
 
