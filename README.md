@@ -140,7 +140,7 @@ Header set Access-Control-Allow-Methods "GET, OPTIONS"
 Header set Access-Control-Allow-Headers "origin, authorization, accept"
 ```
 
-If your Graphite composer is proteced by basic authentication, you have to ensure that the HTTP verb OPTIONS is allowed unauthenticated. This looks like the following for Apache:
+If your Graphite composer is protected by basic authentication, you have to ensure that the HTTP verb OPTIONS is allowed unauthenticated. This looks like the following for Apache:
 ```
 <Location />
     AuthName "graphs restricted"
