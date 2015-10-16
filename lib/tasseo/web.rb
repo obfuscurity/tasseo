@@ -43,9 +43,9 @@ module Tasseo
       end
 
       def find_dashboards
-        @dashboards = []
+        @dashboards = ''
         Dir.foreach(dashboards_dir).grep(/\.js/).sort.each do |f|
-          @dashboards.push(f.split(".").first)
+          @dashboards = f.split(".").first
         end
       end
     end
@@ -58,10 +58,10 @@ module Tasseo
           { :dashboards => dashboards }.to_json
         else
           haml :index, :locals => {
-            :dashboard => nil,
-            :list => dashboards,
-            :error => nil
-          }
+                         :dashboard => dashboards,
+                         :list => dashboards,
+                         :error => nil
+                     }
         end
       else
         if request.accept.include?('application/json')
@@ -69,10 +69,10 @@ module Tasseo
           status 204
         else
           haml :index, :locals => {
-            :dashboard => nil,
-            :list => nil,
-            :error => 'No dashboard files found.'
-          }
+                         :dashboard => nil,
+                         :list => nil,
+                         :error => 'No dashboard files found.'
+                     }
         end
       end
     end
@@ -88,10 +88,10 @@ module Tasseo
         haml :index, :locals => { :dashboard => path }
       else
         body = haml :index, :locals => {
-          :dashboard => nil,
-          :list => dashboards,
-          :error => 'That dashboard does not exist.'
-        }
+                              :dashboard => nil,
+                              :list => dashboards,
+                              :error => 'That dashboard does not exist.'
+                          }
         [404, body]
       end
     end
