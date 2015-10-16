@@ -195,7 +195,7 @@ Tasseo can also be configured to fetch metrics from an [InfluxDB](http://influxd
 The formats of these variables are:
 
 ```
-INFLUXDB_URL=http://sandbox.influxdb.org:9061/db/<database>
+INFLUXDB_URL=http://sandbox.influxdb.org:8086
 INFLUXDB_AUTH=<username>:<password>
 ```
 
@@ -212,7 +212,8 @@ var metrics =
       return value / 1024;
     },
     // minimum y axis value will equal minimum metric y value (instead of 0)
-    scale: true
+    scale: true,
+    db: "points"
   }
 ]
 ```
