@@ -46,10 +46,10 @@
 
           var datasource;
 
-          var graphiteUrl = "#{ENV['GRAPHITE_URL']}";
+          var graphiteUrl = "#{ENV['GRAPHITE_URL'] && ENV['USE_PROXY'] ? '/proxy' : ENV['GRAPHITE_URL']}";
           var graphiteAuth = "#{ENV['GRAPHITE_AUTH']}";
           var libratoAuth = "#{ENV['LIBRATO_AUTH']}";
-          var influxDbUrl = "#{ENV['INFLUXDB_URL']}";
+          var influxDbUrl = "#{ENV['INFLUXDB_URL'] && ENV['USE_PROXY'] ? '/proxy' : ENV['INFLUXDB_URL']}";
           var influxDbAuth = "#{ENV['INFLUXDB_AUTH']}";
           var awsAccessKeyId = "#{ENV['AWS_ACCESS_KEY_ID']}";
           var awsSecretAccessKey = "#{ENV['AWS_SECRET_ACCESS_KEY']}";

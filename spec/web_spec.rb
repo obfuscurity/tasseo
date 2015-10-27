@@ -15,12 +15,12 @@ describe Tasseo::Web do
       before do
         header 'Accept', 'application/json'
       end
-  
+
       context 'without dashboards' do
         before do
           app.any_instance.stub(:dashboards) { [] }
         end
-        
+
         it 'should return a 204' do
           get '/'
           last_response.status.should eq(204)
@@ -85,6 +85,15 @@ describe Tasseo::Web do
       it 'should work even if Github auth is enabled' do
         get '/health'
         last_response.should be_ok
+      end
+    end
+  end
+
+  describe 'GET /proxy' do
+    context '/ JSON' do
+      it 'should return an array of dashboards' do
+        get '/proxy/foo/bar'
+        JSON.parse(last_response.body).should eq({'foo' => 'bar'})
       end
     end
   end
