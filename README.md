@@ -105,15 +105,23 @@ Metric-level attributes are attributes of the metric object(s) in your `metrics`
 
 ## Deployment
 
-The only required environment variable is `GRAPHITE_URL`. This should be set to the base URL of your Graphite composer (e.g. `https://graphite.yourdomain.com`). If your server requires Basic Auth, you can set the `GRAPHITE_AUTH` variable (e.g. `username:password`).
+The only required environment variables are:
+* `HOST`. This should be set to 127.0.0.1 (or the IP address you want)
+* `GRAPHITE_URL`. This should be set to the base URL of your Graphite composer (e.g. `https://graphite.yourdomain.com`).
+
+If your server requires Basic Auth, you can set the `GRAPHITE_AUTH` variable (e.g. `username:password`).
+Also, if you also want to override foreman's default `PORT`, you can set it too: use the `PORT` environment variable.
+
+The variables can be exported in the shell or written down in an environment file. Foreman reads variables in `.env` by default but you can also pass any environment file with `-f /path/to/env/file`.
 
 ### Local
 
 ```bash
 $ rvm use 1.9.2
 $ bundle install
-$ export GRAPHITE_URL=...
-$ export GRAPHITE_AUTH=... # e.g. username:password (optional)
+$ echo "HOST=127.0.0.1" > .env
+$ echo "GRAPHITE_URL=..." >> .env
+$ echo "GRAPHITE_AUTH=..." >> .env  # e.g. username:password (optional)
 $ foreman start
 $ open http://127.0.0.1:5000
 ```
@@ -123,6 +131,7 @@ $ open http://127.0.0.1:5000
 ```bash
 $ export DEPLOY=production/staging/you
 $ heroku create -r $DEPLOY -s cedar tasseo-$DEPLOY
+$ heroku config:set -r $DEPLOY HOST=...
 $ heroku config:set -r $DEPLOY GRAPHITE_URL=...
 $ heroku config:set -r $DEPLOY GRAPHITE_AUTH=...
 $ git push $DEPLOY master
