@@ -97,6 +97,7 @@ Metric-level attributes are attributes of the metric object(s) in your `metrics`
 * critical - Critical threshold. Exceeding this value causes the graph to turn red. (optional)
 * unit - Arbitrary string that can be used to designate a unit value; for example, "Mbps". (optional)
 * series - Name of the InfluxDB series that each target belongs to. (mandatory for InfluxDB)
+* db - Name of database of the InfluxDB. (mandatory for InfluxDB)
 * transform - A function that takes the value and returns a transformed value. (optional)
 * scale - Use a dynamic y-axis scale rather than defaulting to zero min. (optional)
 * where - A `where` clause to pass to InfluxDB. (optional for InfluxDB)
