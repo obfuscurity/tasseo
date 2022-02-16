@@ -154,6 +154,13 @@ If your Graphite composer is protected by basic authentication, you have to ensu
 
 See http://blog.rogeriopvl.com/archives/nginx-and-the-http-options-method/ for an Nginx example.
 
+#### Alternatively, enable the built-in proxy to bypass the CORS requirement
+By setting the `USE_PROXY` environment variable to `true` the clients will make ajax requests to Tasseo's backend and it will forward them on to Graphite or InfluxDB
+```
+USE_PROXY=true
+```
+
+
 ## Alternate Backends
 
 ### Librato Metrics
